@@ -1,0 +1,12 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/lemonmarkets-brokerage-openapi.json
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/lemonmarkets-brokerage-openapi.json
