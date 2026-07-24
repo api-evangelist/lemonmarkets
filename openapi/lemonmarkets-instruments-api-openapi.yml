@@ -1,0 +1,716 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Instruments API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Instruments
+paths:
+  /instruments/{isin}:
+    get:
+      summary: Get Instrument
+      operationId: get_instrument
+      description: 'Returns details for a specific instrument identified by its ISIN.
+
+        <strong>Test ISINs for Trading Halts</strong>
+
+        You can use the following static ISINs to test different predetermined scenarios regarding Trading Halts. The test ISINs are not enabled on our side and are only available in the Sandbox environment.
+
+        <ul> <li><code>XF0000000046</code> - <strong>Buy-side halt</strong>: Returns an instrument with an active trading halt on buy orders only <li><code>XF0000000053</code> - <strong>Sell-side halt</strong>: Returns an instrument with an active trading halt on sell orders only <li><code>XF0000000061</code> - <strong>Both-sides halt</strong>: Returns an instrument with an active trading halt on both buy and sell orders </ul>
+
+        <strong>Note:</strong>
+
+        <ul> <li>These test ISINs are only available on this endpoint. They will not appear in the <code>GET /instruments</code> listing endpoint. <li>The Sandbox behavior of <code>POST /accounts/{account_id}/orders</code> takes these predefined Trading Halts into account: it will thus return a 422 Error when attempting to create an order that would be Halted. </ul>
+
+        '
+      tags:
+      - Instruments
+      parameters:
+      - name: isin
+        required: true
+        schema:
+          title: ISIN
+          type: string
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        in: path
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /instruments/{instrument}/yield:
+    get:
+      tags:
+      - Instruments
+      summary: Get Latest Monthly Yield
+      description: 'Returns the latest monthly annualized yield available for the specified instrument.
+
+
+        **Sandbox Test ISINs**
+
+
+        You can use the following static ISINs to test different scenarios with predetermined responses. The test ISINs do not need to be enabled on our side and are only available on this endpoint in the Sandbox environment.
+
+        - `XF0000000012` - **Success case**: Returns predictable yield data (0.30% monthly, 3.60% annualized)
+
+        - `XF0000000020` - **No yield data**: Returns a 404 error: "No yield data available for instrument XF0000000020"
+
+        - `XF0000000038` - **Non-distributing fund**: Returns a 400 error: "Profit model of instrument XF0000000038 is not distributing"
+
+        '
+      operationId: get_latest_yield
+      parameters:
+      - required: true
+        schema:
+          title: Instrument
+          type: string
+        name: instrument
+        in: path
+        description: 'Specify the ISIN of the instrument.
+
+          '
+        example: IE0008643037
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          type: string
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          type: string
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YieldResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Instrument IE0008643036 is not a Money Market Fund
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: No API key found in request
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                detail: No yield data available for instrument
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: An unexpected error occurred
+  /instruments/{isin}/prices:
+    get:
+      summary: Get Prices
+      operationId: get_prices
+      tags:
+      - Instruments
+      parameters:
+      - name: isin
+        in: path
+        required: true
+        schema:
+          type: string
+          title: ISIN
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+      - name: type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/PriceType'
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InstrumentPriceResponse'
+              example:
+              - ask_price: '28.7707'
+                ask_size: '900'
+                bid_price: '28.6751'
+                bid_size: '1200'
+                currency: EUR
+                instrument: IE00BYXYX521
+                type: quote
+                updated_at: '2024-06-20T14:47:02.733000+00:00'
+              - currency: EUR
+                instrument: DE000A2QK5D4
+                price: '95.6500'
+                type: nav
+                valuation_date: '2024-06-20'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /instruments:
+    get:
+      summary: List Instruments
+      operationId: list_instruments
+      tags:
+      - Instruments
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: type
+        required: false
+        schema:
+          $ref: '#/components/schemas/InstrumentType'
+        in: query
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_InstrumentResponse_'
+              example:
+                data:
+                - fund_profit_model: accumulating
+                  isin: IE00B441G979
+                  title: iShares MSCI World EUR Hedged UCITS ETF
+                  regulatory_information:
+                    kid: https://mocked.test/kid/IE00B441G979.pdf
+                  total_expense_ratio_pct: '0.55'
+                  type: etf
+                - isin: US0378331005
+                  title: Apple Inc.
+                  regulatory_information: {}
+                  type: stock
+                  active_trading_halts:
+                  - valid_from: '2024-01-15T09:30:00.000000+00:00'
+                    valid_to: null
+                    side: buy
+                pagination:
+                  next_cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    InstrumentFundProfitModel:
+      title: Fund Profit Model
+      type: string
+      enum:
+      - accumulating
+      - distributing
+      description: 'A category to represent a fund''s model for profit use:
+
+        <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
+
+        '
+    InstrumentPriceResponse:
+      title: Price Response
+      oneOf:
+      - $ref: '#/components/schemas/QuoteResponseWithType'
+      - $ref: '#/components/schemas/NavResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          nav: '#/components/schemas/NavResponse'
+          quote: '#/components/schemas/QuoteResponseWithType'
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    TradingHaltResponse:
+      title: TradingHaltResponse
+      description: 'An object representing an active trading halt for an instrument.
+
+        '
+      required:
+      - valid_from
+      type: object
+      properties:
+        valid_from:
+          title: Valid From
+          type: string
+          format: date-time
+          description: 'The date and time from which the trading halt has been active.
+
+            '
+          example: '2024-01-15T09:30:00.000000+00:00'
+        valid_to:
+          title: Valid To
+          type: string
+          format: date-time
+          description: 'The date and time until which the trading halt is active. If <code>null</code>, the halt doesn''t have yet a definite lifting date.
+
+            '
+          example: null
+        side:
+          $ref: '#/components/schemas/Side'
+          description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
+
+            '
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
+
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    NavResponse:
+      properties:
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+
+            '
+        price:
+          type: string
+          title: Price
+          description: 'The net asset value (NAV) for the instrument.
+
+            '
+        valuation_date:
+          type: string
+          format: date
+          title: Valuation Date
+          description: 'The date of the NAV valuation.
+
+            '
+      type: object
+      required:
+      - currency
+      - instrument
+      - price
+      - type
+      - valuation_date
+      title: NavResponse
+    QuoteResponseWithType:
+      properties:
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        ask_price:
+          type: string
+          title: Ask Price
+          description: 'The ask price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type buy.
+
+            '
+        ask_size:
+          type: string
+          title: Ask Size
+          description: 'The ask size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type buy to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        bid_price:
+          type: string
+          title: Bid Price
+          description: 'The bid price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type sell.
+
+            '
+        bid_size:
+          type: string
+          title: Bid Size
+          description: 'The bid size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type sell to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+
+            '
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: 'The timestamp of the quote. It represents the point in time at which the quote was updated.
+
+            '
+      type: object
+      required:
+      - instrument
+      - ask_price
+      - bid_price
+      - ask_size
+      - bid_size
+      - currency
+      - type
+      - updated_at
+      title: QuoteResponseWithType
+    YieldResponse:
+      title: Yield
+      description: 'Most recent yield data available for the specified instrument.
+
+        '
+      required:
+      - period_start
+      - period_end
+      - yield_pct
+      - annualized_yield_pct
+      - calculated_as_of
+      type: object
+      properties:
+        period_start:
+          title: Period Start
+          type: string
+          format: date
+          description: 'The start date of the yield period. It represents the starting date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-01'
+        period_end:
+          title: Period End
+          type: string
+          format: date
+          description: 'The end date of the yield period. It represents the final date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-31'
+        yield_pct:
+          title: Yield Percent
+          type: number
+          description: 'The yield of the instrument for the given period in percentage (`"0.14"` means 0.14%).
+
+            '
+          example: '0.14'
+        annualized_yield_pct:
+          title: Annualized Yield Percent
+          type: number
+          description: 'Annualized yield for the specified period in percentage (`"1.69"` means 1.69%). Represents a simple (non-compounded) projection of that period''s factor over a year. Present only after the period''s final distribution is processed.
+
+            '
+          example: '1.69'
+        calculated_as_of:
+          title: Calculated As Of
+          type: string
+          format: date
+          description: 'The last date of the period for which the annualized monthly yield value applies.
+
+            '
+          example: '2023-10-31'
+      example:
+        period_start: '2025-10-01'
+        period_end: '2025-10-31'
+        yield_pct: '0.14'
+        annualized_yield_pct: '1.69'
+        calculated_as_of: '2025-10-31'
+    Page_InstrumentResponse_:
+      title: Page of InstrumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    InstrumentType:
+      title: InstrumentType
+      enum:
+      - etf
+      - fund
+      - stock
+      type: string
+      description: 'A category specifying the type of a financial instrument:
+
+        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+
+        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+
+        '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    InstrumentResponse:
+      title: InstrumentResponse
+      description: 'An object representing a financial instrument.
+
+        '
+      required:
+      - isin
+      - title
+      - type
+      - regulatory_information
+      type: object
+      properties:
+        isin:
+          title: ISIN
+          type: string
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+
+            '
+          example: LU1437015735
+        title:
+          title: Title
+          type: string
+          description: 'The title of the instrument.
+
+            '
+          example: Amundi Index MSCI Europe UCITS ETF DR
+        type:
+          $ref: '#/components/schemas/InstrumentType'
+        fund_profit_model:
+          $ref: '#/components/schemas/InstrumentFundProfitModel'
+        total_expense_ratio_pct:
+          title: Total Expense Ratio (%)
+          type: string
+          format: number
+          description: 'A number representing the total expense ratio for a fund. The value is pre-scaled, so `"0.07"` represents 0.07%.
+
+            '
+          example: '0.07'
+        regulatory_information:
+          $ref: '#/components/schemas/InstrumentRegulatoryInformationResponse'
+        active_trading_halts:
+          title: Active Trading Halts
+          type: array
+          items:
+            $ref: '#/components/schemas/TradingHaltResponse'
+          description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
+
+            '
+    InstrumentRegulatoryInformationResponse:
+      title: InstrumentRegulatoryInformationResponse
+      description: 'An object representing regulatory information regarding the instrument.
+
+        '
+      type: object
+      properties:
+        kid:
+          title: KID
+          type: string
+          format: uri
+          description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
+
+            '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

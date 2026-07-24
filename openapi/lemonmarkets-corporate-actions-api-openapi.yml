@@ -1,0 +1,1299 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Corporate Actions API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Corporate Actions
+paths:
+  /accounts/{account_id}/corporate_actions/{corporate_action_id}:
+    get:
+      summary: Get Corporate Action (Account-level)
+      operationId: get_corporate_action
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: corporate_action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Corporate Action Identifier
+        description: 'A corporate action identifier.
+
+          '
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CorporateActionResponseUnion'
+              examples:
+                cash_dividend:
+                  summary: Cash Dividend
+                  value:
+                    id: ca_cusa__b042d117bc254fcba9d845800c413695
+                    securities_account: sec_ac_50f9103fbba44a6080658bce20629d39
+                    instrument: DE0005909006
+                    type: cash_dividend
+                    ex_date: '2026-05-19'
+                    record_date: '2026-05-18'
+                    payable_date: '2026-05-21'
+                    amount_per_share: '2.80'
+                    amount_per_share_currency: EUR
+                    amount: '3278.80'
+                    currency: EUR
+                    shares_on_ex_date: '1171.00000'
+                    taxes:
+                    - type: church
+                      amount: '0.00'
+                      direction: debit
+                    - type: solidarity_surcharge
+                      amount: '45.08'
+                      direction: debit
+                    - type: capital_gains
+                      amount: '819.70'
+                      direction: debit
+                income_distribution:
+                  summary: Income Distribution
+                  value:
+                    id: ca_cusa__f076cc37106d4bf7bf5749f423953f35
+                    securities_account: sec_ac_50f9103fbba44a6080658bce20629d39
+                    instrument: DE0009848119
+                    type: income_distribution
+                    direction: credit
+                    payable_date: '2026-06-04'
+                    amount: '0.21'
+                    currency: EUR
+                    taxes:
+                    - type: church
+                      amount: '0.00'
+                      direction: debit
+                    - type: solidarity_surcharge
+                      amount: '0.00'
+                      direction: debit
+                    - type: capital_gains
+                      amount: '0.05'
+                      direction: debit
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /corporate_actions/{corporate_action_id}:
+    get:
+      summary: Get Corporate Action (Instrument-level)
+      operationId: get_corporate_action_general
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: corporate_action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Corporate Action Identifier
+        description: 'A corporate action identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentLevelCorporateActionResponseUnion'
+              examples:
+                cash_dividend:
+                  summary: Cash Dividend
+                  value:
+                    id: ca_b042d117bc254fcba9d845800c413695
+                    type: cash_dividend
+                    instrument: DE0005909006
+                    announcement_date: '2026-05-10'
+                    ex_date: '2026-05-19'
+                    record_date: '2026-05-18'
+                    payable_date: '2026-05-21'
+                    amount_per_share: '2.80'
+                    currency: EUR
+                    history:
+                    - status: created
+                      timestamp: '2026-05-10T12:00:00.000000+00:00'
+                    - status: processed
+                      timestamp: '2026-05-21T09:00:00.000000+00:00'
+                income_distribution:
+                  summary: Income Distribution
+                  value:
+                    id: ca_f076cc37106d4bf7bf5749f423953f35
+                    type: income_distribution
+                    instrument: DE0009848119
+                    payable_date: '2026-06-04'
+                    daily_factors:
+                    - date: '2026-06-01'
+                      factor: '0.000123'
+                    - date: '2026-06-02'
+                      factor: '0.000124'
+                    currency: EUR
+                    history:
+                    - status: created
+                      timestamp: '2026-05-20T10:00:00.000000+00:00'
+                    - status: processed
+                      timestamp: '2026-06-04T08:30:00.000000+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/income_distributions/{income_distribution_id}:
+    get:
+      summary: Get Income Distribution
+      operationId: get_income_distribution
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: income_distribution_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Income Distribution Identifier
+        description: 'An Income Distribution Identifier
+
+          '
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeDistributionResponse'
+              example:
+                amount: '100.01'
+                currency: EUR
+                direction: credit
+                id: ca_am_9550285db6174488b3ddcb9e7ce5c95b
+                instrument: IE000CNSFAR2
+                payable_date: '2025-02-24'
+                taxes:
+                - amount: '2.20'
+                  direction: debit
+                  type: church
+                - amount: '1.34'
+                  direction: debit
+                  type: solidarity_surcharge
+                - amount: '24.45'
+                  direction: debit
+                  type: capital_gains
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/corporate_actions:
+    get:
+      summary: List Corporate Actions (Account-level)
+      operationId: list_corporate_actions
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: type
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/CorporateActionType'
+        description: 'Filter corporate actions by type. Available values are `cash_dividend` and `income_distribution`.
+
+          '
+      - name: instrument
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+        description: 'An ISIN (International Securities Identification Number) according to ISO 6166. Use this filter to restrict elements to a specific instrument.
+
+          '
+      - name: securities_account
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Securities Account
+        description: 'Filter corporate actions by securities account.
+
+          '
+        example: sec_acc_654asdh5bb2ys45g42b0bgtjd2tjt566w41
+      - name: cursor
+        in: query
+        required: false
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        schema:
+          type: string
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_CorporateActionResponseUnion_'
+              example:
+                data:
+                - id: ca_cusa__f076cc37106d4bf7bf5749f423953f35
+                  securities_account: sec_ac_50f9103fbba44a6080658bce20629d39
+                  instrument: DE0009848119
+                  type: income_distribution
+                  direction: credit
+                  payable_date: '2026-06-04'
+                  amount: '0.21'
+                  currency: EUR
+                  taxes:
+                  - type: church
+                    amount: '0.00'
+                    direction: debit
+                  - type: solidarity_surcharge
+                    amount: '0.00'
+                    direction: debit
+                  - type: capital_gains
+                    amount: '0.05'
+                    direction: debit
+                - id: ca_cusa__b042d117bc254fcba9d845800c413695
+                  securities_account: sec_ac_50f9103fbba44a6080658bce20629d39
+                  instrument: DE0005909006
+                  type: cash_dividend
+                  ex_date: '2026-05-19'
+                  record_date: '2026-05-18'
+                  payable_date: '2026-05-21'
+                  amount_per_share: '2.80'
+                  amount_per_share_currency: EUR
+                  amount: '3278.80'
+                  currency: EUR
+                  shares_on_ex_date: '1171.00000'
+                  taxes:
+                  - type: church
+                    amount: '0.00'
+                    direction: debit
+                  - type: solidarity_surcharge
+                    amount: '45.08'
+                    direction: debit
+                  - type: capital_gains
+                    amount: '819.70'
+                    direction: debit
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /corporate_actions:
+    get:
+      summary: List Corporate Actions (Instrument-level)
+      operationId: list_corporate_actions_general
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: instrument
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+        description: 'One or more ISINs (International Securities Identification Numbers) according to ISO 6166. Use this filter to restrict elements to specific instruments.
+
+          '
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorporateActionStatus'
+          title: Status
+        description: 'Filter corporate actions by status.
+
+          '
+      - name: cursor
+        in: query
+        required: false
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        schema:
+          type: string
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_InstrumentLevelCorporateActionResponseUnion_'
+              example:
+                data:
+                - id: ca_f076cc37106d4bf7bf5749f423953f35
+                  type: income_distribution
+                  instrument: DE0009848119
+                  payable_date: '2026-06-04'
+                  daily_factors:
+                  - date: '2026-06-01'
+                    factor: '0.000123'
+                  - date: '2026-06-02'
+                    factor: '0.000124'
+                  currency: EUR
+                  history:
+                  - status: created
+                    timestamp: '2026-05-20T10:00:00.000000+00:00'
+                  - status: processed
+                    timestamp: '2026-06-04T08:30:00.000000+00:00'
+                - id: ca_b042d117bc254fcba9d845800c413695
+                  type: cash_dividend
+                  instrument: DE0005909006
+                  announcement_date: '2026-05-10'
+                  ex_date: '2026-05-19'
+                  record_date: '2026-05-18'
+                  payable_date: '2026-05-21'
+                  amount_per_share: '2.80'
+                  currency: EUR
+                  history:
+                  - status: created
+                    timestamp: '2026-05-10T12:00:00.000000+00:00'
+                  - status: processed
+                    timestamp: '2026-05-21T09:00:00.000000+00:00'
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/income_distributions:
+    get:
+      summary: List Income Distributions
+      operationId: list_income_distributions
+      tags:
+      - Corporate Actions
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: instrument
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+        description: 'An ISIN (International Securities Identification Number) according to ISO 6166. Use this filter to restrict elements to a specific instrument.
+
+          '
+      - name: cursor
+        in: query
+        required: false
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        schema:
+          type: string
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_IncomeDistributionResponse_'
+              example:
+                data:
+                - amount: '100.01'
+                  currency: EUR
+                  direction: credit
+                  id: ca_am_9550285db6174488b3ddcb9e7ce5c95b
+                  instrument: IE000CNSFAR2
+                  payable_date: '2025-02-24'
+                  taxes:
+                  - amount: '2.20'
+                    direction: debit
+                    type: church
+                  - amount: '1.34'
+                    direction: debit
+                    type: solidarity_surcharge
+                  - amount: '24.45'
+                    direction: debit
+                    type: capital_gains
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    CorporateActionCashDividendResponse:
+      title: CorporateActionCashDividendResponse
+      description: 'A cash dividend corporate action. Represents a dividend payment to a customer account for shares held at the ex-date.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this corporate action for the customer account.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account Identifier
+          description: 'The securities account identifier associated with this corporate action.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that paid the dividend.
+
+            '
+        type:
+          const: cash_dividend
+          title: Type
+          description: 'The string `"cash_dividend"`, identifying this type of corporate action.
+
+            '
+        ex_date:
+          type: string
+          format: date
+          title: Ex-Date
+          description: 'The first day the security trades without the dividend. Shares must be purchased before this date to be eligible for the dividend payment.
+
+            '
+        record_date:
+          type: string
+          format: date
+          title: Record Date
+          description: 'The date lemon.markets checks who is on the shareholder register for dividend eligibility.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          description: 'The date the dividend is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        amount_per_share:
+          type: string
+          title: Amount Per Share
+          description: 'The gross dividend amount per share, represented as a decimal string.
+
+            '
+        amount_per_share_currency:
+          type: string
+          title: Amount Per Share Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code representing the currency of the `amount_per_share` value.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The total gross dividend amount (before taxes), represented as a decimal string.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Represents the currency for `amount` and `taxes`. The only currently available currency is `"EUR"`.
+
+            '
+        shares_on_ex_date:
+          type: string
+          title: Shares on Ex-Date
+          description: 'The number of shares held at the ex-date cutoff, represented as a decimal string with up to 5 decimal places. This is the quantity used to calculate the total dividend amount.
+
+            '
+        taxes:
+          items:
+            $ref: '#/components/schemas/TaxResponseField'
+          type: array
+          title: Taxes
+          description: 'A list of taxes withheld from this dividend payment.
+
+            '
+      type: object
+      required:
+      - id
+      - securities_account
+      - instrument
+      - type
+      - ex_date
+      - record_date
+      - payable_date
+      - amount_per_share
+      - amount_per_share_currency
+      - amount
+      - currency
+      - shares_on_ex_date
+      - taxes
+    CorporateActionIncomeDistributionResponse:
+      title: CorporateActionIncomeDistributionResponse
+      description: 'An income distribution corporate action. Represents a distribution from a fund or ETF to a customer account.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this corporate action for the customer account.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account Identifier
+          description: 'The securities account identifier associated with this corporate action.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that made the distribution.
+
+            '
+        type:
+          const: income_distribution
+          title: Type
+          description: 'The string `"income_distribution"`, identifying this type of corporate action.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          description: 'The date the distribution is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The total gross distribution amount (before taxes), represented as a decimal string.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Represents the currency for `amount` and `taxes`. The only currently available currency is `"EUR"`.
+
+            '
+        taxes:
+          items:
+            $ref: '#/components/schemas/TaxResponseField'
+          type: array
+          title: Taxes
+          description: 'A list of taxes withheld from this distribution.
+
+            '
+      type: object
+      required:
+      - id
+      - securities_account
+      - instrument
+      - type
+      - direction
+      - payable_date
+      - amount
+      - currency
+      - taxes
+    CorporateActionResponseUnion:
+      title: Corporate Action
+      description: 'An object representing a corporate action that affected a customer account. The response is polymorphic, discriminated by the `type` property.
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/CorporateActionCashDividendResponse'
+      - $ref: '#/components/schemas/CorporateActionIncomeDistributionResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          cash_dividend: '#/components/schemas/CorporateActionCashDividendResponse'
+          income_distribution: '#/components/schemas/CorporateActionIncomeDistributionResponse'
+    TaxResponseField:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: 'A string identifying the type of tax that was withheld for a trade:
+
+            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
+
+            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The monetary amount representing this tax.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+      type: object
+      required:
+      - type
+      - amount
+      - direction
+      title: TaxResponseField
+    Direction:
+      type: string
+      enum:
+      - debit
+      - credit
+      title: Direction
+      description: 'A category representing the direction of a payment or transaction flow:
+
+        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
+
+        '
+    InstrumentLevelCashDividendResponse:
+      title: InstrumentLevelCashDividendResponse
+      description: 'A cash dividend corporate action at the instrument level. Represents a dividend announcement for a given instrument, including key dates and the declared amount per share.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this corporate action.
+
+            '
+        type:
+          const: cash_dividend
+          title: Type
+          description: 'The string `"cash_dividend"`, identifying this type of corporate action.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that declared the dividend.
+
+            '
+        announcement_date:
+          type: string
+          format: date
+          title: Announcement Date
+          nullable: true
+          description: 'The date the dividend was officially announced by the issuer.
+
+            '
+        ex_date:
+          type: string
+          format: date
+          title: Ex-Date
+          nullable: true
+          description: 'The first day the security trades without the dividend. Shares must be purchased before this date to be eligible for the dividend payment.
+
+            '
+        record_date:
+          type: string
+          format: date
+          title: Record Date
+          nullable: true
+          description: 'The date lemon.markets checks who is on the shareholder register for dividend eligibility.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          description: 'The date the dividend is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        amount_per_share:
+          type: string
+          title: Amount Per Share
+          description: 'The gross dividend amount per share, represented as a decimal string.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code representing the currency of the `amount_per_share` value.
+
+            '
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_CorporateActionStatus_'
+          title: History
+          description: 'A chronological list of status changes for this corporate action.
+
+            '
+      type: object
+      required:
+      - id
+      - type
+      - instrument
+      - payable_date
+      - amount_per_share
+      - currency
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginatedCollectionResponse_InstrumentLevelCorporateActionResponseUnion_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/InstrumentLevelCorporateActionResponseUnion'
+          type: array
+          title: Data
+          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[InstrumentLevelCorporateActionResponseUnion]
+    DailyFactorResponse:
+      title: DailyFactorResponse
+      description: 'A daily factor entry for an income distribution corporate action, representing the factor applied on a given date.
+
+        '
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+          description: 'The date for which this factor applies.
+
+            '
+        factor:
+          type: string
+          title: Factor
+          description: 'The factor value for this date, represented as a decimal string.
+
+            '
+      type: object
+      required:
+      - date
+      - factor
+    IncomeDistributionResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this income distribution.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identified the instrument distributing and amount.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          description: 'The expected payable date.  The payment cannot be expected to happen earlier than this date.  Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and taxes listed here. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount of cash received before applying taxes.
+
+            '
+        taxes:
+          items:
+            $ref: '#/components/schemas/TaxResponseField'
+          type: array
+          title: Taxes
+      type: object
+      required:
+      - id
+      - instrument
+      - payable_date
+      - direction
+      - amount
+      - currency
+      title: IncomeDistributionResponse
+    CorporateActionType:
+      type: string
+      enum:
+      - cash_dividend
+      - income_distribution
+      title: CorporateActionType
+      description: 'A category representing the type of corporate action:
+
+        <ul> <li><code>cash_dividend</code>: A cash dividend paid out to shareholders. <li><code>income_distribution</code>: An income or capital distribution from a fund or ETF. </ul>
+
+        <strong>NOTE:</strong> This list can be extended in the future. Prepare your code to accept other values, too.
+
+        '
+    EncodedPaginatedCollectionResponse_CorporateActionResponseUnion_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CorporateActionResponseUnion'
+          type: array
+          title: Data
+          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[CorporateActionResponseUnion]
+    EncodedPaginatedCollectionResponse_IncomeDistributionResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/IncomeDistributionResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[IncomeDistributionResponse]
+    StatusChange_CorporateActionStatus_:
+      title: StatusChange[CorporateActionStatus]
+      description: 'An object representing a status change of a corporate action.
+
+        '
+      properties:
+        status:
+          $ref: '#/components/schemas/CorporateActionStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event. It represents the point in time at which the corporate action status was updated.
+
+            '
+          example: '2026-05-10T12:00:00.000000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+    InstrumentLevelCorporateActionResponseUnion:
+      title: Instrument-level Corporate Action
+      description: 'An object representing a corporate action at the instrument level. Unlike the per-account corporate action, this response does not include customer-specific fields such as taxes or settlement amounts.
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/InstrumentLevelCashDividendResponse'
+      - $ref: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          cash_dividend: '#/components/schemas/InstrumentLevelCashDividendResponse'
+          income_distribution: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
+    CorporateActionStatus:
+      type: string
+      enum:
+      - created
+      - processed
+      title: CorporateActionStatus
+      description: 'The status of a corporate action:
+
+        <ul> <li><code>created</code>: The corporate action has been created and is pending processing. <li><code>processed</code>: The corporate action has been fully processed. </ul>
+
+        '
+    InstrumentLevelIncomeDistributionResponse:
+      title: InstrumentLevelIncomeDistributionResponse
+      description: 'An income distribution corporate action at the instrument level. Represents a distribution from a fund or ETF, including daily factors used for calculation.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this corporate action.
+
+            '
+        type:
+          const: income_distribution
+          title: Type
+          description: 'The string `"income_distribution"`, identifying this type of corporate action.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that made the distribution.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          nullable: true
+          description: 'The date the distribution is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        daily_factors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyFactorResponse'
+          title: Daily Factors
+          description: 'A list of daily factor entries used for calculating the income distribution amount per customer.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          nullable: true
+          description: 'An ISO 4217 three-letter currency code. Represents the currency for the distribution. The only currently available currency is `"EUR"`.
+
+            '
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_CorporateActionStatus_'
+          title: History
+          description: 'A chronological list of status changes for this corporate action.
+
+            '
+      type: object
+      required:
+      - id
+      - type
+      - instrument
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

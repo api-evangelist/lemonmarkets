@@ -1,0 +1,712 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Documents API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Documents
+paths:
+  /agreements:
+    get:
+      tags:
+      - Documents
+      summary: Get Latest Agreements
+      description: 'When opening an account, the user has to agree to accept certain types of contractual documents, like privacy policy or terms and conditions.
+
+        '
+      operationId: get_agreements
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_AgreementResponse_'
+              example:
+                data:
+                - id: agr_9902271f791d413aad781763c61b9bb0
+                  language: de
+                  name: Datenschutzerklärung
+                  type: privacy_policy
+                  url: https://sandbox-agreements.lemon.markets/test-document.pdf
+                - id: agr_8ec894e1ec764a339e172292dff9aeff
+                  language: de
+                  name: Allgemeine Geschäftsbedingungen
+                  type: terms_and_conditions
+                  url: https://sandbox-agreements.lemon.markets/test-document.pdf
+                pagination:
+                  next_cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/documents/{document_id}:
+    get:
+      summary: Get Document
+      operationId: get_document
+      tags:
+      - Documents
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: document_id
+        required: true
+        schema:
+          title: Document Identifier
+          type: string
+        in: path
+        description: 'A document identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/documents:
+    get:
+      summary: List Documents
+      operationId: list_documents_of_account
+      tags:
+      - Documents
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: type
+        required: false
+        schema:
+          $ref: '#/components/schemas/DocumentType'
+        in: query
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_DocumentResponse_'
+              example:
+                data:
+                - content_type: application/pdf
+                  context: null
+                  created_at: '2023-06-30T17:07:26.786573+00:00'
+                  id: doc_8e2a16591a664df89551047d85436562
+                  language: de
+                  name: Datenschutzerklärung
+                  type: contractual
+                  url: https://sandbox-agreements.lemon.markets/test-document.pdf
+                pagination:
+                  next_cursor: nil
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /submit_document:
+    post:
+      summary: Submit Document
+      operationId: submit_document_upload
+      tags:
+      - Documents
+      parameters:
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      description: 'Submit a document for either a person or a business. This endpoint returns a presigned upload URL that can be used to upload the document file.
+
+
+        The request must specify either a person document or a business document based on the `type` field. The response will contain a presigned `upload_location` URL that expires after a certain time.
+
+        '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/PersonDocumentUploadRequest'
+              - $ref: '#/components/schemas/BusinessDocumentUploadRequestV2'
+              discriminator:
+                propertyName: type
+                mapping:
+                  person.identification_bundle: '#/components/schemas/PersonDocumentUploadRequest'
+                  business.articles_of_association: '#/components/schemas/BusinessDocumentUploadRequestV2'
+                  business.commercial_register_extract: '#/components/schemas/BusinessDocumentUploadRequestV2'
+                  business.shareholder_list: '#/components/schemas/BusinessDocumentUploadRequestV2'
+            examples:
+              person_document:
+                summary: Person identification bundle
+                value:
+                  person: pers_0453deb1c90448c99f24adaa833cfda9
+                  type: person.identification_bundle
+              business_document:
+                summary: Business shareholder list
+                value:
+                  business: le_8e2a16591a664df89551047d85436562
+                  type: business.shareholder_list
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/PersonDocumentUploadResponse'
+                - $ref: '#/components/schemas/BusinessDocumentUploadResponseV2'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    person.identification_bundle: '#/components/schemas/PersonDocumentUploadResponse'
+                    business.articles_of_association: '#/components/schemas/BusinessDocumentUploadResponseV2'
+                    business.commercial_register_extract: '#/components/schemas/BusinessDocumentUploadResponseV2'
+                    business.shareholder_list: '#/components/schemas/BusinessDocumentUploadResponseV2'
+              examples:
+                person_document:
+                  summary: Person document upload response
+                  value:
+                    person: pers_0453deb1c90448c99f24adaa833cfda9
+                    type: person.identification_bundle
+                    upload_location: https://example.com/upload-person-document-12345
+                    expires_at: '2024-11-18T13:36:09.478814+00:00'
+                business_document:
+                  summary: Business document upload response
+                  value:
+                    business: le_8e2a16591a664df89551047d85436562
+                    type: business.shareholder_list
+                    upload_location: https://example.com/upload-business-document-12345
+                    expires_at: '2024-11-18T13:36:09.478814+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    PersonDocumentUploadType:
+      type: string
+      enum:
+      - person.identification_bundle
+      title: PersonDocumentUploadType
+      description: 'A category describing a person document:
+
+        <ul> <li><code>person.identification_bundle</code> - A bundle of identification documents for a person </ul>
+
+        '
+    DocumentType:
+      title: Document Type
+      enum:
+      - account_statement
+      - cash.statement
+      - contractual
+      - general
+      - income_distribution.receipt
+      - order.cost
+      - report.ex_post
+      - tax_information
+      - tax.receipt
+      - tax.statement
+      - trade.receipt
+      type: string
+      description: 'A category representing the type of document:
+
+        <ul> <li><code>account_statement</code>: An account statements, e.g. quarterly statements for both the reference account and the securities account. <li><code>cash.statement</code>: A statement detailing cash movements and balances for a specific period, e.g. the quarterly cash statement. <li><code>contractual</code>: A contractual document, e.g. private policy or terms and conditions. <li><code>general</code>: A document with general information, e.g. basic information on securities trading. <li><code>income_distribution.receipt</code>: A document presenting detailed information about an income distribution. <li><code>report.ex_post</code>: The annual cost report. <li><code>order.cost</code>: A cost information document for an order. <li><code>tax_information</code>: deprecated <li><code>tax.receipt</code>: Tax related information about a specific payment, e.g. for capital gains tax on unrealized gains (German Vorabpauschale) or refunds due to tax optimization. <li><code>tax.statement</code>: Tax reporting information, e.g. the annual tax reporting. <li><code>trade.receipt</code>: A trade receipt: It presents final information about prices, cost and quantities. </ul>
+
+        <strong>Note:</strong> This list is not final, there will be more types added over time.
+
+        '
+    BusinessDocumentUploadRequestV2:
+      properties:
+        business:
+          type: string
+          title: Business Identifier
+          description: The identifier of the business for which the document is being submitted
+          example: le_8e2a16591a664df89551047d85436562
+        type:
+          $ref: '#/components/schemas/BusinessDocumentUploadType'
+      type: object
+      required:
+      - business
+      - type
+      title: BusinessDocumentUploadRequestV2
+    DocumentResponse:
+      title: DocumentResponse
+      description: 'An object representing a document to be delivered/displayed to the user.
+
+        '
+      required:
+      - id
+      - created_at
+      - name
+      - url
+      - language
+      - type
+      - content_type
+      type: object
+      properties:
+        id:
+          title: Identifier
+          type: string
+          example: doc_8e2a16591a664df89551047d85436562
+          description: 'A string representing the unique identifier of this document.
+
+            '
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+          description: 'The timestamp of the document.  It represents the point in time at which the document was created for the user.
+
+            '
+        name:
+          title: Name
+          type: string
+          example: Datenschutzerklärung
+          description: 'A string identifying the document, suitable to be displayed to the user.
+
+            '
+        url:
+          title: Download URL
+          maxLength: 2083
+          minLength: 1
+          type: string
+          format: uri
+          description: 'A reference to the actual document. You can use this URL to present the document to the user. It can be accessed without special headers like `Authorization` or the `LMG-Data-Privacy-*` ones, so you have full flexibility for presentation and you can choose among:
+
+            <ol><!-- redocly preview doesn''t support markdown lists --> <li>Showing the document using an In-App Browser. <li>Showing the document using an external Browser App. <li>Provide the user with your own options to download or forward the document. </ol>
+
+            <strong>NOTE:</strong>  The URLs returned here will expire after a certain period of time.  We suggest to ignore document URLs when listing documents, e.g. in a postbox.  When the user wants to view a document, we recommend to perform a `GET` request using the `doc_…` identifier.  This will provide you with a fresh document URL that can be safely used to display the document irregardless of link expiry.
+
+            '
+        language:
+          title: Language
+          type: string
+          example: de
+          description: "The (natural) language for the document.  This will can either be a pure language code like `\"de\"` or `\"pl\"` or a regional language code like `\"en_GB\"` or `\"de_CH\"`.\n<ul> <li><strong>Pure language code</strong> in this case is an ISO 639-1 alpha-2 code. <li><strong>Regional language code</strong> in this case is the concatenation of an ISO 639-1 alpha-2 code for a language\n    joined using the underscore character (<code>_</code>) with an ISO 3166-1 alpha-2 code for a country.\n</ul>\n"
+        type:
+          $ref: '#/components/schemas/DocumentType'
+        content_type:
+          $ref: '#/components/schemas/DocumentContentType'
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    PersonDocumentUploadResponse:
+      properties:
+        person:
+          type: string
+          title: Person Identifier
+          description: The identifier of the person for whom the document was submitted
+          example: pers_0453deb1c90448c99f24adaa833cfda9
+        type:
+          $ref: '#/components/schemas/PersonDocumentUploadType'
+        upload_location:
+          type: string
+          title: Upload Location
+          description: 'A presigned URL to upload the person document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/zip`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - person
+      - type
+      - upload_location
+      - expires_at
+      title: PersonDocumentUploadResponse
+    BusinessDocumentUploadType:
+      type: string
+      enum:
+      - business.articles_of_association
+      - business.commercial_register_extract
+      - business.shareholder_list
+      title: BusinessDocumentUploadType
+      description: 'A category describing a business document:
+
+        <ul> <li><code>business.articles_of_association</code> - Articles of association for a business <li><code>business.commercial_register_extract</code> - Commercial register extract <li><code>business.shareholder_list</code> - List of shareholders </ul>
+
+        '
+    AgreementType:
+      title: AgreementType
+      enum:
+      - pricing_table
+      - privacy_policy
+      - terms_and_conditions
+      type: string
+      description: "This property describes the underlying type of a document.\n<ul> <li><code>pricing_table</code>: The pricing table for the lemon.markets brokerage account. <li><code>privacy_policy</code>: The privacy policy regarding the data processing in the context of a\n    lemon.markets brokerage account.\n<li><code>terms_and_conditions</code>: The general terms and conditions for the lemon.markets brokerage account. </ul>\nIn a list, you can use this value to select a different icon for eahc category or make sure, you always present those documents in a fixed order irrespective of the actual translation of the document title.\n"
+    EncodedPaginatedCollectionResponse_AgreementResponse_:
+      title: Page of AgreementResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          type: array
+          description: 'The elements of the response.
+
+            '
+          items:
+            $ref: '#/components/schemas/AgreementResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    AgreementResponse:
+      title: AgreementResponse
+      required:
+      - id
+      - type
+      - url
+      - language
+      - name
+      type: object
+      properties:
+        id:
+          title: Agreement Identifier
+          type: string
+          description: 'The identifier for this document.  This will be later used as a value for the property `agreements[].agreement_id` for account creation.
+
+            '
+        type:
+          $ref: '#/components/schemas/AgreementType'
+        url:
+          title: Download URL
+          type: string
+          format: url
+          description: 'A reference to the actual document. You can use this URL to present the document to the user. It can be accessed without special headers like `Authorization` or the `LMG-Data-Privacy-*` ones, so you have full flexibility for presentation and you can choose among:
+
+            <ol><!-- redocly preview doesn''t support markdown lists --> <li>Showing the document using an In-App Browser. <li>Showing the document using an external Browser App. <li>Provide the user with your own options to download or forward the document. </ol>
+
+            '
+        language:
+          title: Language
+          type: string
+          description: "The (natural) language for the document.  This will can either be a pure language code like `\"de\"` or `\"pl\"` or a regional language code like `\"en_GB\"` or `\"de_CH\"`.\n<ul> <li><strong>Pure language code</strong> in this case is an ISO 639-1 alpha-2 code. <li><strong>Regional language code</strong> in this case is the concatenation of an ISO 639-1 alpha-2 code for a language\n    joined using the underscore character (<code>_</code>) with an ISO 3166-1 alpha-2 code for a country.\n</ul>\nWhen determining which one to prefer for display, we recommend to implement one of following strategies:\n<ol> <li>If you have a list of preferred languages for the user, such as iOS's\n    <a href=\"https://developer.apple.com/documentation/foundation/locale/2293155-preferredlanguages\"><code>Locale.preferredLanguages</code></a>,\n    iterate that list until you find the first language that has a document provided.\n<li>If you don't have a list of preferred languages, try to detect the regional language preference from\n    the environment (e.g. <code>\"de_AT\"</code>).  If there is a document for that one, present it to the\n     user. If not, try presenting one for the language-part only (in case of <code>\"de_AT\"</code>, that\n     would be <code>\"de\"</code>).\n</ol>\nIn either case, if there is no match with these lists, we recommend you pick a value that will match your application's default. A German version (<code>\"de\"</code>) will always be provided.\n"
+        name:
+          title: Name
+          type: string
+          description: 'The localized name of the document. Use this value to reference to that document in the user interface.
+
+            '
+    PersonDocumentUploadRequest:
+      properties:
+        person:
+          type: string
+          title: Person Identifier
+          description: The identifier of the person for whom the document is being submitted
+          example: pers_0453deb1c90448c99f24adaa833cfda9
+        type:
+          $ref: '#/components/schemas/PersonDocumentUploadType'
+      type: object
+      required:
+      - person
+      - type
+      title: PersonDocumentUploadRequest
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    Page_DocumentResponse_:
+      title: Page of DocumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    DocumentContentType:
+      title: DocumentContentType
+      enum:
+      - application/pdf
+      type: string
+      description: 'A category representing the content type of the document displayed. At the moment, there will only be one content type for documents:
+
+        <ul> <li><code>application/pdf</code> </ul>
+
+        A potential use-case for this attribute is an icon used as a file-type indicator in a list of documents.
+
+        '
+    BusinessDocumentUploadResponseV2:
+      properties:
+        business:
+          type: string
+          title: Business Identifier
+          description: The identifier of the business for which the document was submitted
+          example: le_8e2a16591a664df89551047d85436562
+        type:
+          $ref: '#/components/schemas/BusinessDocumentUploadType'
+        upload_location:
+          type: string
+          title: Upload Location
+          description: 'A presigned URL to upload the business document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - business
+      - type
+      - upload_location
+      - expires_at
+      title: BusinessDocumentUploadResponseV2
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

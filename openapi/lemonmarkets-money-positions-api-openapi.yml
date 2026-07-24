@@ -1,0 +1,1709 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Money + Positions API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Money + Positions
+paths:
+  /accounts/{account_id}/withdrawals/{withdrawal_id}/confirm:
+    post:
+      summary: Confirm Withdrawal
+      tags:
+      - Money + Positions
+      operationId: confirm_withdrawal
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: withdrawal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Withdrawal Identifier
+          description: 'A withdrawal identifier.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmWithdrawalRequest'
+            example: {}
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WithdrawalResponse'
+              example:
+                amount: '12.34'
+                created_at: '2023-08-31T16:41:01.825087+00:00'
+                currency: EUR
+                history:
+                - status: confirmed
+                  timestamp: '2023-08-31T16:41:30.636649+00:00'
+                - status: created
+                  timestamp: '2023-08-31T16:41:01.825087+00:00'
+                id: wtd_50d0271f9fd143adb4d6e3af8962ed4d
+                receiving_account:
+                  bic: COBADEFFXXX
+                  iban: DE89370400440532013000
+                sca:
+                  challenge: idpMw_UsyU31awFi81Atyw==
+                  required: false
+                status: confirmed
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/withdrawals:
+    post:
+      summary: Create Withdrawal
+      tags:
+      - Money + Positions
+      operationId: create_withdrawal
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWithdrawalRequest'
+            example:
+              amount: '12.34'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WithdrawalResponse'
+              example:
+                amount: '12.34'
+                created_at: '2023-08-31T16:41:01.825087+00:00'
+                currency: EUR
+                history:
+                - status: created
+                  timestamp: '2023-08-31T16:41:01.825087+00:00'
+                id: wtd_50d0271f9fd143adb4d6e3af8962ed4d
+                receiving_account:
+                  bic: COBADEFFXXX
+                  iban: DE89370400440532013000
+                sca:
+                  challenge: idpMw_UsyU31awFi81Atyw==
+                  required: false
+                status: created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Withdrawals
+      tags:
+      - Money + Positions
+      operationId: list_withdrawals
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_WithdrawalResponse_'
+              example:
+                data:
+                - amount: '12.34'
+                  created_at: '2023-08-31T16:41:01.825087+00:00'
+                  currency: EUR
+                  history:
+                  - status: confirmed
+                    timestamp: '2023-08-31T16:41:30.636649+00:00'
+                  - status: created
+                    timestamp: '2023-08-31T16:41:01.825087+00:00'
+                  id: wtd_50d0271f9fd143adb4d6e3af8962ed4d
+                  receiving_account:
+                    bic: COBADEFFXXX
+                    iban: DE89370400440532013000
+                  sca:
+                    challenge: idpMw_UsyU31awFi81Atyw==
+                    required: true
+                  status: confirmed
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/financials:
+    get:
+      summary: Get Financials
+      operationId: get_financials_accounts__account_id__financials_get
+      tags:
+      - Money + Positions
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountFinancialsResponse'
+              example:
+                balance: '1000.00'
+                blocked: '100.00'
+                buying_power: '950.00'
+                currency: EUR
+                funds_to_withdraw: '900.00'
+                to_be_settled: '50.00'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/positions:
+    get:
+      tags:
+      - Money + Positions
+      summary: Get Positions
+      operationId: get_positions
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: securities_account
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Securities Account
+        description: 'A securities account identifier.  Use this parameter to limit results to positions for a specific securities account only.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_PositionsResponse_'
+              example:
+                data:
+                - buy_in: '139.7589'
+                  currency: EUR
+                  instrument:
+                    isin: DE0005933931
+                    title: iShares Core DAX UCITS ETF DE
+                  latest_bid: '151.9200'
+                  latest_price:
+                    amount: '151.9200'
+                    type: quote
+                    updated_at: '2026-04-23T10:30:00+00:00'
+                  quantity: '7.95219'
+                - buy_in: '224.2147'
+                  currency: EUR
+                  instrument:
+                    isin: IE00B0M62X26
+                    title: iShs EO Inf.Li.Gov.Bd U.ETF(D)
+                  latest_bid: '225.1401'
+                  latest_price:
+                    amount: '225.1401'
+                    type: quote
+                    updated_at: '2026-04-23T10:30:00+00:00'
+                  quantity: '0.89200'
+                - buy_in: '74.0859'
+                  currency: EUR
+                  instrument:
+                    isin: IE00B441G979
+                    title: iShsV-MSCI W.EUR Hgd U.ETF Acc
+                  latest_bid: '87.3500'
+                  latest_price:
+                    amount: '87.3500'
+                    type: quote
+                    updated_at: '2026-04-23T10:30:00+00:00'
+                  quantity: '681.82608'
+                - buy_in: '1.0000'
+                  currency: EUR
+                  instrument:
+                    isin: IE0008643037
+                    title: DWS Dt.Gl.Liq.-Man. Euro
+                  latest_price:
+                    amount: '1.0000'
+                    type: nav
+                    valuation_date: '2026-04-23'
+                  quantity: '280.67394'
+                pagination:
+                  next_cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/sweeps/{sweep_id}:
+    get:
+      summary: Get Balance Sweep
+      tags:
+      - Money + Positions
+      operationId: get_sweep
+      parameters:
+      - name: sweep_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Sweep Id
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account ID
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SweepResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/transactions/{transaction_id}:
+    get:
+      summary: Get Transaction
+      operationId: get_transaction_by_id
+      tags:
+      - Money + Positions
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Transaction Identifier
+        description: 'The identifier of the transaction to be fetched.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/transactions:
+    get:
+      tags:
+      - Money + Positions
+      summary: Get Transactions
+      operationId: get_transactions
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_Transaction_'
+              example:
+                data:
+                - components:
+                  - amount: '1000.00'
+                    currency: EUR
+                    direction: credit
+                    type: cash
+                  history:
+                  - status: created
+                    timestamp: '2023-08-14T12:47:43.891794+00:00'
+                  id: txn_e74d790e92ee4cc0935bc65c9fe20c68
+                  source: de_5ed37b6e25ca466b86e3ced62f78fbbe
+                  status: created
+                  type: deposit
+                pagination:
+                  next_cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/withdrawals/{withdrawal_id}:
+    get:
+      summary: Get Withdrawal
+      tags:
+      - Money + Positions
+      operationId: get_withdrawal
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: withdrawal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Withdrawal Identifier
+          description: 'A withdrawal identifier.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WithdrawalResponse'
+              example:
+                amount: '12.34'
+                created_at: '2023-08-31T16:41:01.825087+00:00'
+                currency: EUR
+                history:
+                - status: confirmed
+                  timestamp: '2023-08-31T16:41:30.636649+00:00'
+                - status: created
+                  timestamp: '2023-08-31T16:41:01.825087+00:00'
+                id: wtd_50d0271f9fd143adb4d6e3af8962ed4d
+                receiving_account:
+                  bic: COBADEFFXXX
+                  iban: DE89370400440532013000
+                sca:
+                  challenge: idpMw_UsyU31awFi81Atyw==
+                  required: false
+                status: confirmed
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/sweeps:
+    get:
+      summary: List Balance Sweeps
+      tags:
+      - Money + Positions
+      operationId: list_sweeps
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account ID
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_SweepResponse_'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    TransactionComponentDirection:
+      type: string
+      enum:
+      - debit
+      - credit
+      title: TransactionComponentDirection
+      description: 'A category representing a component direction:
+
+        <ul> <li><code>credit</code>: Assets for the customer.  The amount/quanity will be added to the balance/position. <li><code>debit</code>: Liabilities for the customer.  The amount/quantity will be subtracted from the balance/position. </ul>
+
+        '
+    StatusChange_WithdrawalStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/WithdrawalStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the withdrawal was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[WithdrawalStatus]
+    SecuritiesComponent:
+      title: Securities Component
+      description: 'An object representing an instrument-related component of a transaction.
+
+        '
+      properties:
+        type:
+          $ref: '#/components/schemas/TransactionComponentType'
+        direction:
+          $ref: '#/components/schemas/TransactionComponentDirection'
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this component.
+
+            '
+        quantity:
+          type: number
+          exclusiveMinimum: 0
+          title: Quantity
+          description: 'The number of shares affected by this component.
+
+            '
+      type: object
+      required:
+      - type
+      - direction
+      - instrument
+      - quantity
+    PositionsResponse:
+      title: PositionsResponse
+      description: 'A position of the portfolio.  Each of these items represents an instrument for which the user owns shares at the moment.
+
+        '
+      required:
+      - buy_in
+      - currency
+      - instrument
+      - latest_bid
+      - latest_price
+      - quantity
+      type: object
+      properties:
+        buy_in:
+          title: Buy In
+          type: string
+          format: number
+          description: 'The buy-in for this instrument. This is the average price paid for each share. Buying and selling shares will influence this value.
+
+            '
+        currency:
+          title: Currency
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is `"EUR"`.
+
+            '
+        instrument:
+          $ref: '#/components/schemas/Instrument'
+        latest_bid:
+          title: Latest Bid
+          type: string
+          format: number
+          description: 'The latest bid.  This is a price indication that can be used to determine the profit/loss on a specific position.
+
+            '
+        latest_price:
+          $ref: '#/components/schemas/LatestPrice'
+        quantity:
+          title: Quantity
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          description: 'The number of shares owned for a specific instrument.
+
+            '
+      example:
+        instrument:
+          isin: IE00B441G979
+          title: iShares MSCI World EUR Hedged UCITS ETF (Acc)
+        quantity: '232.75210'
+        buy_in: '71.8482'
+        latest_bid: '71.7580'
+        latest_price:
+          amount: '71.7580'
+          type: quote
+          updated_at: '2026-04-23T10:30:00+00:00'
+        currency: EUR
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
+
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
+
+        '
+    QuoteLatestPrice:
+      type: object
+      title: Quote Latest Price
+      description: 'The latest market quote price for an instrument.
+
+        '
+      properties:
+        amount:
+          type: string
+          title: Amount
+          description: 'The latest price for a security.  Use the instrument''s `currency` to interpret this value.
+
+            '
+        type:
+          $ref: '#/components/schemas/PriceType'
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: 'The timestamp when the quote price was last updated.
+
+            '
+      required:
+      - amount
+      - type
+      - updated_at
+    StatusChange_SweepStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/SweepStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the sweep was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[SweepStatus]
+    BankAccountResponse:
+      title: BankAccountResponse
+      description: 'An object representing a bank account.
+
+        '
+      required:
+      - iban
+      - bic
+      type: object
+      properties:
+        iban:
+          title: IBAN
+          type: string
+          description: 'An IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+            '
+        bic:
+          title: BIC
+          type: string
+          description: 'A BIC (Business Identifier Code) according to ISO 9362.
+
+            '
+        name:
+          type: string
+          title: Name
+          description: 'The name of the bank managing the bank account.
+
+            '
+    SweepStatus:
+      type: string
+      enum:
+      - canceled
+      - created
+      - processed
+      - rejected
+      - started
+      title: SweepStatus
+      description: 'A category describing the status of a balance sweep:
+
+        <ul> <li><code>canceled</code> <li><code>created</code> <li><code>processed</code> <li><code>rejected</code> <li><code>started</code> </ul>
+
+        '
+    EncodedPaginatedCollectionResponse_PositionsResponse_:
+      title: Page of PositionsResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/PositionsResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    WithdrawalResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this transaction.
+
+            '
+        status:
+          $ref: '#/components/schemas/WithdrawalStatus'
+        amount:
+          anyOf:
+          - type: number
+            exclusiveMinimum: 0
+          - type: string
+          title: Amount
+          description: 'The amount of money to withdraw.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is `"EUR"`.
+
+            '
+        receiving_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        sca:
+          $ref: '#/components/schemas/StrongCustomerAuthenticationRequest'
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_WithdrawalStatus_'
+          type: array
+          title: History
+          description: 'A history of the status changes for a withdrawal.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'The timestamp of the withdrawal.  It represents the point in time at which the withdrawal was created.
+
+            **NOTE:**  Deprecated as of 2024-06, use `history` to query this information.
+
+            '
+      type: object
+      required:
+      - id
+      - status
+      - amount
+      - currency
+      - receiving_account
+      - history
+      title: WithdrawalResponse
+    LatestPrice:
+      title: Latest Price
+      description: 'An object representing the latest price for an instrument.
+
+        '
+      anyOf:
+      - $ref: '#/components/schemas/QuoteLatestPrice'
+      - $ref: '#/components/schemas/NavLatestPrice'
+      discriminator:
+        propertyName: type
+        mapping:
+          quote: '#/components/schemas/QuoteLatestPrice'
+          nav: '#/components/schemas/NavLatestPrice'
+    ConfirmWithdrawalRequest:
+      properties:
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmWithdrawalRequest
+    CreateWithdrawalRequest:
+      properties:
+        amount:
+          type: string
+          exclusiveMinimum: 0
+          format: number
+          title: Amount
+          description: 'The amount of money to withdraw.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          default: EUR
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - amount
+      title: CreateWithdrawalRequest
+    SCAConfirmation:
+      title: Strong Customer Authentication
+      description: 'An object representing the confirmation for strong customer authentication.
+
+        '
+      properties:
+        client_credential_id:
+          type: string
+          title: Client Credential Identifier
+          description: 'The client-side identifier of the authenticator used to generate the signature.
+
+            '
+        signature:
+          type: string
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
+
+            '
+      type: object
+      required:
+      - client_credential_id
+      - signature
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    StatusChange_TransactionStatus_:
+      title: StatusChange of TransactionStatus
+      properties:
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the transaction was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+    TransactionType:
+      type: string
+      enum:
+      - deposit
+      - income_distribution
+      - securities_transfer
+      - sweep
+      - tax
+      - trade
+      - withdrawal
+      title: TransactionType
+      description: 'A category representing a transaction type:
+
+        <ul> <li><code>deposit</code>: Cash Deposit <li><code>income_distribution</code>: Income Distribution <li><code>securities_transfer</code>: Securities Transfer <li><code>sweep</code>: Balance Sweep <li><code>tax</code>: Tax Payment <!--or Credit--> <li><code>trade</code>: Trade <li><code>withdrawal</code>: Cash Withdrawal </ul>
+
+        '
+    CustomerAccountFinancialsResponse:
+      title: CustomerAccountFinancialsResponse
+      required:
+      - balance
+      - buying_power
+      - funds_to_withdraw
+      - blocked
+      - to_be_settled
+      - currency
+      type: object
+      properties:
+        balance:
+          title: Balance
+          type: string
+          format: number
+          description: 'The current balance on the user''s cash account.
+
+            '
+        buying_power:
+          title: Buying Power
+          type: string
+          format: number
+          description: 'The amount of money available to the user for buying instruments.
+
+            '
+        funds_to_withdraw:
+          title: Funds To Withdraw
+          type: string
+          format: number
+          description: 'The amount of money available for withdrawal. As trades are usually settled within two business days, this might not include proceeds from sales within the last few days (those will be `to_be_settled` until they are available).
+
+            '
+        blocked:
+          title: Blocked
+          type: string
+          format: number
+          description: 'Amount blocked for orders placed, but not executed yet.
+
+            '
+        to_be_settled:
+          title: To be Settled
+          type: string
+          format: number
+          description: 'Incoming funds not settled yet. Within the next few business days, those will be moved from `to_be_settled` to `balance` and `funds_to_withdraw`.
+
+            '
+        currency:
+          title: Currency
+          maxLength: 3
+          minLength: 3
+          type: string
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for amounts listed here. The only currently available currency is `"EUR"`.
+
+            '
+    Page_SweepResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SweepResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[SweepResponse]
+    TransactionComponent:
+      title: Transaction Component
+      description: 'A component of a transaction.  It indicates changes to the positions or funds affected by a transaction.
+
+        '
+      anyOf:
+      - $ref: '#/components/schemas/CashComponent'
+      - $ref: '#/components/schemas/SecuritiesComponent'
+      discriminator:
+        propertyName: type
+        mapping:
+          cash: '#/components/schemas/CashComponent'
+          securities: '#/components/schemas/SecuritiesComponent'
+    TransactionComponentType:
+      type: string
+      enum:
+      - cash
+      - securities
+      title: TransactionComponentType
+      description: 'A category representing a component type:
+
+        <ul> <li><code>cash</code>: Cash component; this component modifies the customer''s cash balance. <li><code>securities</code>: Securities component; this component modified a customer''s position. </ul>
+
+        '
+    Instrument:
+      title: Instrument
+      description: A summary of the instrument references in a position.
+      required:
+      - isin
+      - title
+      type: object
+      properties:
+        isin:
+          title: ISIN
+          type: string
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+
+            '
+        title:
+          title: Title
+          type: string
+          description: 'The title of the instrument.
+
+            '
+      example:
+        isin: LU1437015735
+        title: Amundi Index MSCI Europe UCITS ETF DR
+    StrongCustomerAuthenticationRequest:
+      title: StrongCustomerAuthenticationRequest
+      description: 'An object representing a strong customer authentication challenge.
+
+        '
+      properties:
+        required:
+          type: boolean
+          title: Required
+          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
+
+            '
+        challenge:
+          type: string
+          title: Challenge
+          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
+
+            '
+      type: object
+      required:
+      - required
+      - challenge
+    NavLatestPrice:
+      type: object
+      title: NAV Latest Price
+      description: 'The latest NAV (Net Asset Value) price for an instrument.
+
+        '
+      properties:
+        amount:
+          type: string
+          title: Amount
+          description: 'The latest price for a security.  Use the instrument''s `currency` to interpret this value.
+
+            '
+        type:
+          $ref: '#/components/schemas/PriceType'
+        valuation_date:
+          type: string
+          format: date
+          title: Valuation Date
+          description: 'The date for which the NAV (Net Asset Value) price is valid.
+
+            '
+      required:
+      - amount
+      - type
+      - valuation_date
+    CashComponent:
+      title: Cash Component
+      description: 'An object representing the cash component of a transaction.
+
+        '
+      properties:
+        type:
+          $ref: '#/components/schemas/TransactionComponentType'
+        direction:
+          $ref: '#/components/schemas/TransactionComponentDirection'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed. The only currently available currency is `"EUR"`.
+
+            '
+        amount:
+          type: number
+          title: Amount
+          description: 'The amount of cash being moved in this transaction component.
+
+            '
+      type: object
+      required:
+      - type
+      - direction
+      - currency
+      - amount
+    WithdrawalStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - confirmed
+      - created
+      - processed
+      - rejected
+      title: Withdrawal Status
+      description: 'A category representing a withdrawal''s status:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>confirmed</code> <li><code>created</code> <li><code>processed</code> <li><code>rejected</code> </ul>
+
+        '
+    Page_Transaction_:
+      title: Page of Transaction
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          items:
+            $ref: '#/components/schemas/Transaction'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+    Transaction:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this transaction.
+
+            '
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        source:
+          type: string
+          title: Source
+          description: 'An opaque identifier referencing the source of the transaction.
+
+            '
+        components:
+          items:
+            $ref: '#/components/schemas/TransactionComponent'
+          type: array
+          title: Components
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TransactionStatus_'
+          type: array
+          title: History
+          description: 'A history of the status changes for a transaction.
+
+            '
+      type: object
+      required:
+      - id
+      - status
+      - type
+      - source
+      - components
+      - history
+      title: Transaction
+    EncodedPaginatedCollectionResponse_WithdrawalResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/WithdrawalResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[WithdrawalResponse]
+    TransactionStatus:
+      type: string
+      enum:
+      - canceled
+      - created
+      - settled
+      title: TransactionStatus
+      description: 'A category representing a transaction status:
+
+        <ul> <li><code>canceled</code>: The transaction was canceled. <li><code>created</code>: The transaction was created and is not settled yet. <li><code>settled</code>: The transaction is settled. </ul>
+
+        '
+    SweepResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A unique value identifying this sweep.
+
+            '
+        status:
+          $ref: '#/components/schemas/SweepStatus'
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount of money to be withdrawn during the balance sweep.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is `"EUR"`.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_SweepStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - status
+      - amount
+      - currency
+      - history
+      title: SweepResponse
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

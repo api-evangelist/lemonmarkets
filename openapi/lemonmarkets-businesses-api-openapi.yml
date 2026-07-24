@@ -1,0 +1,2844 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Businesses API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Businesses
+paths:
+  /businesses/{business_id}/beneficial_owners:
+    post:
+      summary: Add Beneficial Owner
+      operationId: add_beneficial_owner
+      tags:
+      - Businesses
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+          description: 'A business identifier.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeneficialOwnerRequest'
+            example:
+              shares_pct: '100'
+              voting_rights_pct: '100'
+              person: pers_310212a629b2429cacfdc09d212fa87a
+              type: real
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficialOwnerResponse'
+              example:
+                id: ubo_ea20564620af48a4af367aca2ade4d91
+                shares_pct: '100'
+                voting_rights_pct: '100'
+                person: pers_310212a629b2429cacfdc09d212fa87a
+                nature: real
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Beneficial Owners
+      operationId: list_beneficial_owners
+      tags:
+      - Businesses
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+        description: 'A business identifier.
+
+          '
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Cursor
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_BeneficialOwnerResponse_'
+              example:
+                data:
+                - id: ubo_ea20564620af48a4af367aca2ade4d91
+                  shares_pct: '100'
+                  voting_rights_pct: '100'
+                  person: pers_310212a629b2429cacfdc09d212fa87a
+                  type: real
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /businesses/{business_id}/legal_representatives:
+    post:
+      summary: Add Legal Representative
+      operationId: add_legal_representative
+      tags:
+      - Businesses
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+          description: 'A business identifier.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegalRepresentativeRequest'
+            example:
+              person: pers_310212a629b2429cacfdc09d212fa87a
+              representation_rule: sole_representation
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalRepresentativeResponse'
+              example:
+                id: rep_b4831949b797401bbc037a03f9a64d79
+                person: pers_310212a629b2429cacfdc09d212fa87a
+                representation_rule: sole_representation
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Legal Representatives
+      operationId: list_legal_representatives
+      tags:
+      - Businesses
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+          description: 'A business identifier.
+
+            '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          default: 100
+          type: integer
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_LegalRepresentativeResponse_'
+              example:
+                data:
+                - id: rep_b4831949b797401bbc037a03f9a64d79
+                  person: pers_310212a629b2429cacfdc09d212fa87a
+                  representation_rule: sole_representation
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /businesses:
+    post:
+      summary: Create Business
+      operationId: create_business
+      tags:
+      - Businesses
+      parameters:
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+            example:
+              currency: EUR
+              expected_annual_revenue: '123456.78'
+              fatca_relevant: false
+              industry:
+                nace_rev: '2.1'
+                code: T.96.22
+              name: Beeswax UG (haftungsbeschränkt)
+              nfe_type: active
+              registered_address:
+                city: Musterstadt
+                country: DE
+                line_1: Mustergasse 1a
+                postal_code: '12345'
+              registration:
+                court: Musterstadt
+                id: HRB 123456
+                incorporation_country: DE
+                incorporation_date: '2024-01-02'
+                legal_form: ug
+              single_tier_ownership: true
+              taxation_countries:
+              - country: DE
+                business_identification_number: null
+                tax_number: 123/456/78901
+                vat_id: DE0815
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessResponse'
+              example:
+                currency: EUR
+                expected_annual_revenue: '123456.78'
+                fatca_relevant: false
+                id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                industry:
+                  nace_rev: '2.1'
+                  code: T.96.22
+                legal_entity_identifier: null
+                name: Beeswax UG (haftungsbeschränkt)
+                nfe_type: active
+                registered_address:
+                  city: Musterstadt
+                  country: DE
+                  line_1: Mustergasse 1a
+                  line_2: null
+                  postal_code: '12345'
+                registration:
+                  court: Musterstadt
+                  id: HRB 123456
+                  incorporation_country: DE
+                  incorporation_date: '2024-01-02'
+                  legal_form: ug
+                single_tier_ownership: true
+                taxation_countries:
+                - country: DE
+                  business_identification_number: null
+                  tax_number: 123/456/78901
+                  vat_id: DE0815
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Businesses
+      operationId: list_businesses
+      tags:
+      - Businesses
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Cursor
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_BusinessResponse_'
+              example:
+                data:
+                - currency: EUR
+                  expected_annual_revenue: '123456.78'
+                  fatca_relevant: false
+                  id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                  industry:
+                    nace_rev: '2.1'
+                    code: T.96.22
+                  legal_entity_identifier: null
+                  name: Beeswax UG (haftungsbeschränkt)
+                  nfe_type: active
+                  registered_address:
+                    city: Musterstadt
+                    country: DE
+                    line_1: Mustergasse 1a
+                    line_2: null
+                    postal_code: '12345'
+                  registration:
+                    court: Musterstadt
+                    id: HRB 123456
+                    incorporation_country: DE
+                    incorporation_date: '2024-01-02'
+                    legal_form: ug
+                  single_tier_ownership: true
+                  taxation_countries:
+                  - country: DE
+                    business_identification_number: null
+                    tax_number: 123/456/78901
+                    vat_id: DE0815
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /businesses/{business_id}:
+    get:
+      summary: Get Business
+      operationId: get_business
+      tags:
+      - Businesses
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+        description: 'A business identifier.
+
+          '
+        example: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessResponse'
+              example:
+                currency: EUR
+                expected_annual_revenue: '123456.78'
+                fatca_relevant: false
+                id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                industry:
+                  nace_rev: '2.1'
+                  code: T.96.22
+                legal_entity_identifier: null
+                name: Beeswax UG (haftungsbeschränkt)
+                nfe_type: active
+                registered_address:
+                  city: Musterstadt
+                  country: DE
+                  line_1: Mustergasse 1a
+                  line_2: null
+                  postal_code: '12345'
+                registration:
+                  court: Musterstadt
+                  id: HRB 123456
+                  incorporation_country: DE
+                  incorporation_date: '2024-01-02'
+                  legal_form: ug
+                single_tier_ownership: true
+                taxation_countries:
+                - country: DE
+                  business_identification_number: null
+                  tax_number: 123/456/78901
+                  vat_id: DE0815
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /businesses/{business_id}/submit_document:
+    post:
+      summary: Submit Document
+      deprecated: true
+      operationId: submit_document
+      tags:
+      - Businesses
+      description: '**⚠️ DEPRECATED**: This endpoint is deprecated. Please use the new unified `/submit_document` endpoint instead, which supports both person and business documents through a discriminated union approach.
+
+
+        See [Submit Document](/reference/submit_document_upload) for the replacement endpoint.
+
+        '
+      parameters:
+      - name: business_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Business Identifier
+          description: 'A business identifier.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessDocumentUploadRequest'
+            example:
+              document: shareholder_list
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessDocumentUploadResponse'
+              example:
+                expires_at: '2024-11-18T13:36:09.478814+00:00'
+                document: shareholder_list
+                upload_url: https://example.com/upload-document-url-12345
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    BusinessTaxResidencyRequest:
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
+
+            '
+        tax_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Tax Number
+          description: 'The business''s tax number, eg. `123/456/78901`.
+
+            '
+        vat_id:
+          type: string
+          pattern: ^[A-Za-z]{2}\d{2,13}$
+          title: Value Added Tax Identifier (VAT ID)
+          description: 'The company''s identifier for VAT (value added tax).
+
+            '
+        business_identification_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Business Identification Number
+          description: 'Reserved for future use, pass `null` for now.
+
+            '
+      type: object
+      required:
+      - country
+      - tax_number
+      title: BusinessTaxResidencyRequest
+    BusinessIndustryCodeEnumTwoOne:
+      type: string
+      enum:
+      - A.1.11
+      - A.1.12
+      - A.1.13
+      - A.1.14
+      - A.1.15
+      - A.1.16
+      - A.1.19
+      - A.1.21
+      - A.1.22
+      - A.1.23
+      - A.1.24
+      - A.1.25
+      - A.1.26
+      - A.1.27
+      - A.1.28
+      - A.1.29
+      - A.1.30
+      - A.1.41
+      - A.1.42
+      - A.1.43
+      - A.1.44
+      - A.1.45
+      - A.1.46
+      - A.1.47
+      - A.1.48
+      - A.1.50
+      - A.1.61
+      - A.1.62
+      - A.1.63
+      - A.1.70
+      - A.2.10
+      - A.2.20
+      - A.2.30
+      - A.2.40
+      - A.3.11
+      - A.3.12
+      - A.3.21
+      - A.3.22
+      - A.3.30
+      - B.5.10
+      - B.5.20
+      - B.6.10
+      - B.6.20
+      - B.7.10
+      - B.7.21
+      - B.7.29
+      - B.8.11
+      - B.8.12
+      - B.8.91
+      - B.8.92
+      - B.8.93
+      - B.8.99
+      - B.9.10
+      - B.9.90
+      - C.10.11
+      - C.10.12
+      - C.10.13
+      - C.10.20
+      - C.10.31
+      - C.10.32
+      - C.10.39
+      - C.10.41
+      - C.10.42
+      - C.10.51
+      - C.10.52
+      - C.10.61
+      - C.10.62
+      - C.10.71
+      - C.10.72
+      - C.10.73
+      - C.10.81
+      - C.10.82
+      - C.10.83
+      - C.10.84
+      - C.10.85
+      - C.10.86
+      - C.10.89
+      - C.10.91
+      - C.10.92
+      - C.11.01
+      - C.11.02
+      - C.11.03
+      - C.11.04
+      - C.11.05
+      - C.11.06
+      - C.11.07
+      - C.12.00
+      - C.13.10
+      - C.13.20
+      - C.13.30
+      - C.13.91
+      - C.13.92
+      - C.13.93
+      - C.13.94
+      - C.13.95
+      - C.13.96
+      - C.13.99
+      - C.14.10
+      - C.14.21
+      - C.14.22
+      - C.14.23
+      - C.14.24
+      - C.14.29
+      - C.15.11
+      - C.15.12
+      - C.15.20
+      - C.16.11
+      - C.16.12
+      - C.16.21
+      - C.16.22
+      - C.16.23
+      - C.16.24
+      - C.16.25
+      - C.16.26
+      - C.16.27
+      - C.16.28
+      - C.17.11
+      - C.17.12
+      - C.17.21
+      - C.17.22
+      - C.17.23
+      - C.17.24
+      - C.17.25
+      - C.18.11
+      - C.18.12
+      - C.18.13
+      - C.18.14
+      - C.18.20
+      - C.19.10
+      - C.19.20
+      - C.20.11
+      - C.20.12
+      - C.20.13
+      - C.20.14
+      - C.20.15
+      - C.20.16
+      - C.20.17
+      - C.20.20
+      - C.20.30
+      - C.20.41
+      - C.20.42
+      - C.20.51
+      - C.20.59
+      - C.20.60
+      - C.21.10
+      - C.21.20
+      - C.22.11
+      - C.22.12
+      - C.22.21
+      - C.22.22
+      - C.22.23
+      - C.22.24
+      - C.22.25
+      - C.22.26
+      - C.23.11
+      - C.23.12
+      - C.23.13
+      - C.23.14
+      - C.23.15
+      - C.23.20
+      - C.23.31
+      - C.23.32
+      - C.23.41
+      - C.23.42
+      - C.23.43
+      - C.23.44
+      - C.23.45
+      - C.23.51
+      - C.23.52
+      - C.23.61
+      - C.23.62
+      - C.23.63
+      - C.23.64
+      - C.23.65
+      - C.23.66
+      - C.23.70
+      - C.23.91
+      - C.23.99
+      - C.24.10
+      - C.24.20
+      - C.24.31
+      - C.24.32
+      - C.24.33
+      - C.24.34
+      - C.24.41
+      - C.24.42
+      - C.24.43
+      - C.24.44
+      - C.24.45
+      - C.24.46
+      - C.24.51
+      - C.24.52
+      - C.24.53
+      - C.24.54
+      - C.25.11
+      - C.25.12
+      - C.25.21
+      - C.25.22
+      - C.25.30
+      - C.25.40
+      - C.25.51
+      - C.25.52
+      - C.25.53
+      - C.25.61
+      - C.25.62
+      - C.25.63
+      - C.25.91
+      - C.25.92
+      - C.25.93
+      - C.25.94
+      - C.25.99
+      - C.26.11
+      - C.26.12
+      - C.26.20
+      - C.26.30
+      - C.26.40
+      - C.26.51
+      - C.26.52
+      - C.26.60
+      - C.26.70
+      - C.27.11
+      - C.27.12
+      - C.27.20
+      - C.27.31
+      - C.27.32
+      - C.27.33
+      - C.27.40
+      - C.27.51
+      - C.27.52
+      - C.27.90
+      - C.28.11
+      - C.28.12
+      - C.28.13
+      - C.28.14
+      - C.28.15
+      - C.28.21
+      - C.28.22
+      - C.28.23
+      - C.28.24
+      - C.28.25
+      - C.28.29
+      - C.28.30
+      - C.28.41
+      - C.28.42
+      - C.28.91
+      - C.28.92
+      - C.28.93
+      - C.28.94
+      - C.28.95
+      - C.28.96
+      - C.28.97
+      - C.28.99
+      - C.29.10
+      - C.29.20
+      - C.29.31
+      - C.29.32
+      - C.30.11
+      - C.30.12
+      - C.30.13
+      - C.30.20
+      - C.30.31
+      - C.30.32
+      - C.30.40
+      - C.30.91
+      - C.30.92
+      - C.30.99
+      - C.31.00
+      - C.32.11
+      - C.32.12
+      - C.32.13
+      - C.32.20
+      - C.32.30
+      - C.32.40
+      - C.32.50
+      - C.32.91
+      - C.32.99
+      - C.33.11
+      - C.33.12
+      - C.33.13
+      - C.33.14
+      - C.33.15
+      - C.33.16
+      - C.33.17
+      - C.33.18
+      - C.33.19
+      - C.33.20
+      - D.35.11
+      - D.35.12
+      - D.35.13
+      - D.35.14
+      - D.35.15
+      - D.35.16
+      - D.35.21
+      - D.35.22
+      - D.35.23
+      - D.35.24
+      - D.35.30
+      - D.35.40
+      - E.36.00
+      - E.37.00
+      - E.38.11
+      - E.38.12
+      - E.38.21
+      - E.38.22
+      - E.38.23
+      - E.38.31
+      - E.38.32
+      - E.38.33
+      - E.39.00
+      - F.41.00
+      - F.42.11
+      - F.42.12
+      - F.42.13
+      - F.42.21
+      - F.42.22
+      - F.42.91
+      - F.42.99
+      - F.43.11
+      - F.43.12
+      - F.43.13
+      - F.43.21
+      - F.43.22
+      - F.43.23
+      - F.43.24
+      - F.43.31
+      - F.43.32
+      - F.43.33
+      - F.43.34
+      - F.43.35
+      - F.43.41
+      - F.43.42
+      - F.43.50
+      - F.43.60
+      - F.43.91
+      - F.43.99
+      - G.46.11
+      - G.46.12
+      - G.46.13
+      - G.46.14
+      - G.46.15
+      - G.46.16
+      - G.46.17
+      - G.46.18
+      - G.46.19
+      - G.46.21
+      - G.46.22
+      - G.46.23
+      - G.46.24
+      - G.46.31
+      - G.46.32
+      - G.46.33
+      - G.46.34
+      - G.46.35
+      - G.46.36
+      - G.46.37
+      - G.46.38
+      - G.46.39
+      - G.46.41
+      - G.46.42
+      - G.46.43
+      - G.46.44
+      - G.46.45
+      - G.46.46
+      - G.46.47
+      - G.46.48
+      - G.46.49
+      - G.46.50
+      - G.46.61
+      - G.46.62
+      - G.46.63
+      - G.46.64
+      - G.46.71
+      - G.46.72
+      - G.46.73
+      - G.46.81
+      - G.46.82
+      - G.46.83
+      - G.46.84
+      - G.46.85
+      - G.46.86
+      - G.46.87
+      - G.46.89
+      - G.46.90
+      - G.47.11
+      - G.47.12
+      - G.47.21
+      - G.47.22
+      - G.47.23
+      - G.47.24
+      - G.47.25
+      - G.47.26
+      - G.47.27
+      - G.47.30
+      - G.47.40
+      - G.47.51
+      - G.47.52
+      - G.47.53
+      - G.47.54
+      - G.47.55
+      - G.47.61
+      - G.47.62
+      - G.47.63
+      - G.47.64
+      - G.47.69
+      - G.47.71
+      - G.47.72
+      - G.47.73
+      - G.47.74
+      - G.47.75
+      - G.47.76
+      - G.47.77
+      - G.47.78
+      - G.47.79
+      - G.47.81
+      - G.47.82
+      - G.47.83
+      - G.47.91
+      - G.47.92
+      - H.49.11
+      - H.49.12
+      - H.49.20
+      - H.49.31
+      - H.49.32
+      - H.49.33
+      - H.49.34
+      - H.49.39
+      - H.49.41
+      - H.49.42
+      - H.49.50
+      - H.50.10
+      - H.50.20
+      - H.50.30
+      - H.50.40
+      - H.51.10
+      - H.51.21
+      - H.51.22
+      - H.52.10
+      - H.52.21
+      - H.52.22
+      - H.52.23
+      - H.52.24
+      - H.52.25
+      - H.52.26
+      - H.52.31
+      - H.52.32
+      - H.53.10
+      - H.53.20
+      - H.53.30
+      - I.55.10
+      - I.55.20
+      - I.55.30
+      - I.55.40
+      - I.55.90
+      - I.56.11
+      - I.56.12
+      - I.56.21
+      - I.56.22
+      - I.56.30
+      - I.56.40
+      - J.58.11
+      - J.58.12
+      - J.58.13
+      - J.58.19
+      - J.58.21
+      - J.58.29
+      - J.59.11
+      - J.59.12
+      - J.59.13
+      - J.59.14
+      - J.59.20
+      - J.60.10
+      - J.60.20
+      - J.60.31
+      - J.60.39
+      - K.61.10
+      - K.61.20
+      - K.61.90
+      - K.62.10
+      - K.62.20
+      - K.62.90
+      - K.63.10
+      - K.63.91
+      - K.63.92
+      - L.64.11
+      - L.64.19
+      - L.64.21
+      - L.64.22
+      - L.64.31
+      - L.64.32
+      - L.64.91
+      - L.64.92
+      - L.64.99
+      - L.65.11
+      - L.65.12
+      - L.65.20
+      - L.65.30
+      - L.66.11
+      - L.66.12
+      - L.66.19
+      - L.66.21
+      - L.66.22
+      - L.66.29
+      - L.66.30
+      - M.68.11
+      - M.68.12
+      - M.68.20
+      - M.68.31
+      - M.68.32
+      - N.69.10
+      - N.69.20
+      - N.70.10
+      - N.70.20
+      - N.71.11
+      - N.71.12
+      - N.71.20
+      - N.72.10
+      - N.72.20
+      - N.73.11
+      - N.73.12
+      - N.73.20
+      - N.73.30
+      - N.74.11
+      - N.74.12
+      - N.74.13
+      - N.74.14
+      - N.74.20
+      - N.74.30
+      - N.74.91
+      - N.74.99
+      - N.75.00
+      - O.77.11
+      - O.77.12
+      - O.77.21
+      - O.77.22
+      - O.77.31
+      - O.77.32
+      - O.77.33
+      - O.77.34
+      - O.77.35
+      - O.77.39
+      - O.77.40
+      - O.77.51
+      - O.77.52
+      - O.78.10
+      - O.78.20
+      - O.79.11
+      - O.79.12
+      - O.79.90
+      - O.80.01
+      - O.80.09
+      - O.81.10
+      - O.81.21
+      - O.81.22
+      - O.81.23
+      - O.81.30
+      - O.82.10
+      - O.82.20
+      - O.82.30
+      - O.82.40
+      - O.82.91
+      - O.82.92
+      - O.82.99
+      - P.84.11
+      - P.84.12
+      - P.84.13
+      - P.84.21
+      - P.84.22
+      - P.84.23
+      - P.84.24
+      - P.84.25
+      - P.84.30
+      - Q.85.10
+      - Q.85.20
+      - Q.85.31
+      - Q.85.32
+      - Q.85.33
+      - Q.85.40
+      - Q.85.51
+      - Q.85.52
+      - Q.85.53
+      - Q.85.59
+      - Q.85.61
+      - Q.85.69
+      - R.86.10
+      - R.86.21
+      - R.86.22
+      - R.86.23
+      - R.86.91
+      - R.86.92
+      - R.86.93
+      - R.86.94
+      - R.86.95
+      - R.86.96
+      - R.86.97
+      - R.86.99
+      - R.87.10
+      - R.87.20
+      - R.87.30
+      - R.87.91
+      - R.87.99
+      - R.88.10
+      - R.88.91
+      - R.88.99
+      - S.90.11
+      - S.90.12
+      - S.90.13
+      - S.90.20
+      - S.90.31
+      - S.90.39
+      - S.91.11
+      - S.91.12
+      - S.91.21
+      - S.91.22
+      - S.91.30
+      - S.91.41
+      - S.91.42
+      - S.92.00
+      - S.93.11
+      - S.93.12
+      - S.93.13
+      - S.93.19
+      - S.93.21
+      - S.93.29
+      - T.94.11
+      - T.94.12
+      - T.94.20
+      - T.94.91
+      - T.94.92
+      - T.94.99
+      - T.95.10
+      - T.95.21
+      - T.95.22
+      - T.95.23
+      - T.95.24
+      - T.95.25
+      - T.95.29
+      - T.95.31
+      - T.95.32
+      - T.95.40
+      - T.96.10
+      - T.96.21
+      - T.96.22
+      - T.96.23
+      - T.96.30
+      - T.96.40
+      - T.96.91
+      - T.96.99
+      - U.97.00
+      - U.98.10
+      - U.98.20
+      title: BusinessIndustryCodeEnumTwoOne
+      description: 'An industry sector identifier, according to NACE rev 2.1 (2025).
+
+        '
+    BusinessIndustryNaceRev:
+      type: string
+      enum:
+      - '2'
+      - '2.1'
+      title: BusinessIndustryNaceRev
+      description: 'A category representing a revision of the NACE classification codes:
+
+        <ul> <li><code>"2"</code>:  NACE Rev. 2 (2008) <li><code>"2.1"</code>:  NACE Rev. 2.1 (2025) </ul>
+
+        '
+    BusinessResponse:
+      type: object
+      title: BusinessResponse
+      description: 'Response object representing a business record returned from the API.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Business Identifier
+          description: The unique identifier for this business.
+        name:
+          type: string
+          title: Name
+          description: The legal name of the business as formally registered.
+          example: Wayne Enterprises, Inc.
+        registration:
+          $ref: '#/components/schemas/BusinessRegistrationResponse'
+        industry:
+          $ref: '#/components/schemas/BusinessIndustry'
+        registered_address:
+          $ref: '#/components/schemas/Address'
+        taxation_countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTaxResidencyResponse'
+          title: Taxation Countries
+          description: 'A **complete** list of all tax residencies.  It is important for this list to be exhaustive.
+
+            '
+        fatca_relevant:
+          type: boolean
+          title: Fatca Relevant
+          description: 'A boolean value indicating if the legal entity is subject to FATCA (Foreign Account Tax Compliance Act). Provide `true` if either: (1) the legal entity is a US Person according to IRS definition, or (2) any shareholder who is a US Person holds >10% of the legal entity. Otherwise, provide `false`.
+
+            '
+        expected_annual_revenue:
+          type: string
+          format: number
+          title: Expected Annual Revenue
+          description: 'An estimate of the annual revenue.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          example: EUR
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for `expected_annual_revenue`. The only currently available currency is `"EUR"`.
+
+            '
+        legal_entity_identifier:
+          type: string
+          title: Legal Entity Identifier
+          description: 'An ISO 17442 Legal Entity Identifier (LEI) assigned to the legal entity.
+
+            '
+        single_tier_ownership:
+          type: boolean
+          nullable: true
+          title: Single Tier Ownership
+          description: 'A boolean value indicating single tier ownership, i.e. `true` whether the business is directly owned by individuals only (`true`), or if there are companies in the ownership structure (`false`). Required only for KYC reliance partners.
+
+            '
+        nfe_type:
+          $ref: '#/components/schemas/BusinessNFETypeEnum'
+          type: object
+          description: 'Nature of financial engagement (NFE) type associated with this business.
+
+            '
+      required:
+      - id
+      - name
+      - registration
+      - registered_address
+      - taxation_countries
+    BusinessTaxResidencyResponse:
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
+
+            '
+        tax_number:
+          type: string
+          title: Tax Number
+          description: 'The business''s tax number, eg. `123/456/78901`.
+
+            '
+        vat_id:
+          type: string
+          pattern: ^[A-Za-z]{2}\d{2,13}$
+          title: Value Added Tax Identifier (VAT ID)
+          description: 'The company''s identifier for VAT (value added tax).
+
+            '
+        business_identification_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Business Identification Number
+          description: 'Reserved for future use, pass `null` for now.
+
+            '
+      type: object
+      required:
+      - country
+      - tax_number
+      title: BusinessTaxResidencyResponse
+    GenericBusinessRegistrationRequest:
+      title: GenericBusinessRegistrationRequest
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Registration Identifier
+          description: 'The unique identifier of the business''s registration in the commercial register, e.g., `"HRB 123456"`.
+
+            '
+        incorporation_country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country of Incorporation
+          description: 'An ISO 3166-1 alpha-2 code, representing the business''s country of incorporation.
+
+            '
+          example: DE
+        incorporation_date:
+          type: string
+          format: date
+          title: Date of Incorporation
+          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
+
+            '
+      required:
+      - id
+      - incorporation_country
+      - incorporation_date
+    BusinessRegistrationRequest:
+      type: object
+      title: BusinessRegistrationRequest
+      description: 'Base class for business registration requests, adapting constraints and fields based on the `incorporation_country`. For example, German businesses are validated using the `GermanBusinessRegistration` schema with additional required fields.
+
+        '
+      discriminator:
+        propertyName: incorporation_country
+        mapping:
+          DE: '#/components/schemas/GermanBusinessRegistration'
+          '*': '#/components/schemas/GenericBusinessRegistrationRequest'
+      anyOf:
+      - $ref: '#/components/schemas/GermanBusinessRegistration'
+      - $ref: '#/components/schemas/GenericBusinessRegistrationRequest'
+    GermanBusinessRegistration:
+      title: GermanBusinessRegistration
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          pattern: ^(HRA|HRB|GNR|VR|PR).*
+          title: Registration Number
+          description: 'The identifier of the company''s registration in the commercial register of `court`, which must contain one of the following prefixes: `HRA`, `HRB`, `GNR`, `VR`, or `PR`. e.g. `"HRB 123456"`.
+
+            '
+        court:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Court
+          description: 'The name of the district court of the commercial register.
+
+            '
+        legal_form:
+          $ref: '#/components/schemas/GermanBusinessLegalForm'
+        incorporation_country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country of Incorporation
+          description: 'An ISO 3166-1 alpha-2 code, representing the business''s country of incorporation.
+
+            '
+          example: DE
+        incorporation_date:
+          type: string
+          format: date
+          title: Date of Incorporation
+          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
+
+            '
+      required:
+      - id
+      - incorporation_date
+      - incorporation_country
+      - legal_form
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    LegalRepresentativeResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'An identifier for the legal representative.
+
+            '
+        person:
+          type: string
+          title: Person
+          description: 'A person identifier. This field represents the person being a legal representative.
+
+            '
+        representation_rule:
+          $ref: '#/components/schemas/RepresentationRule'
+      type: object
+      required:
+      - id
+      - person
+      - representation_rule
+      title: LegalRepresentativeResponse
+    AddressRequest:
+      properties:
+        line_1:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 1
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 2
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          type: string
+          maxLength: 50
+          minLength: 1
+          title: Postal Code
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          type: string
+          maxLength: 150
+          minLength: 1
+          title: City
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+      type: object
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      title: AddressRequest
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    BusinessDocumentType:
+      type: string
+      enum:
+      - articles_of_association
+      - commercial_register_extract
+      - shareholder_list
+      title: BusinessDocumentType
+      description: 'A category describing the a business document:
+
+        <ul> <li><code>articles_of_association</code> <li><code>commercial_register_extract</code> <li><code>shareholder_list</code> </ul>
+
+        '
+    EncodedPaginatedCollectionResponse_BusinessResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BusinessResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[BusinessResponse]
+    IndustryRequestNaceRev:
+      type: string
+      enum:
+      - '2.1'
+      title: IndustryRequestNaceRev
+      description: 'A category representing a revision of the NACE classification codes. Only NACE Rev. 2.1 (2025) is supported for new business requests.
+
+        '
+    BeneficialOwnerRequest:
+      properties:
+        person:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Person
+          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
+
+            '
+        shares_pct:
+          exclusiveMinimum: 0
+          maximum: 100
+          type: string
+          format: number
+          title: Percentage Shares
+          description: 'The amount of shares (in percent) held by this beneficial owner.
+
+            '
+        voting_rights_pct:
+          type: string
+          format: number
+          maximum: 100
+          exclusiveMinimum: 0
+          title: Percentage Voting Rights
+          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
+
+            '
+        nature:
+          $ref: '#/components/schemas/BeneficialOwnerNature'
+      type: object
+      required:
+      - nature
+      - person
+      - shares_pct
+      title: BeneficialOwnerRequest
+    BusinessIndustry:
+      properties:
+        nace_rev:
+          $ref: '#/components/schemas/BusinessIndustryNaceRev'
+        code:
+          oneOf:
+          - $ref: '#/components/schemas/BusinessIndustryCodeEnumTwo'
+          - $ref: '#/components/schemas/BusinessIndustryCodeEnumTwoOne'
+      type: object
+      required:
+      - nace_rev
+      - code
+      title: BusinessIndustry
+      description: 'A specification of an industry sector.
+
+        '
+    BusinessRequest:
+      type: object
+      title: BusinessRequest
+      description: Request object for creating a business record in the system.
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: The legal name of the business as formally registered.
+          example: Wayne Enterprises, Inc.
+        registration:
+          $ref: '#/components/schemas/BusinessRegistrationRequest'
+        industry:
+          $ref: '#/components/schemas/IndustryRequest'
+        registered_address:
+          $ref: '#/components/schemas/AddressRequest'
+        taxation_countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTaxResidencyRequest'
+          minItems: 1
+          title: Taxation Countries
+          description: 'A **complete** list of all tax residencies. It is critical that this list is exhaustive.
+
+            '
+        fatca_relevant:
+          type: boolean
+          title: Fatca Relevant
+          description: 'A boolean value indicating if the legal entity is subject to FATCA (Foreign Account Tax Compliance Act). Provide `true` if either: (1) the legal entity is a US Person according to IRS definition, or (2) any shareholder who is a US Person holds >10% of the legal entity. Otherwise, provide `false`.
+
+            '
+        expected_annual_revenue:
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          title: Expected Annual Revenue
+          description: 'An estimate of the annual revenue of the business.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          example: EUR
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for `expected_annual_revenue`. The only currently available currency is `"EUR"`.
+
+            '
+        legal_entity_identifier:
+          type: string
+          maxLength: 20
+          minLength: 20
+          title: Legal Entity Identifier
+          description: 'An ISO 17442 Legal Entity Identifier (LEI) assigned to the legal entity.
+
+            '
+        single_tier_ownership:
+          type: boolean
+          title: Single Tier Ownership
+          description: 'A boolean value indicating single tier ownership, i.e. `true` whether the business is directly owned by individuals only (`true`), or if there are companies in the ownership structure (`false`). Required only for KYC reliance partners.
+
+            '
+        nfe_type:
+          $ref: '#/components/schemas/BusinessNFETypeEnum'
+      required:
+      - name
+      - registration
+      - industry
+      - registered_address
+      - taxation_countries
+      - fatca_relevant
+      - expected_annual_revenue
+      - currency
+      - nfe_type
+    BusinessNFETypeEnum:
+      type: string
+      enum:
+      - active
+      - passive
+      title: BusinessNFETypeEnum
+      description: 'A category describing the business model of Non-Financial Entities (NFE):
+
+        <ul> <li><code>active</code> <li><code>passive</code> </ul>
+
+        '
+    Address:
+      title: Address
+      description: 'A residential address.
+
+        '
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      type: object
+      properties:
+        line_1:
+          title: Line 1
+          maxLength: 128
+          type: string
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          title: Line 2
+          maxLength: 128
+          type: string
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          title: Postal Code
+          maxLength: 50
+          type: string
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          title: City
+          maxLength: 150
+          type: string
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+    EncodedPaginatedCollectionResponse_LegalRepresentativeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/LegalRepresentativeResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[LegalRepresentativeResponse]
+    LegalRepresentativeRequest:
+      properties:
+        person:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Person
+          description: 'A person identifier. This field represents the person being a legal representative.
+
+            '
+        representation_rule:
+          $ref: '#/components/schemas/RepresentationRule'
+      type: object
+      required:
+      - person
+      - representation_rule
+      title: LegalRepresentativeRequest
+    BusinessIndustryCodeEnumTwo:
+      type: string
+      enum:
+      - A.1.11
+      - A.1.12
+      - A.1.13
+      - A.1.14
+      - A.1.15
+      - A.1.16
+      - A.1.19
+      - A.1.21
+      - A.1.22
+      - A.1.23
+      - A.1.24
+      - A.1.25
+      - A.1.26
+      - A.1.27
+      - A.1.28
+      - A.1.29
+      - A.1.30
+      - A.1.41
+      - A.1.42
+      - A.1.43
+      - A.1.44
+      - A.1.45
+      - A.1.46
+      - A.1.47
+      - A.1.49
+      - A.1.50
+      - A.1.61
+      - A.1.62
+      - A.1.63
+      - A.1.64
+      - A.1.70
+      - A.2.10
+      - A.2.20
+      - A.2.30
+      - A.2.40
+      - A.3.11
+      - A.3.12
+      - A.3.21
+      - A.3.22
+      - B.5.10
+      - B.5.20
+      - B.6.10
+      - B.6.20
+      - B.7.10
+      - B.7.21
+      - B.7.29
+      - B.8.11
+      - B.8.12
+      - B.8.91
+      - B.8.92
+      - B.8.93
+      - B.8.99
+      - B.9.10
+      - B.9.90
+      - C.10.11
+      - C.10.12
+      - C.10.13
+      - C.10.20
+      - C.10.31
+      - C.10.32
+      - C.10.39
+      - C.10.41
+      - C.10.42
+      - C.10.51
+      - C.10.52
+      - C.10.61
+      - C.10.62
+      - C.10.71
+      - C.10.72
+      - C.10.73
+      - C.10.81
+      - C.10.82
+      - C.10.83
+      - C.10.84
+      - C.10.85
+      - C.10.86
+      - C.10.89
+      - C.10.91
+      - C.10.92
+      - C.11.01
+      - C.11.02
+      - C.11.03
+      - C.11.04
+      - C.11.05
+      - C.11.06
+      - C.11.07
+      - C.12.00
+      - C.13.10
+      - C.13.20
+      - C.13.30
+      - C.13.91
+      - C.13.92
+      - C.13.93
+      - C.13.94
+      - C.13.95
+      - C.13.96
+      - C.13.99
+      - C.14.11
+      - C.14.12
+      - C.14.13
+      - C.14.14
+      - C.14.19
+      - C.14.20
+      - C.14.31
+      - C.14.39
+      - C.15.11
+      - C.15.12
+      - C.15.20
+      - C.16.10
+      - C.16.21
+      - C.16.22
+      - C.16.23
+      - C.16.24
+      - C.16.29
+      - C.17.11
+      - C.17.12
+      - C.17.21
+      - C.17.22
+      - C.17.23
+      - C.17.24
+      - C.17.29
+      - C.18.11
+      - C.18.12
+      - C.18.13
+      - C.18.14
+      - C.18.20
+      - C.19.10
+      - C.19.20
+      - C.20.11
+      - C.20.12
+      - C.20.13
+      - C.20.14
+      - C.20.15
+      - C.20.16
+      - C.20.17
+      - C.20.20
+      - C.20.30
+      - C.20.41
+      - C.20.42
+      - C.20.51
+      - C.20.52
+      - C.20.53
+      - C.20.59
+      - C.20.60
+      - C.21.10
+      - C.21.20
+      - C.22.11
+      - C.22.19
+      - C.22.21
+      - C.22.22
+      - C.22.23
+      - C.22.24
+      - C.23.11
+      - C.23.12
+      - C.23.13
+      - C.23.14
+      - C.23.19
+      - C.23.20
+      - C.23.31
+      - C.23.32
+      - C.23.41
+      - C.23.42
+      - C.23.43
+      - C.23.44
+      - C.23.49
+      - C.23.51
+      - C.23.52
+      - C.23.61
+      - C.23.62
+      - C.23.63
+      - C.23.64
+      - C.23.65
+      - C.23.69
+      - C.23.70
+      - C.23.91
+      - C.23.99
+      - C.24.10
+      - C.24.20
+      - C.24.31
+      - C.24.32
+      - C.24.33
+      - C.24.34
+      - C.24.41
+      - C.24.42
+      - C.24.43
+      - C.24.44
+      - C.24.45
+      - C.24.46
+      - C.24.51
+      - C.24.52
+      - C.24.53
+      - C.24.54
+      - C.25.11
+      - C.25.12
+      - C.25.21
+      - C.25.29
+      - C.25.30
+      - C.25.40
+      - C.25.50
+      - C.25.61
+      - C.25.62
+      - C.25.71
+      - C.25.72
+      - C.25.73
+      - C.25.91
+      - C.25.92
+      - C.25.93
+      - C.25.94
+      - C.25.95
+      - C.26.11
+      - C.26.12
+      - C.26.20
+      - C.26.30
+      - C.26.40
+      - C.26.51
+      - C.26.52
+      - C.26.60
+      - C.26.70
+      - C.26.80
+      - C.27.11
+      - C.27.12
+      - C.27.20
+      - C.27.31
+      - C.27.32
+      - C.27.33
+      - C.27.40
+      - C.27.51
+      - C.27.52
+      - C.27.90
+      - C.28.11
+      - C.28.12
+      - C.28.13
+      - C.28.14
+      - C.28.15
+      - C.28.21
+      - C.28.22
+      - C.28.23
+      - C.28.24
+      - C.28.25
+      - C.28.29
+      - C.28.30
+      - C.28.41
+      - C.28.49
+      - C.28.91
+      - C.28.92
+      - C.28.93
+      - C.28.94
+      - C.28.95
+      - C.28.96
+      - C.28.99
+      - C.29.10
+      - C.29.20
+      - C.29.31
+      - C.29.32
+      - C.30.11
+      - C.30.12
+      - C.30.20
+      - C.30.30
+      - C.30.40
+      - C.30.91
+      - C.30.92
+      - C.30.99
+      - C.31.01
+      - C.31.02
+      - C.31.03
+      - C.31.09
+      - C.32.11
+      - C.32.12
+      - C.32.13
+      - C.32.20
+      - C.32.30
+      - C.32.40
+      - C.32.50
+      - C.32.91
+      - C.32.99
+      - C.33.11
+      - C.33.12
+      - C.33.13
+      - C.33.14
+      - C.33.15
+      - C.33.16
+      - C.33.17
+      - C.33.19
+      - C.33.20
+      - D.35.11
+      - D.35.12
+      - D.35.13
+      - D.35.14
+      - D.35.21
+      - D.35.22
+      - D.35.23
+      - D.35.30
+      - E.36.00
+      - E.37.00
+      - E.38.11
+      - E.38.12
+      - E.38.21
+      - E.38.22
+      - E.38.31
+      - E.38.32
+      - E.39.00
+      - F.41.10
+      - F.41.20
+      - F.42.11
+      - F.42.12
+      - F.42.13
+      - F.42.21
+      - F.42.22
+      - F.42.91
+      - F.42.99
+      - F.43.11
+      - F.43.12
+      - F.43.13
+      - F.43.21
+      - F.43.22
+      - F.43.29
+      - F.43.31
+      - F.43.32
+      - F.43.33
+      - F.43.34
+      - F.43.39
+      - F.43.91
+      - F.43.99
+      - G.45.11
+      - G.45.19
+      - G.45.20
+      - G.45.31
+      - G.45.32
+      - G.45.40
+      - G.46.11
+      - G.46.12
+      - G.46.13
+      - G.46.14
+      - G.46.15
+      - G.46.16
+      - G.46.17
+      - G.46.18
+      - G.46.19
+      - G.46.21
+      - G.46.22
+      - G.46.23
+      - G.46.24
+      - G.46.31
+      - G.46.32
+      - G.46.33
+      - G.46.34
+      - G.46.35
+      - G.46.36
+      - G.46.37
+      - G.46.38
+      - G.46.39
+      - G.46.41
+      - G.46.42
+      - G.46.43
+      - G.46.44
+      - G.46.45
+      - G.46.46
+      - G.46.47
+      - G.46.48
+      - G.46.49
+      - G.46.51
+      - G.46.52
+      - G.46.61
+      - G.46.62
+      - G.46.63
+      - G.46.64
+      - G.46.65
+      - G.46.66
+      - G.46.69
+      - G.46.71
+      - G.46.72
+      - G.46.73
+      - G.46.74
+      - G.46.75
+      - G.46.76
+      - G.46.77
+      - G.46.90
+      - G.47.11
+      - G.47.19
+      - G.47.21
+      - G.47.22
+      - G.47.23
+      - G.47.24
+      - G.47.25
+      - G.47.26
+      - G.47.29
+      - G.47.30
+      - G.47.41
+      - G.47.42
+      - G.47.43
+      - G.47.51
+      - G.47.52
+      - G.47.53
+      - G.47.54
+      - G.47.59
+      - G.47.61
+      - G.47.62
+      - G.47.63
+      - G.47.64
+      - G.47.65
+      - G.47.71
+      - G.47.72
+      - G.47.73
+      - G.47.74
+      - G.47.75
+      - G.47.76
+      - G.47.77
+      - G.47.78
+      - G.47.79
+      - G.47.81
+      - G.47.82
+      - G.47.89
+      - G.47.91
+      - G.47.99
+      - H.49.10
+      - H.49.20
+      - H.49.31
+      - H.49.32
+      - H.49.39
+      - H.49.41
+      - H.49.42
+      - H.49.50
+      - H.50.10
+      - H.50.20
+      - H.50.30
+      - H.50.40
+      - H.51.10
+      - H.51.21
+      - H.51.22
+      - H.52.10
+      - H.52.21
+      - H.52.22
+      - H.52.23
+      - H.52.24
+      - H.52.29
+      - H.53.10
+      - H.53.20
+      - I.55.10
+      - I.55.20
+      - I.55.30
+      - I.55.90
+      - I.56.10
+      - I.56.21
+      - I.56.29
+      - I.56.30
+      - J.58.11
+      - J.58.12
+      - J.58.13
+      - J.58.14
+      - J.58.19
+      - J.58.21
+      - J.58.29
+      - J.59.11
+      - J.59.12
+      - J.59.13
+      - J.59.14
+      - J.59.20
+      - J.60.10
+      - J.60.20
+      - J.61.10
+      - J.61.20
+      - J.61.30
+      - J.61.90
+      - J.62.01
+      - J.62.02
+      - J.62.03
+      - J.62.09
+      - J.63.11
+      - J.63.12
+      - J.63.91
+      - J.63.99
+      - K.64.11
+      - K.64.19
+      - K.64.20
+      - K.64.30
+      - K.64.91
+      - K.64.92
+      - K.64.99
+      - K.65.11
+      - K.65.12
+      - K.65.20
+      - K.65.30
+      - K.66.11
+      - K.66.12
+      - K.66.19
+      - K.66.21
+      - K.66.22
+      - K.66.29
+      - K.66.30
+      - L.68.10
+      - L.68.20
+      - L.68.31
+      - L.68.32
+      - M.69.10
+      - M.69.20
+      - M.70.10
+      - M.70.21
+      - M.70.22
+      - M.71.11
+      - M.71.12
+      - M.71.20
+      - M.72.11
+      - M.72.19
+      - M.72.20
+      - M.73.11
+      - M.73.12
+      - M.73.20
+      - M.74.10
+      - M.74.20
+      - M.74.30
+      - M.74.90
+      - M.75.00
+      - M.77.11
+      - M.77.12
+      - M.77.21
+      - M.77.22
+      - M.77.29
+      - N.77.31
+      - N.77.32
+      - N.77.33
+      - N.77.34
+      - N.77.35
+      - N.77.39
+      - N.77.40
+      - N.78.10
+      - N.78.20
+      - N.78.30
+      - N.79.11
+      - N.79.12
+      - N.79.90
+      - N.80.10
+      - N.80.20
+      - N.80.30
+      - N.81.10
+      - N.81.21
+      - N.81.22
+      - N.81.29
+      - N.81.30
+      - N.82.11
+      - N.82.19
+      - N.82.20
+      - N.82.30
+      - N.82.91
+      - N.82.92
+      - N.82.99
+      - N.84.11
+      - N.84.12
+      - N.84.13
+      - N.84.21
+      - N.84.22
+      - N.84.23
+      - N.84.24
+      - N.84.25
+      - O.84.30
+      - P.85.10
+      - P.85.20
+      - P.85.31
+      - P.85.32
+      - P.85.41
+      - P.85.42
+      - P.85.51
+      - P.85.52
+      - P.85.53
+      - P.85.59
+      - P.85.60
+      - Q.86.10
+      - Q.86.21
+      - Q.86.22
+      - Q.86.23
+      - Q.86.90
+      - Q.87.10
+      - Q.87.20
+      - Q.87.30
+      - Q.87.90
+      - Q.88.10
+      - Q.88.91
+      - Q.88.99
+      - R.90.01
+      - R.90.02
+      - R.90.03
+      - R.90.04
+      - R.91.01
+      - R.91.02
+      - R.91.03
+      - R.91.04
+      - R.92.00
+      - R.93.11
+      - R.93.12
+      - R.93.13
+      - R.93.19
+      - R.93.21
+      - R.93.29
+      - S.94.11
+      - S.94.12
+      - S.94.20
+      - S.94.91
+      - S.94.92
+      - S.94.99
+      - S.95.11
+      - S.95.12
+      - S.95.21
+      - S.95.22
+      - S.95.23
+      - S.95.24
+      - S.95.25
+      - S.95.29
+      - S.96.01
+      - S.96.02
+      - S.96.03
+      - S.96.04
+      - S.96.09
+      - T.97.00
+      - T.98.10
+      - T.98.20
+      - U.99.00
+      title: BusinessIndustryCodeEnumTwo
+      description: 'An industry sector identifier, according to NACE rev 2 (2006).
+
+        '
+    BeneficialOwnerResponse:
+      properties:
+        id:
+          type: string
+          title: Beneficial Owner Identifier
+          description: The unique identifier for this beneficial owner.
+        person:
+          type: string
+          title: Person
+          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
+
+            '
+        shares_pct:
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          title: Percentage Shares
+          description: 'The amount of shares (in percent) held by this beneficial owner.
+
+            '
+        voting_rights_pct:
+          type: string
+          format: number
+          maximum: 100
+          exclusiveMinimum: 0
+          title: Percentage Voting Rights
+          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
+
+            '
+        nature:
+          $ref: '#/components/schemas/BeneficialOwnerNature'
+      type: object
+      required:
+      - id
+      - nature
+      - person
+      - shares_pct
+      title: BeneficialOwnerResponse
+    EncodedPaginatedCollectionResponse_BeneficialOwnerResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BeneficialOwnerResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[BeneficialOwnerResponse]
+    GermanBusinessLegalForm:
+      title: GermanBusinessLegalForm
+      type: string
+      enum:
+      - gmbh
+      - ug
+      description: 'A category representing the formal type of a German legal entity:
+
+        <ul> <li><code>gmbh</code>: GmbH <li><code>ug</code>: UG (haftungsbeschränkt) </ul>
+
+        '
+    RepresentationRule:
+      type: string
+      enum:
+      - sole_representation
+      - joint_representation
+      title: RepresentationRule
+      description: 'A category describing the representation rule for a legal representative:
+
+        <ul> <li><code>sole_representation</code>:  The legal representative alone can represent the company. <li><code>joint_representation</code>:  The legal representative needs at least one more legal representative to represent the company. </ul>
+
+        '
+    BusinessRegistrationResponse:
+      type: object
+      title: BusinessRegistrationResponse
+      description: 'Business registration information as returned in API responses.
+
+        '
+      discriminator:
+        propertyName: incorporation_country
+        mapping:
+          DE: '#/components/schemas/GermanBusinessRegistration'
+          '*': '#/components/schemas/GenericBusinessRegistrationResponse'
+      anyOf:
+      - $ref: '#/components/schemas/GermanBusinessRegistration'
+      - $ref: '#/components/schemas/GenericBusinessRegistrationResponse'
+    BusinessDocumentUploadResponse:
+      properties:
+        document:
+          $ref: '#/components/schemas/BusinessDocumentType'
+        upload_url:
+          type: string
+          title: Upload URL
+          description: 'A URL to upload the business document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link.  Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - document
+      - upload_url
+      - expires_at
+      title: BusinessDocumentUploadResponse
+    BeneficialOwnerNature:
+      type: string
+      enum:
+      - real
+      - notional
+      title: BeneficialOwnerNature
+      description: 'A category describing the nature of a UBO:
+
+        <ul> <li><code>real</code> <li><code>notional</code> </ul>
+
+        '
+    BusinessDocumentUploadRequest:
+      properties:
+        document:
+          $ref: '#/components/schemas/BusinessDocumentType'
+      type: object
+      required:
+      - document
+      title: BusinessDocumentUploadRequest
+    GenericBusinessRegistrationResponse:
+      title: GenericBusinessRegistrationResponse
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Registration Identifier
+          description: The unique identifier for the business registration.
+        incorporation_country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country of Incorporation
+          description: 'An ISO 3166-1 alpha-2 code representing the business''s country of incorporation.
+
+            '
+          example: DE
+        incorporation_date:
+          type: string
+          format: date
+          title: Incorporation Date
+          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
+
+            '
+      required:
+      - id
+      - incorporation_country
+      - incorporation_date
+    IndustryRequest:
+      properties:
+        nace_rev:
+          $ref: '#/components/schemas/IndustryRequestNaceRev'
+        code:
+          $ref: '#/components/schemas/BusinessIndustryCodeEnumTwoOne'
+      type: object
+      required:
+      - nace_rev
+      - code
+      title: IndustryRequest
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

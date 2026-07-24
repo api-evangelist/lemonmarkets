@@ -1,0 +1,1470 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Persons API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Persons
+paths:
+  /persons:
+    post:
+      summary: Create Person
+      operationId: create_person
+      tags:
+      - Persons
+      parameters:
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonRequest'
+            example:
+              date_of_birth: '1964-08-13'
+              email: erika.mustermann@example.com
+              firstname: Erika
+              lastname: Mustermann
+              nationalities:
+              - DE
+              phone_number: '+49172997318'
+              place_of_birth:
+                city: Berlin
+                country: DE
+              registered_address:
+                city: Köln
+                country: DE
+                line_1: Heidestraße 17
+                postal_code: '51147'
+              tax_residencies:
+              - country: DE
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broker__apps__api__endpoints__persons__PersonResponse'
+              example:
+                date_of_birth: '1964-08-13'
+                email: erika.mustermann@example.com
+                firstname: Erika
+                id: pers_9aa38d16cb1e436baf48381906057964
+                lastname: Mustermann
+                nationalities:
+                - DE
+                phone_number: '+49172997318'
+                place_of_birth:
+                  city: Berlin
+                  country: DE
+                registered_address:
+                  city: Köln
+                  country: DE
+                  line_1: Heidestraße 17
+                  line_2: null
+                  postal_code: '51147'
+                tax_residencies:
+                - country: DE
+                  tax_identification_number: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Persons
+      operationId: list_persons
+      tags:
+      - Persons
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          default: 100
+          type: integer
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_PersonResponse_'
+              example:
+                data:
+                - date_of_birth: '1964-08-13'
+                  email: erika.mustermann@example.com
+                  firstname: Erika
+                  id: pers_9aa38d16cb1e436baf48381906057964
+                  lastname: Mustermann
+                  nationalities:
+                  - DE
+                  phone_number: '+49172997318'
+                  place_of_birth:
+                    city: Berlin
+                    country: DE
+                  registered_address:
+                    city: Köln
+                    country: DE
+                    line_1: Heidestraße 17
+                    line_2: null
+                    postal_code: '51147'
+                  tax_residencies:
+                  - country: DE
+                    tax_identification_number: null
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /persons/{person_id}/updates:
+    post:
+      summary: Create Person Data Update Request
+      operationId: create_person_data_update
+      tags:
+      - Persons
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Person Identifier
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDataUpdateRequest'
+            examples:
+              email:
+                summary: Update email
+                value:
+                  type: email
+                  email: newemail@example.com
+              phone_number:
+                summary: Update phone number
+                value:
+                  type: phone_number
+                  number: '+49172997319'
+              registered_address:
+                summary: Update registered address
+                value:
+                  type: registered_address
+                  line_1: Neue Straße 1
+                  line_2: null
+                  postal_code: '10115'
+                  city: Berlin
+                  country: DE
+              employment:
+                summary: Update employment
+                value:
+                  type: employment
+                  status: employed
+                  annual_salary: gte_50k_lt_75k_eur
+                  sector: public_sector
+              tax_residencies:
+                summary: Update tax residencies
+                value:
+                  type: tax_residencies
+                  residencies:
+                  - country: DE
+                    tax_identification_number: '12345'
+                  - country: NL
+                    tax_identification_number: '67890'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDataUpdateAnnotatedResponse'
+              example:
+                id: upd_4ffa7b6928e6466ba8c13badb49f8add
+                type: email
+                email: newemail@example.com
+                history:
+                - status: created
+                  timestamp: '2024-10-07T10:00:00.000000+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Person Data Update Requests
+      operationId: list_person_data_updates
+      tags:
+      - Persons
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Person Identifier
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_PersonDataUpdateAnnotatedResponse_'
+              example:
+                data:
+                - id: upd_4ffa7b6928e6466ba8c13badb49f8add
+                  type: email
+                  email: newemail@example.com
+                  history:
+                  - status: success
+                    timestamp: '2024-10-07T10:05:00.000000+00:00'
+                  - status: processing
+                    timestamp: '2024-10-07T10:01:00.000000+00:00'
+                  - status: created
+                    timestamp: '2024-10-07T10:00:00.000000+00:00'
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /persons/{person_id}:
+    get:
+      summary: Get Person
+      operationId: get_person
+      tags:
+      - Persons
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Person Identifier
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broker__apps__api__endpoints__persons__PersonResponse'
+              example:
+                date_of_birth: '1964-08-13'
+                email: erika.mustermann@example.com
+                firstname: Erika
+                id: pers_9aa38d16cb1e436baf48381906057964
+                lastname: Mustermann
+                nationalities:
+                - DE
+                phone_number: '+49172997318'
+                place_of_birth:
+                  city: Berlin
+                  country: DE
+                registered_address:
+                  city: Köln
+                  country: DE
+                  line_1: Heidestraße 17
+                  line_2: null
+                  postal_code: '51147'
+                tax_residencies:
+                - country: DE
+                  tax_identification_number: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /persons/{person_id}/updates/{update_id}:
+    get:
+      summary: Get Person Data Update Request
+      operationId: get_person_data_update
+      tags:
+      - Persons
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Person Identifier
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: update_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Update Identifier
+        example: upd_4ffa7b6928e6466ba8c13badb49f8add
+        description: 'A person data update request identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDataUpdateAnnotatedResponse'
+              example:
+                id: upd_4ffa7b6928e6466ba8c13badb49f8add
+                type: email
+                email: newemail@example.com
+                history:
+                - status: success
+                  timestamp: '2024-10-07T10:05:00.000000+00:00'
+                - status: processing
+                  timestamp: '2024-10-07T10:01:00.000000+00:00'
+                - status: created
+                  timestamp: '2024-10-07T10:00:00.000000+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    broker__apps__api__endpoints__persons__PersonResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier representing this person.
+
+            '
+        firstname:
+          type: string
+          title: First Name
+          description: 'A string describing the person''s first name.
+
+            '
+        lastname:
+          type: string
+          title: Lastname
+          description: 'A string describing the person''s lastname.
+
+            '
+        date_of_birth:
+          type: string
+          format: date
+          title: Date of Birth
+          description: 'A string describing the day of birth, like `"1964-08-13"`.
+
+            '
+        registered_address:
+          $ref: '#/components/schemas/Address'
+        nationalities:
+          items:
+            type: string
+            maxLength: 2
+            minLength: 2
+          type: array
+          title: Nationalities
+          description: 'A **complete** list of ISO 3166-1 alpha-2 codes, representing each country related to a user''s nationalities/citizenships.  It is important for this data point to be complete.
+
+            '
+        email:
+          type: string
+          title: Email
+          description: 'A verified email address to contact the user.  This email address must match the one you have on record for the user.
+
+            '
+        phone_number:
+          type: string
+          title: Phone Number
+          description: 'A mobile phone number, including the country calling code.
+
+            '
+          example: '+49172997318'
+        place_of_birth:
+          $ref: '#/components/schemas/PlaceOfBirthRequest'
+        tax_residencies:
+          items:
+            $ref: '#/components/schemas/TaxResidency'
+          type: array
+          title: Tax Residencies
+          description: 'A **complete** list of all of a user''s tax residencies.  It is important for this data point to be complete.
+
+            '
+      type: object
+      required:
+      - id
+      - firstname
+      - lastname
+      - date_of_birth
+      - registered_address
+      title: PersonResponse
+    PersonDataUpdateRequest:
+      title: PersonDataUpdateRequest
+      description: 'A request to update a single person data field. The payload contains the type of data being updated and the new value(s).
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/PersonDataUpdateEmailRequest'
+      - $ref: '#/components/schemas/PersonDataUpdatePhoneNumberRequest'
+      - $ref: '#/components/schemas/PersonDataUpdateRegisteredAddressRequest'
+      - $ref: '#/components/schemas/PersonDataUpdateEmploymentRequest'
+      - $ref: '#/components/schemas/PersonDataUpdateTaxResidenciesRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          email: '#/components/schemas/PersonDataUpdateEmailRequest'
+          phone_number: '#/components/schemas/PersonDataUpdatePhoneNumberRequest'
+          registered_address: '#/components/schemas/PersonDataUpdateRegisteredAddressRequest'
+          employment: '#/components/schemas/PersonDataUpdateEmploymentRequest'
+          tax_residencies: '#/components/schemas/PersonDataUpdateTaxResidenciesRequest'
+    PersonDataUpdateRequestStatus:
+      type: string
+      enum:
+      - created
+      - processing
+      - success
+      - failure
+      title: PersonDataUpdateRequestStatus
+      description: 'A category representing the status of a person data update request.
+
+        <ul> <li><code>created</code> - The update request has been created <li><code>processing</code> - The update request is being processed <li><code>success</code> - The update request has been successfully completed <li><code>failure</code> - The update request has failed </ul>
+
+        '
+    IndustrySector:
+      title: IndustrySector
+      enum:
+      - agriculture
+      - commodities
+      - construction
+      - education
+      - financial_services
+      - gambling
+      - healthcare
+      - it
+      - jewellery_trading
+      - manufacturing
+      - precious_metals_trading
+      - professional_services
+      - public_sector
+      - real_estate
+      - retail
+      - service_industry
+      - sport
+      - tourism
+      - transport
+      - used_vehicles_trading
+      - weapons_trading
+      - other
+      type: string
+      description: 'A category representing the industry sector related to a user''s employment status.  If the user''s employment status is not directly linked to a sector, select `other`.
+
+        <ul> <li><code>agriculture</code></li> <li><code>commodities</code></li> <li><code>construction</code></li> <li><code>education</code></li> <li><code>financial_services</code></li> <li><code>gambling</code></li> <li><code>healthcare</code></li> <li><code>it</code></li> <li><code>jewellery_trading</code></li> <li><code>manufacturing</code></li> <li><code>precious_metals_trading</code></li> <li><code>professional_services</code></li> <li><code>public_sector</code></li> <li><code>real_estate</code></li> <li><code>retail</code></li> <li><code>service_industry</code></li> <li><code>sport</code></li> <li><code>tourism</code></li> <li><code>transport</code></li> <li><code>used_vehicles_trading</code></li> <li><code>weapons_trading</code></li> <li><code>other</code></li> </ul>
+
+        '
+    PlaceOfBirthRequest:
+      title: PlaceOfBirthRequest
+      description: 'An object representing a place of birth.
+
+        '
+      required:
+      - city
+      - country
+      type: object
+      properties:
+        city:
+          title: City
+          maxLength: 255
+          type: string
+          description: 'The city/municipality of the place of birth.
+
+            '
+          example: Berlin
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+
+            '
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    AnnualSalary:
+      title: AnnualSalary
+      enum:
+      - lt_50k_eur
+      - gte_50k_lt_75k_eur
+      - gte_75k_lt_100k_eur
+      - gte_100k_lt_150k_eur
+      - gte_150k_eur
+      type: string
+      description: 'A category to represent a customer''s annual income:
+
+        <ul> <li><code>lt_50k_eur</code>: Less than 50,000 EUR. <li><code>gte_50k_lt_75k_eur</code>: 50,000 EUR or more, but less than 75,000 EUR. <li><code>gte_75k_lt_100k_eur</code>: 75,000 EUR or more, but less than 100,000 EUR. <li><code>gte_100k_lt_150k_eur</code>: 100,000 EUR or more, but less than 150,000 EUR. <li><code>gte_150k_eur</code>: 150,000 EUR or more. </ul>
+
+        '
+    AddressRequest:
+      properties:
+        line_1:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 1
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 2
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          type: string
+          maxLength: 50
+          minLength: 1
+          title: Postal Code
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          type: string
+          maxLength: 150
+          minLength: 1
+          title: City
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+      type: object
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      title: AddressRequest
+    EmploymentStatus:
+      title: EmploymentStatus
+      enum:
+      - apprenticeship
+      - company_owner
+      - employed
+      - managing_director
+      - public_official
+      - retired
+      - self_employed
+      - student
+      - unemployed
+      type: string
+      description: 'A category to represent a user''s employment status:
+
+        <ul> <li><code>apprenticeship</code> <li><code>company_owner</code> <li><code>employed</code> <li><code>managing_director</code> <li><code>public_official</code> <li><code>retired</code> <li><code>self_employed</code> <li><code>student</code> <li><code>unemployed</code> </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    PersonDataUpdateTaxResidency:
+      title: PersonDataUpdateTaxResidency
+      description: 'A tax residency item for a person data update request.
+
+        '
+      required:
+      - country
+      - tax_identification_number
+      type: object
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code representing the tax residency country.
+
+            '
+          example: DE
+        tax_identification_number:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Tax Identification Number
+          description: 'The TIN (Tax Identification Number) for the person in the given country.
+
+            '
+          example: '12345'
+    EncodedPaginatedCollectionResponse_PersonDataUpdateAnnotatedResponse_:
+      title: EncodedPaginatedCollectionResponse[PersonDataUpdateAnnotatedResponse]
+      description: 'A paginated collection of person data update requests.
+
+        '
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonDataUpdateAnnotatedResponse'
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+    Address:
+      title: Address
+      description: 'A residential address.
+
+        '
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      type: object
+      properties:
+        line_1:
+          title: Line 1
+          maxLength: 128
+          type: string
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          title: Line 2
+          maxLength: 128
+          type: string
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          title: Postal Code
+          maxLength: 50
+          type: string
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          title: City
+          maxLength: 150
+          type: string
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+    EncodedPaginatedCollectionResponse_PersonResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__persons__PersonResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[PersonResponse]
+    PersonDataUpdateRegisteredAddressRequest:
+      title: PersonDataUpdateRegisteredAddressRequest
+      description: 'A request to update a person''s registered address.
+
+        '
+      required:
+      - type
+      - line_1
+      - postal_code
+      - city
+      - country
+      type: object
+      properties:
+        type:
+          type: string
+          const: registered_address
+          title: Type
+          description: 'The type discriminator identifying this as a registered address update request.
+
+            '
+        line_1:
+          type: string
+          maxLength: 255
+          title: Address Line 1
+          description: 'The first line of the address, typically containing the street name and number.
+
+            '
+          example: Neue Straße 1
+        line_2:
+          type: string
+          maxLength: 255
+          nullable: true
+          title: Address Line 2
+          description: 'An optional second line of the address, for additional address details.
+
+            '
+        postal_code:
+          type: string
+          maxLength: 20
+          title: Postal Code
+          description: 'The postal code or ZIP code of the address.
+
+            '
+          example: '10115'
+        city:
+          type: string
+          maxLength: 255
+          title: City
+          description: 'The city or municipality of the address.
+
+            '
+          example: Berlin
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code representing the country of the address.
+
+            '
+          example: DE
+    PersonDataUpdateAnnotatedResponse:
+      title: PersonDataUpdateAnnotatedResponse
+      description: 'An object representing a person data update request with the specific data being updated.
+
+        '
+      type: object
+      required:
+      - id
+      - type
+      - history
+      properties:
+        id:
+          type: string
+          title: Update Identifier
+          description: 'A unique identifier for the person data update request.
+
+            '
+          example: upd_4ffa7b6928e6466ba8c13badb49f8add
+        type:
+          type: string
+          title: Type
+          description: 'The discriminator identifying which field is being updated.
+
+            '
+          enum:
+          - email
+          - phone_number
+          - registered_address
+          - employment
+          - tax_residencies
+        email:
+          type: string
+          format: email
+          title: Email
+          description: 'The new email address for the person when `type` is `email`.
+
+            '
+          example: newemail@example.com
+        number:
+          type: string
+          minLength: 1
+          maxLength: 45
+          title: Phone Number
+          description: 'The new phone number for the person, including the country calling code, when `type` is `phone_number`.
+
+            '
+          example: '+49172997319'
+        line_1:
+          type: string
+          maxLength: 255
+          title: Address Line 1
+          description: 'The first line of the address when `type` is `registered_address`.
+
+            '
+          example: Neue Straße 1
+        line_2:
+          type: string
+          maxLength: 255
+          nullable: true
+          title: Address Line 2
+          description: 'An optional second line of the address when `type` is `registered_address`.
+
+            '
+        postal_code:
+          type: string
+          maxLength: 20
+          title: Postal Code
+          description: 'The postal code or ZIP code of the address when `type` is `registered_address`.
+
+            '
+          example: '10115'
+        city:
+          type: string
+          maxLength: 255
+          title: City
+          description: 'The city or municipality of the address when `type` is `registered_address`.
+
+            '
+          example: Berlin
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code representing the country when `type` is `registered_address`.
+
+            '
+          example: DE
+        status:
+          $ref: '#/components/schemas/EmploymentStatus'
+          description: 'The employment status when `type` is `employment`.
+
+            '
+        annual_salary:
+          $ref: '#/components/schemas/AnnualSalary'
+          description: 'The annual salary range when `type` is `employment`.
+
+            '
+        sector:
+          $ref: '#/components/schemas/IndustrySector'
+          description: 'The employment sector when `type` is `employment`.
+
+            '
+        residencies:
+          title: Tax Residencies
+          type: array
+          description: 'The list of tax residencies and TINs when `type` is `tax_residencies`.
+
+            '
+          items:
+            $ref: '#/components/schemas/PersonDataUpdateTaxResidency'
+        history:
+          type: array
+          title: History
+          description: 'A chronological list of status changes for this update request.
+
+            '
+          items:
+            $ref: '#/components/schemas/StatusChange_PersonDataUpdateRequestStatus_'
+    PersonRequest:
+      properties:
+        firstname:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: First Name
+          example: Erika
+          description: 'A string describing the person''s first name.
+
+            '
+        lastname:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Lastname
+          example: Mustermann
+          description: 'A string describing the person''s lastname.
+
+            '
+        date_of_birth:
+          type: string
+          format: date
+          title: Date Of Birth
+          description: 'A string describing the day of birth, like `"1964-08-13"`.
+
+            '
+          example: '1964-08-13'
+        registered_address:
+          $ref: '#/components/schemas/AddressRequest'
+        nationalities:
+          items:
+            type: string
+            maxLength: 2
+            minLength: 2
+          type: array
+          minItems: 1
+          title: Nationalities
+          description: 'A **complete** list of ISO 3166-1 alpha-2 codes, representing each country related to a user''s nationalities/citizenships.  It is important for this data point to be complete.
+
+            '
+          example:
+          - DE
+        email:
+          type: string
+          format: email
+          title: Email
+          description: 'A verified email address to contact the user.  This email address must match the one you have on record for the user.
+
+            '
+          example: erika.mustermann@example.com
+        phone_number:
+          type: string
+          maxLength: 45
+          minLength: 1
+          title: Mobile Phone Number
+          description: 'A mobile phone number, including the country calling code.
+
+            '
+          example: '+49172997318'
+        place_of_birth:
+          $ref: '#/components/schemas/BusinessPersonPlaceOfBirthRequest'
+        tax_residencies:
+          items:
+            $ref: '#/components/schemas/TaxResidency'
+          type: array
+          minItems: 1
+          title: Tax Residencies
+          description: 'A list of a person''s tax residencies.  It is important for this data point to be complete.
+
+            '
+        accepted_agreements:
+          title: Accepted Agreements
+          description: 'A list of legal agreements that have been accepted by the person.
+
+            '
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__agreements__AgreementAcceptanceRequest'
+          type: array
+          maxItems: 1
+          minItems: 1
+      type: object
+      required:
+      - firstname
+      - lastname
+      - date_of_birth
+      - registered_address
+      - accepted_agreements
+      title: PersonRequest
+    PersonDataUpdateEmailRequest:
+      title: PersonDataUpdateEmailRequest
+      description: 'A request to update a person''s email address.
+
+        '
+      required:
+      - type
+      - email
+      type: object
+      properties:
+        type:
+          type: string
+          const: email
+          title: Type
+          description: 'The type discriminator identifying this as an email update request.
+
+            '
+        email:
+          type: string
+          format: email
+          title: Email
+          description: 'The new email address for the person.
+
+            '
+          example: newemail@example.com
+    BusinessPersonPlaceOfBirthRequest:
+      title: PlaceOfBirthRequest
+      description: 'An object representing a place of birth.
+
+        '
+      required:
+      - country
+      type: object
+      properties:
+        city:
+          title: City
+          maxLength: 255
+          type: string
+          description: 'The city/municipality of the place of birth.
+
+            '
+          example: Berlin
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+
+            '
+    PersonDataUpdatePhoneNumberRequest:
+      title: PersonDataUpdatePhoneNumberRequest
+      description: 'A request to update a person''s phone number.
+
+        '
+      required:
+      - type
+      - number
+      type: object
+      properties:
+        type:
+          type: string
+          const: phone_number
+          title: Type
+          description: 'The type discriminator identifying this as a phone number update request.
+
+            '
+        number:
+          type: string
+          minLength: 1
+          maxLength: 45
+          title: Phone Number
+          description: 'The new phone number for the person, including the country calling code.
+
+            '
+          example: '+49172997319'
+    PersonDataUpdateTaxResidenciesRequest:
+      title: PersonDataUpdateTaxResidenciesRequest
+      description: 'A request to update a person''s tax residencies (self-declared TINs). Provide the complete list of tax residencies for the person (the list replaces the current set, so include all existing and new entries, not just the new one). Each country must appear at most once.
+
+        '
+      required:
+      - type
+      - residencies
+      type: object
+      properties:
+        type:
+          type: string
+          const: tax_residencies
+          title: Type
+          description: 'The type discriminator identifying this as a tax residency update request.
+
+            '
+        residencies:
+          title: Tax Residencies
+          minItems: 1
+          type: array
+          description: 'The complete list of tax residencies and TINs for the person.
+
+            '
+          items:
+            $ref: '#/components/schemas/PersonDataUpdateTaxResidency'
+    PersonDataUpdateEmploymentRequest:
+      title: PersonDataUpdateEmploymentRequest
+      description: 'A request to update a person''s employment information.
+
+        '
+      required:
+      - type
+      - status
+      - annual_salary
+      - sector
+      type: object
+      properties:
+        type:
+          type: string
+          const: employment
+          title: Type
+          description: 'The type discriminator identifying this as an employment information update request.
+
+            '
+        status:
+          $ref: '#/components/schemas/EmploymentStatus'
+        annual_salary:
+          $ref: '#/components/schemas/AnnualSalary'
+        sector:
+          $ref: '#/components/schemas/IndustrySector'
+    broker__apps__api__endpoints__agreements__AgreementAcceptanceRequest:
+      title: AgreementAcceptance
+      description: 'An object representing the user''s acceptance of a legal agreement at a specific point in time.
+
+        '
+      required:
+      - agreement_id
+      - accepted_at
+      type: object
+      properties:
+        agreement_id:
+          title: Agreement Identifier
+          maxLength: 255
+          type: string
+          example: agr_9902271f791d413aad781763c61b9bb0
+          description: 'An agreement identifier. This value identifies the agreement that a customer has accepted at a certain point in time.
+
+            '
+        accepted_at:
+          title: Accepted At
+          type: string
+          format: date-time
+          example: '2023-06-29T14:39:29Z'
+          description: 'A point in time.  This value specifies the point in time at which the user accepted the agreement referenced by `agreement_id`.
+
+            '
+    TaxResidency:
+      title: TaxResidency
+      description: 'An object representing a tax residency.
+
+        '
+      required:
+      - country
+      type: object
+      properties:
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: 'An ISO 3166-1 alpha-2 code, representing a country considering the user one of its tax payers.
+
+            '
+          example: DE
+        tax_identification_number:
+          title: Tax Identification Number
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: 'The TIN (Tax Identification Number) related to the user within the taxation regime within `country`.
+
+            '
+    StatusChange_PersonDataUpdateRequestStatus_:
+      title: StatusChange[PersonDataUpdateRequestStatus]
+      description: 'An object representing a transition to a new status.
+
+        '
+      required:
+      - status
+      - timestamp
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonDataUpdateRequestStatus'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+          description: 'The timestamp at which this status change occurred.
+
+            '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

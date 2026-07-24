@@ -1,0 +1,892 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Cash Settlement API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Cash Settlement
+paths:
+  /settlement_accounts/{settlement_account_id}/settlements/{settlement_id}:
+    get:
+      summary: Get Settlement
+      operationId: get_settlement
+      tags:
+      - Cash Settlement
+      parameters:
+      - name: settlement_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Account Identifier
+          description: 'A settlement account identifier
+
+            '
+      - name: settlement_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Identifier
+        description: 'A settlement identifier.
+
+          '
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementResponse'
+              example:
+                amount: '200.28'
+                currency: EUR
+                cutoff_timestamp: '2025-05-22T10:00:00+00:00'
+                direction: credit
+                id: cst_1
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /settlement_accounts:
+    get:
+      summary: List Settlement Accounts
+      operationId: list_settlement_accounts
+      tags:
+      - Cash Settlement
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_SettlementAccountResponse_'
+              example:
+                data:
+                - balance: '-60963.74'
+                  currency: EUR
+                  id: psa_5d97d141935e4176aab4233a9311fdd2
+                  inpayment_bank_account:
+                    bic: DEUTDEFFVAC
+                    iban: DE58120700700000000006
+                    name: Deutsche Bank
+                  name: Default
+                  withdrawals_in_progress: '0.00'
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /settlement_accounts/{settlement_account_id}/transactions:
+    get:
+      summary: List Settlement Accounts Transactions
+      operationId: list_settlement_accounts_transactions
+      tags:
+      - Cash Settlement
+      parameters:
+      - name: settlement_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Account Identifier
+          description: 'A settlement account identifier
+
+            '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_SettlementAccountTransactionResponse_'
+              example:
+                data:
+                - amount: '100.00'
+                  created_at: '2025-05-13T12:27:25.171589+00:00'
+                  currency: EUR
+                  direction: debit
+                  id: ptx_911c879585f94d5c81cc4ff0b65782d0
+                  payment_details: null
+                  settlement: cst_b0c44db064994579873cfbef49521425
+                  type: settlement
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /settlement_accounts/{settlement_account_id}/settlements/{settlement_id}/items:
+    get:
+      summary: List Settlement Items
+      operationId: list_settlement_items
+      tags:
+      - Cash Settlement
+      parameters:
+      - name: settlement_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Identifier
+        description: 'A settlement identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: settlement_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Account Identifier
+          description: 'A settlement account identifier
+
+            '
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_SettlementItemResponse_'
+              example:
+                data:
+                - account: cusa_1
+                  amount: '100.20'
+                  currency: EUR
+                  direction: credit
+                  id: sti_1sell
+                  source: tr_1
+                  type: trade
+                - account: cusa_2
+                  amount: '80.02'
+                  currency: EUR
+                  direction: credit
+                  id: sti_2sell
+                  source: tr_2
+                  type: trade
+                - account: cusa_2
+                  amount: '20.06'
+                  currency: EUR
+                  direction: credit
+                  id: sti_1income
+                  source: ca_am_1
+                  type: income_distribution
+                - id: sti_1buy
+                  account: cusa_1
+                  amount: '1000.00'
+                  currency: EUR
+                  direction: debit
+                  source: bord_1
+                  type: order
+                - id: sti_2buy
+                  account: cusa_2
+                  amount: '500.00'
+                  currency: EUR
+                  direction: debit
+                  source: bord_2
+                  type: order
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /settlement_accounts/{settlement_account_id}/settlements:
+    get:
+      summary: List Settlements
+      operationId: list_settlements
+      tags:
+      - Cash Settlement
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: settlement_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Settlement Account Identifier
+          description: 'A settlement account identifier
+
+            '
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_SettlementResponse_'
+              example:
+                data:
+                - amount: '200.28'
+                  currency: EUR
+                  cutoff_timestamp: '2025-05-22T10:00:00+00:00'
+                  direction: credit
+                  id: cst_1sell
+                - amount: '1500.00'
+                  currency: EUR
+                  cutoff_timestamp: '2025-05-22T10:00:00+00:00'
+                  direction: debit
+                  id: cst_1buy
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    EncodedPaginatedCollectionResponse_SettlementResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementResponse]
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    SettlementAccountTransactionResponse:
+      oneOf:
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse1'
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse2'
+      discriminator:
+        propertyName: type
+        mapping:
+          payment: '#/components/schemas/SettlementAccountTransactionResponse1'
+          settlement: '#/components/schemas/SettlementAccountTransactionResponse2'
+    EncodedPaginatedCollectionResponse_SettlementItemResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementItemResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementItemResponse]
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    SettlementAccountTransactionResponse2:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this settlement transaction.
+
+            '
+        type:
+          type: string
+          const: settlement
+          title: Type
+          description: 'The value `"settlement"` for a settlement transaction.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The value of the transaction, expressed using `currency`.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'A timestamp representing the point in time when the transaction was created.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementAccountTransactionDirection'
+        settlement:
+          type: string
+          title: Settlement Identifier
+          description: 'A reference to the corresponding settlement.
+
+            '
+      type: object
+      required:
+      - id
+      - amount
+      - created_at
+      - currency
+      - direction
+      - settlement
+      - type
+      title: SettlementAccountTransactionResponse
+    BankAccountResponse:
+      title: BankAccountResponse
+      description: 'An object representing a bank account.
+
+        '
+      required:
+      - iban
+      - bic
+      type: object
+      properties:
+        iban:
+          title: IBAN
+          type: string
+          description: 'An IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+            '
+        bic:
+          title: BIC
+          type: string
+          description: 'A BIC (Business Identifier Code) according to ISO 9362.
+
+            '
+        name:
+          type: string
+          title: Name
+          description: 'The name of the bank managing the bank account.
+
+            '
+    Page_SettlementAccountTransactionResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementAccountTransactionResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[SettlementAccountTransactionResponse]
+    SettlementAccountTransactionResponse1:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this settlement transaction.
+
+            '
+        type:
+          type: string
+          const: payment
+          title: Type
+          description: 'The value `"payment"` for a payment transaction.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The value of the transaction, expressed using `currency`.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'A timestamp representing the point in time when the transaction was created.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementAccountTransactionDirection'
+        payment_details:
+          type: object
+          properties:
+            reference:
+              type: string
+              title: Reference
+              description: 'The reference text for the transaction.
+
+                '
+            sender_iban:
+              type: string
+              title: Sender
+              description: 'The bank account sending the amount using IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+                '
+            recipient_iban:
+              type: string
+              title: Recipient
+              description: 'The bank account receiving the amount using IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+                '
+            booking_date:
+              type: string
+              title: Booking Date
+          required:
+          - reference
+          - sender_iban
+          - recipient_iban
+          - booking_date
+      type: object
+      required:
+      - id
+      - amount
+      - currency
+      - created_at
+      - direction
+      - payment_details
+      - type
+      title: SettlementAccountTransactionResponse
+    EncodedPaginatedCollectionResponse_SettlementAccountResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementAccountResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[SettlementAccountResponse]
+    SettlementAccountResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this settlement account.
+
+            '
+          example: psa_2323
+        name:
+          type: string
+          title: Name
+          description: 'Logical name for the bank account, e.g. “Funds Trading” or “Brokerage Pooling”.
+
+            '
+          example: Funds Trading
+        inpayment_bank_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+        balance:
+          type: string
+          title: Balance
+          example: '123.45'
+          description: 'Current account balance, excluding `withdrawals_in_progress`.  A positive amount is caused by funds to be paid out to customers, a negative amount would be caused by funds pending transfer to the lemon.markets pooling account.
+
+            '
+        withdrawals_in_progress:
+          type: string
+          title: Withdrawals In Progress
+          example: '12.34'
+          description: 'Withdrawals in progress to be paid out to the partner. Already deducted from `balance`.
+
+            '
+      type: object
+      required:
+      - id
+      - name
+      - inpayment_bank_account
+      - currency
+      - balance
+      - withdrawals_in_progress
+      title: SettlementAccountResponse
+    SettlementAccountTransactionDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementAccountTransactionDirection
+    SettlementItemType:
+      type: string
+      enum:
+      - income_distribution
+      - order
+      - trade
+      title: SettlementItemType
+      description: 'A category describing the type of a settlement item.
+
+        <ul> <li><code>income_distribution</code>:  The transaction was caused by a distribution <li><code>order</code>:  The transaction was caused by an order <li><code>trade</code>:  The transaction was caused by a trade </ul>
+
+        '
+    SettlementItemResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifying the settlement item.
+
+            '
+        account:
+          type: string
+          title: Account
+          description: 'The account identifier for this source (`cusa_…`).
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount for the settlement.
+
+            '
+        currency:
+          type: string
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount property. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementDirection'
+        source:
+          type: string
+          title: Source
+          description: 'The identifier of the underlying source of the item.
+
+            <ul> <li>When <code>type</code> is <code>trade</code>, this is a reference to a trade. </ul>
+
+            '
+        type:
+          $ref: '#/components/schemas/SettlementItemType'
+      type: object
+      required:
+      - id
+      - account
+      - amount
+      - currency
+      - direction
+      - source
+      - type
+      title: SettlementItemResponse
+      description: 'An object representing a settlement item.
+
+        '
+    SettlementDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementDirection
+      description: 'A category representing the direction of settlement:
+
+        <ul> <li><code>credit</code>:  The settlement results in funds being credited (net-sell day). <li><code>debit</code>: The settlement results in funds being debited (net-buy day). </ul>
+
+        '
+    SettlementResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifying the settlement.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount for the settlement.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is "EUR".
+
+            '
+        cutoff_timestamp:
+          type: string
+          format: date-time
+          title: Cutoff Timestamp
+          description: 'The point in time at which `debit` settlements have to be delivered and the point in time for cash distribution for `credit` settlements.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementDirection'
+      type: object
+      required:
+      - id
+      - amount
+      - currency
+      - cutoff_timestamp
+      - direction
+      title: SettlementResponse
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,0 +1,397 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Securities Accounts API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Securities Accounts
+paths:
+  /accounts/{account_id}/securities_accounts:
+    post:
+      summary: Create Securities Account
+      operationId: create_securities_account
+      tags:
+      - Securities Accounts
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
+              example:
+                id: sec_ac_00e49aeab85844c89de57929bcb0f76a
+                account_number: LMM867947731
+                history:
+                - status: created
+                  timestamp: '2025-07-14T11:36:27.530203+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Securities Accounts
+      operationId: list_securities_accounts
+      tags:
+      - Securities Accounts
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          default: 100
+          type: integer
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SecuritiesAccountStatus'
+          title: Status
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_'
+              example:
+                data:
+                - id: sec_ac_00e49aeab85844c89de57929bcb0f76a
+                  account_number: LMM867947731
+                  history:
+                  - status: opened
+                    timestamp: '2025-07-14T11:36:28.157491+00:00'
+                  - status: created
+                    timestamp: '2025-07-14T11:36:27.530203+00:00'
+                - id: sec_ac_2f532772b8f84da9859215754a50f091
+                  account_number: LMM000000127
+                  history:
+                  - status: opened
+                    timestamp: '2023-07-14T16:14:22.645530+00:00'
+                  - status: created
+                    timestamp: '2023-07-14T16:10:50.160199+00:00'
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/securities_accounts/{securities_account_id}:
+    get:
+      summary: Get Securities Account
+      operationId: get_securities_account
+      tags:
+      - Securities Accounts
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: securities_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Securities Account Identifier
+        example: sec_ac_00e49aeab85844c89de57929bcb0f76a
+        description: 'A securities account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
+              example:
+                id: sec_ac_00e49aeab85844c89de57929bcb0f76a
+                account_number: LMM867947731
+                history:
+                - status: opened
+                  timestamp: '2025-07-14T11:36:28.157491+00:00'
+                - status: created
+                  timestamp: '2025-07-14T11:36:27.530203+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    SecuritiesAccountStatus:
+      type: string
+      enum:
+      - created
+      - opened
+      - rejected
+      - closed
+      title: SecuritiesAccountStatus
+    StatusChange_CustomerAccountStatus_:
+      title: StatusChange[CustomerAccountStatus]
+      description: 'An object representing a change in the user account.
+
+        '
+      required:
+      - status
+      - timestamp
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CustomerAccountStatus'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+          description: 'The timestamp of the event.  It represents the point in time at which the account was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+    EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    CustomerAccountStatus:
+      title: CustomerAccountStatus
+      enum:
+      - closed
+      - created
+      - opened
+      - rejected
+      type: string
+      description: 'A category representing the status of a user''s account.
+
+        <ul> <li><code>closed</code> <li><code>created</code> <li><code>opened</code> <li><code>rejected</code> </ul>
+
+        <strong>NOTE:</strong> This list is not final yet, there will be more values added later.
+
+        '
+    broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifiying a securities account.  Use this as a technical identifier for the securities account.
+
+            '
+        account_number:
+          type: string
+          title: Account Number
+          description: 'A string representing the account number for the securities account.  Use this is a user-visible identifier for the securities account.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
+          type: array
+          title: History
+          description: 'A history of the status changes for the security account.
+
+            '
+      type: object
+      required:
+      - id
+      - account_number
+      - created_at
+      - history
+      title: SecuritiesAccountResponse
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

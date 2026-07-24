@@ -1,0 +1,2596 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: 'Accounts: General'
+paths:
+  /accounts/{account}/accept_agreement:
+    post:
+      summary: Accept Agreement
+      operationId: accept_agreement
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: account
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptAgreementRequest'
+            example:
+              person: pers_8ec894e1ec764a339e172292dff9aeff
+              agreement: agr_8ec894e1ec764a339e172292dff9aeff
+              accepted_at: '2023-06-29T14:39:29Z'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptAgreementResponse'
+              examples:
+                person_customer:
+                  summary: Person customer account
+                  value:
+                    cash_account:
+                      bic: BYLADEM1001
+                      iban: DE02120300000000202051
+                    customer:
+                      type: person
+                      id: pers_8ec894e1ec764a339e172292dff9aeff
+                      person: pers_8ec894e1ec764a339e172292dff9aeff
+                    declaration_of_acting_on_own_account: true
+                    history:
+                    - status: created
+                      timestamp: '2023-06-12T17:23:16.975969+00:00'
+                    id: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+                    securities_account:
+                      number: '000000044'
+                    status: created
+                    agreements:
+                    - agreement: agr_9902271f791d413aad781763c61b9bb0
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_8ec894e1ec764a339e172292dff9aeff
+                    - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_8ec894e1ec764a339e172292dff9aeff
+                business_customer:
+                  summary: Business customer account
+                  value:
+                    cash_account:
+                      bic: BYLADEM1001
+                      iban: DE02120300000000202051
+                    customer:
+                      type: business
+                      id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                      business: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                    declaration_of_acting_on_own_account: true
+                    history:
+                    - status: created
+                      timestamp: '2023-06-12T17:23:16.975969+00:00'
+                    id: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+                    securities_account:
+                      number: '000000044'
+                    status: created
+                    agreements:
+                    - agreement: agr_9902271f791d413aad781763c61b9bb0
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                    - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts:
+    post:
+      tags:
+      - 'Accounts: General'
+      summary: Create Account
+      operationId: create_account
+      parameters:
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountRequest'
+            example:
+              accepted_agreements:
+              - accepted_at: '2023-06-29T14:39:29Z'
+                agreement_id: agr_9902271f791d413aad781763c61b9bb0
+              - accepted_at: '2023-06-29T14:39:29Z'
+                agreement_id: agr_8ec894e1ec764a339e172292dff9aeff
+              customer:
+                date_of_birth: '1964-08-13'
+                email: erika.mustermann@example.com
+                employment:
+                  annual_salary: gte_50k_lt_75k_eur
+                  sector: public_sector
+                  status: employed
+                firstname: Erika
+                gender: female
+                lastname: Mustermann
+                marital_status: married
+                nationalities:
+                - DE
+                phone_number: '+49172997318'
+                place_of_birth:
+                  city: Berlin
+                  country: DE
+                registered_address:
+                  city: Köln
+                  country: DE
+                  line_1: Heidestraße 17
+                  postal_code: '51147'
+                tax_residencies:
+                - country: DE
+                  tax_identification_number: 123/456/78901
+              declaration_of_acting_on_own_account: true
+              metadata:
+                origin_id: origin_example
+                reference_account: REF123
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountResponse'
+              example:
+                id: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+                cash_account: null
+                customer:
+                  id: pers_8e3c698265484edbaca82ae52c9fabd7
+                  date_of_birth: '1964-08-13'
+                  email: erika.mustermann@example.com
+                  employment:
+                    annual_salary: gte_50k_lt_75k_eur
+                    sector: public_sector
+                    status: employed
+                  firstname: Erika
+                  gender: female
+                  lastname: Mustermann
+                  marital_status: married
+                  nationalities:
+                  - DE
+                  phone_number: '+49172997318'
+                  place_of_birth:
+                    city: Berlin
+                    country: DE
+                  registered_address:
+                    city: Köln
+                    country: DE
+                    line_1: Heidestraße 17
+                    line_2: null
+                    postal_code: '51147'
+                  tax_residencies:
+                  - country: DE
+                    tax_identification_number: 123/456/78901
+                declaration_of_acting_on_own_account: true
+                history:
+                - status: created
+                  timestamp: '2023-06-29T14:43:03.937676+00:00'
+                securities_account: null
+                status: created
+                metadata:
+                  origin_id: origin_example
+                  reference_account: REF123
+                agreements:
+                - agreement: agr_9902271f791d413aad781763c61b9bb0
+                  accepted_at: '2023-06-29T14:39:29Z'
+                  person: pers_8e3c698265484edbaca82ae52c9fabd7
+                - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                  accepted_at: '2023-06-29T14:39:29Z'
+                  person: pers_8e3c698265484edbaca82ae52c9fabd7
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: List Accounts
+      operationId: list_accounts
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          exclusiveMinimum: 0
+          type: integer
+          default: 100
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/CustomerAccountStatus'
+        in: query
+        description: 'Provide an account status to filter results on a single account status.
+
+          '
+      - name: person_customer
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: 'If set to `true`, returns a simplified person customer object containing only the type and person ID, instead of the full customer details. The parameter will be **deprecated in a future version** of this API. Once deprecated, all responses will behave as if `person_customer=true`.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_CustomerAccountResponse_'
+              examples:
+                full_customer:
+                  summary: Full customer details (default)
+                  value:
+                    data:
+                    - cash_account:
+                        bic: BYLADEM1001
+                        iban: DE02120300000000202051
+                      customer:
+                        date_of_birth: '1950-01-01'
+                        email: john.doe@example.com
+                        employment:
+                          annual_salary: lt_50k_eur
+                          sector: agriculture
+                          status: apprenticeship
+                        firstname: John
+                        gender: male
+                        lastname: Doe
+                        marital_status: single
+                        nationalities:
+                        - DE
+                        phone_number: '+49123123123'
+                        place_of_birth:
+                          city: Berlin
+                          country: DE
+                        registered_address:
+                          city: Berlin
+                          country: DE
+                          line_1: Kottbusser Damn 79
+                          line_2: null
+                          postal_code: '12345'
+                        tax_residencies:
+                        - country: DE
+                          tax_identification_number: '123123123'
+                      declaration_of_acting_on_own_account: true
+                      history:
+                      - status: created
+                        timestamp: '2023-06-12T17:23:16.975969+00:00'
+                      id: cusa_20323d55bb264d42b0b225d293591049
+                      securities_account:
+                        number: '000000044'
+                      status: created
+                      agreements:
+                      - agreement: agr_9902271f791d413aad781763c61b9bb0
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                      - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                simplified_person:
+                  summary: Simplified person customer (person_customer=true)
+                  value:
+                    data:
+                    - cash_account:
+                        bic: BYLADEM1001
+                        iban: DE02120300000000202051
+                      customer:
+                        type: person
+                        id: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                      declaration_of_acting_on_own_account: true
+                      history:
+                      - status: created
+                        timestamp: '2023-06-12T17:23:16.975969+00:00'
+                      id: cusa_20323d55bb264d42b0b225d293591049
+                      securities_account:
+                        number: '000000044'
+                      status: created
+                      agreements:
+                      - agreement: agr_9902271f791d413aad781763c61b9bb0
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                      - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                business_customer:
+                  summary: Business customer account
+                  value:
+                    data:
+                    - cash_account:
+                        bic: BYLADEM1001
+                        iban: DE02120300000000202051
+                      customer:
+                        type: business
+                        id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                        business: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                      declaration_of_acting_on_own_account: true
+                      history:
+                      - status: created
+                        timestamp: '2023-06-12T17:23:16.975969+00:00'
+                      id: cusa_20323d55bb264d42b0b225d293591049
+                      securities_account:
+                        number: '000000044'
+                      status: created
+                      agreements:
+                      - agreement: agr_9902271f791d413aad781763c61b9bb0
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                      - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                        accepted_at: '2023-06-29T14:39:29Z'
+                        person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/authenticators:
+    post:
+      summary: Create Authenticator
+      operationId: create_authenticator
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAuthenticatorRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: List Authenticators
+      operationId: list_authenticators
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          exclusiveMinimum: 0
+          type: integer
+          default: 100
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_AuthenticatorResponse_'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}:
+    get:
+      summary: Get Account
+      operationId: get_account
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      - name: person_customer
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: 'If set to `true`, returns a simplified person customer object containing only the type and person ID, instead of the full customer details. The parameter will be **deprecated in a future version** of this API. Once deprecated, all responses will behave as if `person_customer=true`.
+
+          '
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountResponse'
+              examples:
+                full_customer:
+                  summary: Full customer details (default)
+                  value:
+                    cash_account:
+                      bic: BYLADEM1001
+                      iban: DE02120300000000202051
+                    customer:
+                      date_of_birth: '1950-01-01'
+                      email: john.doe@example.com
+                      employment:
+                        annual_salary: lt_50k_eur
+                        sector: agriculture
+                        status: apprenticeship
+                      firstname: John
+                      gender: male
+                      lastname: Doe
+                      marital_status: single
+                      nationalities:
+                      - DE
+                      phone_number: '+49123123123'
+                      place_of_birth:
+                        city: Berlin
+                        country: DE
+                      registered_address:
+                        city: Berlin
+                        country: DE
+                        line_1: Kottbusser Damn 79
+                        line_2: null
+                        postal_code: '12345'
+                      tax_residencies:
+                      - country: DE
+                        tax_identification_number: '123123123'
+                    declaration_of_acting_on_own_account: true
+                    history:
+                    - status: created
+                      timestamp: '2023-06-12T17:23:16.975969+00:00'
+                    id: cusa_20323d55bb264d42b0b225d293591049
+                    securities_account:
+                      number: '000000044'
+                    status: created
+                    agreements:
+                    - agreement: agr_9902271f791d413aad781763c61b9bb0
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                    - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                simplified_person:
+                  summary: Simplified person customer (person_customer=true)
+                  value:
+                    cash_account:
+                      bic: BYLADEM1001
+                      iban: DE02120300000000202051
+                    customer:
+                      type: person
+                      id: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                    declaration_of_acting_on_own_account: true
+                    history:
+                    - status: created
+                      timestamp: '2023-06-12T17:23:16.975969+00:00'
+                    id: cusa_20323d55bb264d42b0b225d293591049
+                    securities_account:
+                      number: '000000044'
+                    status: created
+                    agreements:
+                    - agreement: agr_9902271f791d413aad781763c61b9bb0
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                    - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                business_customer:
+                  summary: Business customer account
+                  value:
+                    cash_account:
+                      bic: BYLADEM1001
+                      iban: DE02120300000000202051
+                    customer:
+                      type: business
+                      id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                      business: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+                    declaration_of_acting_on_own_account: true
+                    history:
+                    - status: created
+                      timestamp: '2023-06-12T17:23:16.975969+00:00'
+                    id: cusa_20323d55bb264d42b0b225d293591049
+                    securities_account:
+                      number: '000000044'
+                    status: created
+                    agreements:
+                    - agreement: agr_9902271f791d413aad781763c61b9bb0
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+                    - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+                      accepted_at: '2023-06-29T14:39:29Z'
+                      person: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/checks:
+    get:
+      summary: Get Account Checks
+      tags:
+      - 'Accounts: General'
+      operationId: get_account_checks
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          exclusiveMinimum: 0
+          type: integer
+          default: 100
+        in: query
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        in: header
+      - name: LMG-Data-Privacy-Access-Justification
+        required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        in: header
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_CustomerAccountCheckResponse_'
+              example:
+                data:
+                - data: null
+                  history:
+                  - status: action_required
+                    timestamp: '2023-08-11T16:00:50.837846+00:00'
+                  status: action_required
+                  type: authenticator_enrollment
+                - data: null
+                  history:
+                  - status: action_required
+                    timestamp: '2023-06-29T14:43:03.937676+00:00'
+                  status: action_required
+                  type: identity_verification
+                - data: null
+                  history:
+                  - status: processing
+                    timestamp: '2023-06-29T14:43:03.937676+00:00'
+                  status: processing
+                  type: risk_assessment
+                pagination:
+                  next_cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts/{account_id}/experience:
+    get:
+      summary: Get Experience Profile
+      tags:
+      - 'Accounts: General'
+      operationId: get_experience_profile
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Id
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceTransition-Output'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    post:
+      summary: Set Experience Profile
+      operationId: set_experience_profile
+      tags:
+      - 'Accounts: General'
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperienceTransition-Input'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceTransition-Output'
+              example:
+                non_complex_products:
+                  experience: none
+                  knowledge: none
+                structured_investment_products: null
+                swap_based_ucits_and_alternative_investment_funds: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update Knowledge
+      tags:
+      - 'Accounts: General'
+      operationId: update_knowledge
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Id
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperienceTransitionKnowledge-Input'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceTransition-Output'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    AuthenticatorResponse:
+      properties:
+        id:
+          type: string
+          title: Authenticator Identifier
+          description: 'An authenticator identifier.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'A timestamp representing the point in time when the authenticator was registered.
+
+            '
+        public_key:
+          type: string
+          title: Public Key
+          description: 'The base64-url encoded form of the authenticator''s public key.  See the guide on strong customer authentication for more information about the format.
+
+            '
+        client_credential_id:
+          type: string
+          title: Client Credential Identifier
+          description: 'A client-side (read: on-device) identifier for the public key of the authenticator.  Use this identifier to indicate the private key used to create a signature in the two-step verification process or to match the authenticator in a list of authenticated devices.
+
+            **NOTE:** All authenticators associated with a single account must have different values in `client_credential_id`.
+
+            '
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - created_at
+      - public_key
+      - client_credential_id
+      - name
+      title: AuthenticatorResponse
+      example:
+        client_credential_id: adfd5154-c39c-41c5-a88d-f3e6a2aded9e
+        created_at: '2023-07-28T14:10:33.858446+00:00'
+        id: sca_8f993645e0954d8ab35198c4c7875fcd
+        name: Happy 🍋
+        public_key: pSJYIO1qxZIy0bSkO0djjJtdFFVU5K0v1l76XJQba8DNw3xXAQIgAQMmIVggh3uzl_vqfplJX8P3T-rdhEbkO_XX5dDkuGjFO0kRr5w=
+    StatusChange_OnboardingCheckStatus_:
+      title: StatusChange of OnboardingCheckStatus
+      required:
+      - status
+      - timestamp
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CustomerAccountCheckStatus'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+          description: 'The timestamp of the event.  It represents the point in time at which the account check was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+    Page_CustomerAccountResponse_:
+      title: Page of CustomerAccountResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccountResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    BankAccountResponse:
+      title: BankAccountResponse
+      description: 'An object representing a bank account.
+
+        '
+      required:
+      - iban
+      - bic
+      type: object
+      properties:
+        iban:
+          title: IBAN
+          type: string
+          description: 'An IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+            '
+        bic:
+          title: BIC
+          type: string
+          description: 'A BIC (Business Identifier Code) according to ISO 9362.
+
+            '
+        name:
+          type: string
+          title: Name
+          description: 'The name of the bank managing the bank account.
+
+            '
+    Action:
+      title: Action
+      description: 'An object representing an action that either needs to be performed or that needed to be performed in the past.
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/CompleteIdentificationAction'
+      - $ref: '#/components/schemas/EnrollSCAAuthenticatorAction'
+      - $ref: '#/components/schemas/InitiateIdentityVerificationAction'
+      - $ref: '#/components/schemas/PendingCheckAction'
+      - $ref: '#/components/schemas/ProvideSCARecoveryCodeAction'
+      - $ref: '#/components/schemas/SubmitDocumentAction'
+      discriminator:
+        propertyName: type
+        mapping:
+          complete_identification: '#/components/schemas/CompleteIdentificationAction'
+          enroll_sca_authenticator: '#/components/schemas/EnrollSCAAuthenticatorAction'
+          initiate_identity_verification: '#/components/schemas/InitiateIdentityVerificationAction'
+          proof_of_address: '#/components/schemas/PendingCheckAction'
+          provide_recovery_code: '#/components/schemas/ProvideSCARecoveryCodeAction'
+          submit_document: '#/components/schemas/SubmitDocumentAction'
+          tax_identification: '#/components/schemas/PendingCheckAction'
+    IndustrySector:
+      title: IndustrySector
+      enum:
+      - agriculture
+      - commodities
+      - construction
+      - education
+      - financial_services
+      - gambling
+      - healthcare
+      - it
+      - jewellery_trading
+      - manufacturing
+      - precious_metals_trading
+      - professional_services
+      - public_sector
+      - real_estate
+      - retail
+      - service_industry
+      - sport
+      - tourism
+      - transport
+      - used_vehicles_trading
+      - weapons_trading
+      - other
+      type: string
+      description: 'A category representing the industry sector related to a user''s employment status.  If the user''s employment status is not directly linked to a sector, select `other`.
+
+        <ul> <li><code>agriculture</code></li> <li><code>commodities</code></li> <li><code>construction</code></li> <li><code>education</code></li> <li><code>financial_services</code></li> <li><code>gambling</code></li> <li><code>healthcare</code></li> <li><code>it</code></li> <li><code>jewellery_trading</code></li> <li><code>manufacturing</code></li> <li><code>precious_metals_trading</code></li> <li><code>professional_services</code></li> <li><code>public_sector</code></li> <li><code>real_estate</code></li> <li><code>retail</code></li> <li><code>service_industry</code></li> <li><code>sport</code></li> <li><code>tourism</code></li> <li><code>transport</code></li> <li><code>used_vehicles_trading</code></li> <li><code>weapons_trading</code></li> <li><code>other</code></li> </ul>
+
+        '
+    ExperienceDetail-Input:
+      properties:
+        experience:
+          $ref: '#/components/schemas/ExperienceType'
+        knowledge:
+          $ref: '#/components/schemas/KnowledgeLevelType'
+      type: object
+      required:
+      - knowledge
+      title: ExperienceDetail
+    ExperienceDetail-Output:
+      properties:
+        experience:
+          $ref: '#/components/schemas/ExperienceType'
+        knowledge:
+          $ref: '#/components/schemas/KnowledgeLevelType'
+      type: object
+      required:
+      - knowledge
+      title: ExperienceDetail
+    broker__apps__api__endpoints__accounts__SecuritiesAccountResponse:
+      description: 'An object representing the account information for the customer''s securities account.
+
+        '
+      properties:
+        number:
+          title: Account Number
+          type: string
+          description: 'A string representing the account number for the securities account.
+
+            '
+      type: object
+      required:
+      - number
+      title: SecuritiesAccountResponse
+    PlaceOfBirthRequest:
+      title: PlaceOfBirthRequest
+      description: 'An object representing a place of birth.
+
+        '
+      required:
+      - city
+      - country
+      type: object
+      properties:
+        city:
+          title: City
+          maxLength: 255
+          type: string
+          description: 'The city/municipality of the place of birth.
+
+            '
+          example: Berlin
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+
+            '
+    CreateAccountRequest:
+      title: CreateAccountRequest
+      required:
+      - customer
+      - accepted_agreements
+      - declaration_of_acting_on_own_account
+      type: object
+      properties:
+        customer:
+          oneOf:
+          - $ref: '#/components/schemas/CustomerRequest'
+          - $ref: '#/components/schemas/BusinessCustomerRequest'
+          - $ref: '#/components/schemas/PersonCustomerRequest'
+          title: Customer
+        accepted_agreements:
+          title: Accepted Agreements
+          description: 'A list of legal agreements that have been accepted by the user.
+
+            '
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__accounts__AgreementAcceptanceRequest'
+        declaration_of_acting_on_own_account:
+          title: Declaration of Acting on Own Account
+          type: boolean
+          description: 'An boolean value indicating whether the user has explicitly stated that they are acting on their own account and not in someone else''s name.
+
+            '
+          default: false
+        metadata:
+          title: Metadata
+          type: object
+          description: 'Optional metadata for the account as key-value pairs.
+
+            '
+          additionalProperties:
+            type: string
+    CustomerAccountCheckStatus:
+      title: CustomerAccountCheckStatus
+      enum:
+      - action_required
+      - processing
+      - success
+      - failure
+      type: string
+      description: 'A category describing the status of an account check:
+
+        <ul> <li><code>action_required</code>: An action is required to move forward with this check. <li><code>processing</code>: This check is in progress. <li><code>success</code>: This check was completed. <li><code>failure</code>: This check has failed. </ul>
+
+        '
+    CreateAuthenticatorRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: 'Name for the authenticator being registered.  When binding to a specific device, it may be a good idea to use the device''s model name, like `iPhone14,1`.  This will help when the user has more than one authenticator registered for an account.
+
+            **NOTE:** At the moment, there is no way to register a second authenticator, but this feature will be added in the future.
+
+            '
+        public_key:
+          type: string
+          title: Public Key
+          description: 'Base64-url encoded form of the public key.  See our guide on strong customer authentication for more details on the formats supported.
+
+            '
+        client_credential_id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Client Credential Identifier
+          description: 'Client side credential identifier of when the key pair was generated.  This identifier will be used to indicate the authenticator that created a signature.
+
+            '
+        recovery_code:
+          type: string
+          minLength: 1
+          pattern: ^\d{6}$
+          title: Authenticator Recovery Code
+          description: 'When resetting the authenticator, use this property to provide the recovery code from lemon.markets. The format is a six-digit string like `"123456"`.
+
+            '
+        verification:
+          $ref: '#/components/schemas/VerificationRequest'
+      type: object
+      required:
+      - name
+      - public_key
+      - client_credential_id
+      title: CreateAuthenticatorRequest
+      example:
+        client_credential_id: adfd5154-c39c-41c5-a88d-f3e6a2aded9e
+        name: Happy 🍋
+        public_key: pSJYIO1qxZIy0bSkO0djjJtdFFVU5K0v1l76XJQba8DNw3xXAQIgAQMmIVggh3uzl_vqfplJX8P3T-rdhEbkO_XX5dDkuGjFO0kRr5w=
+        verification:
+          nonce: <base64-url encoded random data>
+          signature: <base64-url encoded signature for `nonce` using `public_key`>
+    broker__apps__api__endpoints__accounts__AgreementAcceptanceRequest:
+      title: AgreementAcceptance
+      description: 'An object representing the user''s acceptance of a legal agreement at a specific point in time.
+
+        '
+      required:
+      - agreement_id
+      - accepted_at
+      type: object
+      properties:
+        agreement_id:
+          title: Agreement Identifier
+          maxLength: 255
+          type: string
+          example: agr_9902271f791d413aad781763c61b9bb0
+          description: 'An agreement identifier. This value identifies the agreement that a customer has accepted at a certain point in time.
+
+            '
+        accepted_at:
+          title: Accepted At
+          type: string
+          format: date-time
+          example: '2023-06-29T14:39:29Z'
+          description: 'A point in time.  This value specifies the point in time at which the user accepted the agreement referenced by `agreement_id`.
+
+            '
+        legal_representative:
+          type: string
+          title: Legal Representative
+          maxLength: 255
+          example: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+          description: 'An legal representative identifier.  This value identifies the legal representative who has accepted the agreement.
+
+            '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    AnnualSalary:
+      title: AnnualSalary
+      enum:
+      - lt_50k_eur
+      - gte_50k_lt_75k_eur
+      - gte_75k_lt_100k_eur
+      - gte_100k_lt_150k_eur
+      - gte_150k_eur
+      type: string
+      description: 'A category to represent a customer''s annual income:
+
+        <ul> <li><code>lt_50k_eur</code>: Less than 50,000 EUR. <li><code>gte_50k_lt_75k_eur</code>: 50,000 EUR or more, but less than 75,000 EUR. <li><code>gte_75k_lt_100k_eur</code>: 75,000 EUR or more, but less than 100,000 EUR. <li><code>gte_100k_lt_150k_eur</code>: 100,000 EUR or more, but less than 150,000 EUR. <li><code>gte_150k_eur</code>: 150,000 EUR or more. </ul>
+
+        '
+    ExperienceTransition-Output:
+      properties:
+        non_complex_products:
+          $ref: '#/components/schemas/ExperienceDetail-Output'
+          description: 'Experience Details with Trading of Non-Complex Products
+
+            '
+        structured_investment_products:
+          $ref: '#/components/schemas/ExperienceDetail-Output'
+          description: 'Experience Details with Trading of Structured Investment Products
+
+            '
+        swap_based_ucits_and_alternative_investment_funds:
+          $ref: '#/components/schemas/ExperienceDetail-Output'
+          description: 'Experience Details with Trading of Swap-Based UCITS Funds or Alternative Investment Funds (AIF)
+
+            '
+      type: object
+      title: ExperienceTransition
+    BusinessCustomerResponse:
+      properties:
+        type:
+          type: string
+          enum:
+          - business
+          const: business
+          title: Type
+          description: 'The string `"business"` is used here to identify a business account being onboarded.
+
+            '
+        id:
+          type: string
+          title: Business Identifier
+          deprecated: true
+          description: 'The identifier for the business owning an account.
+
+            **Deprecated:** Use the `business` field instead. This field will be removed in a future version.
+
+            '
+        business:
+          type: string
+          title: Business Identifier
+          description: 'The identifier for the business owning an account.
+
+            '
+      type: object
+      required:
+      - type
+      - id
+      - business
+      title: BusinessCustomerResponse
+      example:
+        id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+        business: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+        type: business
+    PersonCustomerResponse:
+      title: PersonCustomerResponse
+      description: 'A simplified object containing only the person customer type and identifier. This response is returned when the `person_customer` query parameter is set to `true` on the GET /accounts/{account_id} endpoint.
+
+        **Warning:** The `person_customer` parameter will be **deprecated in a future version** of this API. Once deprecated, all responses will behave as if `person_customer=true`.
+
+        '
+      required:
+      - type
+      - id
+      - person
+      type: object
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The customer type discriminator. Always set to "person" for person customers.
+
+            '
+        id:
+          type: string
+          title: Person Identifier
+          deprecated: true
+          description: 'The unique identifier for the person customer.
+
+            **Deprecated:** Use the `person` field instead. This field will be removed in a future version.
+
+            '
+          example: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+        person:
+          type: string
+          title: Person Identifier
+          description: 'The unique identifier for the person customer.
+
+            '
+          example: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+    CustomerAccountResponse:
+      title: CustomerAccountResponse
+      required:
+      - id
+      - status
+      - history
+      - declaration_of_acting_on_own_account
+      - customer
+      type: object
+      properties:
+        id:
+          title: Identifier
+          type: string
+          description: 'A value identifiying the individual user''s account.
+
+            '
+          example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        cash_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        customer:
+          oneOf:
+          - $ref: '#/components/schemas/CustomerResponse'
+          - $ref: '#/components/schemas/PersonCustomerResponse'
+          - $ref: '#/components/schemas/BusinessCustomerResponse'
+          title: Customer
+          description: 'The customer associated with the account. Returns full customer details by default, or a simplified PersonCustomerResponse when the `person_customer` query parameter is `true`.
+
+            **Warning:** The `person_customer` parameter will be **deprecated in a future version** of this API. Once deprecated, all responses will behave as if `person_customer=true`.
+
+            '
+        declaration_of_acting_on_own_account:
+          title: Declaration Of Acting On Own Account
+          type: boolean
+          description: 'An boolean value indicating whether the user has explicitly stated that they are acting on their own account and not in someone else''s name.
+
+            '
+        history:
+          title: History
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
+          description: 'A history of the status changes for the user''s account.
+
+            '
+          example:
+          - status: created
+            timestamp: '2023-06-23T07:29:55.465000+00:00'
+        reference_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        securities_account:
+          $ref: '#/components/schemas/broker__apps__api__endpoints__accounts__SecuritiesAccountResponse'
+        status:
+          $ref: '#/components/schemas/CustomerAccountStatus'
+        metadata:
+          title: Metadata
+          type: object
+          description: 'Optional metadata for the account as key-value pairs.
+
+            '
+          additionalProperties:
+            type: string
+        agreements:
+          title: Accepted Agreements
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptedAgreementResponse'
+          description: 'A list of agreements that have been signed and currently valid for this account.
+
+            '
+          example:
+          - agreement: agr_9902271f791d413aad781763c61b9bb0
+            accepted_at: '2023-06-29T14:39:29Z'
+            person: per_3a0baf04657b4fb9bcaa03d8120b5e9e
+          - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+            accepted_at: '2023-06-29T14:39:29Z'
+            person: per_3a0baf04657b4fb9bcaa03d8120b5e9e
+    EmploymentStatus:
+      title: EmploymentStatus
+      enum:
+      - apprenticeship
+      - company_owner
+      - employed
+      - managing_director
+      - public_official
+      - retired
+      - self_employed
+      - student
+      - unemployed
+      type: string
+      description: 'A category to represent a user''s employment status:
+
+        <ul> <li><code>apprenticeship</code> <li><code>company_owner</code> <li><code>employed</code> <li><code>managing_director</code> <li><code>public_official</code> <li><code>retired</code> <li><code>self_employed</code> <li><code>student</code> <li><code>unemployed</code> </ul>
+
+        '
+    ExperienceTransitionKnowledge-Input:
+      properties:
+        non_complex_products:
+          $ref: '#/components/schemas/ExperienceDetailKnowledge-Input'
+          description: 'Knowledge about Non-Complex Products
+
+            '
+        structured_investment_products:
+          $ref: '#/components/schemas/ExperienceDetailKnowledge-Input'
+          description: 'Knowledge about Structured Investment Products
+
+            '
+        swap_based_ucits_and_alternative_investment_funds:
+          $ref: '#/components/schemas/ExperienceDetailKnowledge-Input'
+          description: 'Knowledge about Swap-Based UCITS Funds and Alternative Investment Funds (AIF)
+
+            '
+      type: object
+      title: ExperienceTransition
+      example:
+        non_complex_products:
+          knowledge: knowledgeable
+        structured_investment_products: null
+        swap_based_ucits_and_alternative_investment_funds: null
+    Gender:
+      title: Gender
+      enum:
+      - diverse
+      - female
+      - male
+      - unknown
+      type: string
+      description: 'A category to represent a user''s gender:
+
+        <ul> <li><code>diverse</code> <li><code>female</code> <li><code>male</code> <li><code>unknown</code> </ul>
+
+        <strong>Remember:</strong> Due to the identity verification requirements, it is important that there is a match between the user''s gender as reported via the API and the user''s gender as reported by the official ID.
+
+        '
+    OnboardingCheckType:
+      title: OnboardingCheckType
+      enum:
+      - address_validation
+      - authenticator_enrollment
+      - authenticator_reset
+      - identity_verification
+      - risk_assessment
+      - submit_document
+      - tin_validation
+      type: string
+      description: 'A category describing the type of an onboarding check:
+
+        <ul> <li><code>address_validation</code> <li><code>authenticator_enrollment</code> <li><code>authenticator_reset</code> <li><code>identity_verification</code> <li><code>risk_assessment</code> <li><code>submit_document</code> <li><code>tin_validation</code> </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    CustomerAccountStatus:
+      title: CustomerAccountStatus
+      enum:
+      - closed
+      - created
+      - opened
+      - rejected
+      type: string
+      description: 'A category representing the status of a user''s account.
+
+        <ul> <li><code>closed</code> <li><code>created</code> <li><code>opened</code> <li><code>rejected</code> </ul>
+
+        <strong>NOTE:</strong> This list is not final yet, there will be more values added later.
+
+        '
+    BusinessDocumentType:
+      type: string
+      enum:
+      - articles_of_association
+      - commercial_register_extract
+      - shareholder_list
+      title: BusinessDocumentType
+      description: 'A category describing the a business document:
+
+        <ul> <li><code>articles_of_association</code> <li><code>commercial_register_extract</code> <li><code>shareholder_list</code> </ul>
+
+        '
+    BusinessCustomerRequest:
+      properties:
+        type:
+          type: string
+          enum:
+          - business
+          const: business
+          title: Type
+          description: 'The string `"business"` is used here to identify a business account being onboarded.
+
+            '
+        id:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Business Identifier
+          description: 'The identifier for the business to create an account for.
+
+            '
+      type: object
+      required:
+      - type
+      - id
+      title: BusinessCustomerRequest
+      example:
+        id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+        type: business
+    ExperienceTransition-Input:
+      properties:
+        non_complex_products:
+          $ref: '#/components/schemas/ExperienceDetail-Input'
+          description: 'Experience Details with Trading of Non-Complex Products
+
+            '
+        structured_investment_products:
+          $ref: '#/components/schemas/ExperienceDetail-Input'
+          description: 'Experience Details with Trading of Structured Investment Products
+
+            '
+        swap_based_ucits_and_alternative_investment_funds:
+          $ref: '#/components/schemas/ExperienceDetail-Input'
+          description: 'Experience Details with Trading of Swap-Based UCITS Funds or Alternative Investment Funds (AIF)
+
+            '
+      type: object
+      title: ExperienceTransition
+      example:
+        non_complex_products:
+          experience: none
+          knowledge: none
+        structured_investment_products:
+          experience: none
+          knowledge: none
+        swap_based_ucits_and_alternative_investment_funds:
+          experience: none
+          knowledge: none
+    PendingCheckAction:
+      title: PendingCheckAction
+      description: 'An object representing the requirement for proof of address.
+
+        '
+      properties:
+        type:
+          title: Type
+          type: string
+          enum:
+          - proof_of_address
+          - tax_identification
+          description: 'A type value indicating the type of action:
+
+            <ul> <li><code>proof_of_address</code> <li><code>tax_identification</code> </ul>
+
+            '
+        due_date:
+          type: string
+          format: date
+          title: Due Date
+          description: 'The date by which this action has to be completed to avoid limitations on account capabilities.
+
+            '
+      type: object
+      required:
+      - type
+      - due_date
+    CompleteIdentificationAction:
+      title: CompleteIdentificationAction
+      description: 'An action to indicate that identification information needs to be uploaded.
+
+        '
+      properties:
+        type:
+          const: complete_identification
+          title: Action Type
+          description: 'The string `"complete_identification"`, identifiying this type of action.
+
+            '
+        identification:
+          type: string
+          title: Identification
+          description: 'The identifier for the identification process to be completed.
+
+            '
+        person:
+          type: string
+          title: Person
+          description: 'The identifier for the person that needs to complete the identification process.
+
+            '
+      type: object
+      required:
+      - type
+      - identification
+      - person
+    AcceptAgreementResponse:
+      title: AcceptAgreementResponse
+      required:
+      - id
+      - status
+      - history
+      - declaration_of_acting_on_own_account
+      - customer
+      - agreements
+      type: object
+      properties:
+        id:
+          title: Identifier
+          type: string
+          description: 'A value identifiying the individual user''s account.
+
+            '
+          example: cusa_c2c3f89ec0524b6e818ce00c16e4897f
+        cash_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        customer:
+          oneOf:
+          - $ref: '#/components/schemas/PersonCustomerResponse'
+          - $ref: '#/components/schemas/BusinessCustomerResponse'
+          title: Customer
+          description: 'A simplified object containing customer type and identifier.
+
+            '
+        declaration_of_acting_on_own_account:
+          title: Declaration Of Acting On Own Account
+          type: boolean
+          description: 'An boolean value indicating whether the user has explicitly stated that they are acting on their own account and not in someone else''s name.
+
+            '
+        history:
+          title: History
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
+          description: 'A history of the status changes for the user''s account.
+
+            '
+          example:
+          - status: created
+            timestamp: '2023-06-23T07:29:55.465000+00:00'
+        reference_account:
+          $ref: '#/components/schemas/BankAccountResponse'
+        securities_account:
+          $ref: '#/components/schemas/broker__apps__api__endpoints__accounts__SecuritiesAccountResponse'
+        status:
+          $ref: '#/components/schemas/CustomerAccountStatus'
+        metadata:
+          title: Metadata
+          type: object
+          description: 'Optional metadata for the account as key-value pairs.
+
+            '
+          additionalProperties:
+            type: string
+        agreements:
+          title: Accepted Agreements
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptedAgreementResponse'
+          description: 'A list of agreements that have been signed and currently valid for this account.
+
+            '
+          example:
+          - agreement: agr_9902271f791d413aad781763c61b9bb0
+            accepted_at: '2023-06-29T14:39:29Z'
+            person: per_3a0baf04657b4fb9bcaa03d8120b5e9e
+          - agreement: agr_8ec894e1ec764a339e172292dff9aeff
+            accepted_at: '2023-06-29T14:39:29Z'
+            person: per_3a0baf04657b4fb9bcaa03d8120b5e9e
+      description: 'The customer account response after accepting an agreement, containing either PersonCustomerResponse or BusinessCustomerResponse.
+
+        '
+    MaritalStatus:
+      title: MaritalStatus
+      enum:
+      - single
+      - married
+      - unknown
+      type: string
+      description: 'A simple category describing a user''s marital status:
+
+        <ul> <li><code>single</code>: The user is not married (can include divorced). <li><code>married</code>: The user is married or in a legally equivalent status (e.g. German “Eingetragene Partnerschaft”). <li><code>unknown</code>: This information is unknown/unspecified. </ul>
+
+        Widowed people may pick one or the other. Which one depends on whether the former marriage still has an effect on the tax status.
+
+        '
+    Address:
+      title: Address
+      description: 'A residential address.
+
+        '
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      type: object
+      properties:
+        line_1:
+          title: Line 1
+          maxLength: 128
+          type: string
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          title: Line 2
+          maxLength: 128
+          type: string
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          title: Postal Code
+          maxLength: 50
+          type: string
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          title: City
+          maxLength: 150
+          type: string
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+    InitiateIdentityVerificationAction:
+      title: InitiateIdentityVerificationAction
+      description: 'An object representing the requirement to perform identity verification.
+
+        '
+      properties:
+        type:
+          const: initiate_identity_verification
+          title: Type
+          description: 'A type value indicating the type of action: `initiate_identity_verification`
+
+            '
+        url:
+          type: string
+          title: Web URL
+          description: 'The address of the website to visit for performing the identity verification.
+
+            '
+        video_ident_id:
+          type: string
+          title: Process Identifier
+          description: 'The identifier for the video identification process.
+
+            '
+      type: object
+      required:
+      - type
+    CustomerAccountCheckCategory:
+      type: string
+      enum:
+      - onboarding
+      - post_onboarding
+      title: CustomerAccountCheckCategory
+    EnrollSCAAuthenticatorAction:
+      title: EnrollSCAAuthenticatorAction
+      description: 'An object representing the requirement to enroll an authenticator fro storng customer authentication (SCA).
+
+        '
+      properties:
+        type:
+          const: enroll_sca_authenticator
+          title: Type
+          description: 'A type value indicating the type of action: `enroll_sca_authenticator`
+
+            '
+      type: object
+      required:
+      - type
+    Employment:
+      title: Employment
+      description: 'An object describing a user''s employment status.
+
+        '
+      required:
+      - status
+      - annual_salary
+      - sector
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/EmploymentStatus'
+        annual_salary:
+          $ref: '#/components/schemas/AnnualSalary'
+        sector:
+          $ref: '#/components/schemas/IndustrySector'
+    CustomerAccountCheckResponse:
+      title: Account Check Response
+      description: 'An object representing the status of an account check.
+
+        '
+      required:
+      - type
+      - category
+      - status
+      - actions
+      - history
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/OnboardingCheckType'
+        category:
+          $ref: '#/components/schemas/CustomerAccountCheckCategory'
+        status:
+          $ref: '#/components/schemas/CustomerAccountCheckStatus'
+        actions:
+          items:
+            $ref: '#/components/schemas/Action'
+          type: array
+          title: Actions
+        history:
+          title: History
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_OnboardingCheckStatus_'
+          description: 'A history of the status changes for an account check.
+
+            '
+    KnowledgeLevelType:
+      title: KnowledgeLevelType
+      enum:
+      - none
+      - knowledgeable
+      type: string
+      description: 'A category specifying the knowledge level for a specific type of instrument:
+
+        <ul> <li><code>none</code>: The user is not knowledgeable with regards to this type of instrument. <li><code>knowledgeable</code>: The user is knowledgeable with regards to this type of instrument. </ul>
+
+        '
+    Page_CustomerAccountCheckResponse_:
+      title: Page of CustomerAccountCheckResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerAccountCheckResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ProvideSCARecoveryCodeAction:
+      title: Provide Recovery Code
+      description: 'This action indicates the requirement for a user to reset their authenticator using the recovery code provided by lemon.markets.
+
+        '
+      properties:
+        type:
+          const: provide_recovery_code
+          title: Type
+          description: 'A type value indicating the type of action: `provide_recovery_code`
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'Expiry date.  Provide the recovery code when setting up a new authenticator before this date.  After this point in time, the recovery code will be considered expired.
+
+            '
+      type: object
+      required:
+      - type
+    EncodedPaginatedCollectionResponse_AuthenticatorResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AuthenticatorResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[AuthenticatorResponse]
+    AcceptedAgreementResponse:
+      title: AcceptedAgreementResponse
+      required:
+      - agreement
+      - accepted_at
+      - person
+      type: object
+      properties:
+        agreement:
+          title: Agreement Identifier
+          type: string
+          description: 'An agreement identifier. This value identifies the agreement that a customer has accepted.
+
+            '
+          example: agr_9902271f791d413aad781763c61b9bb0
+        accepted_at:
+          title: Accepted At
+          type: string
+          format: date-time
+          description: 'A point in time. This value specifies the point in time at which the agreement was accepted.
+
+            '
+          example: '2023-06-29T14:39:29Z'
+        person:
+          title: Person Identifier
+          type: string
+          description: 'A person identifier. This value identifies the person who accepted the agreement (either customer or legal representative).
+
+            '
+          example: per_3a0baf04657b4fb9bcaa03d8120b5e9e
+      description: 'An object representing a currently signed and valid record of an accepted agreement.
+
+        '
+    CustomerResponse:
+      title: CustomerResponse
+      description: 'An object describing the user associated to an account.
+
+        '
+      required:
+      - firstname
+      - lastname
+      - date_of_birth
+      - place_of_birth
+      - nationalities
+      - phone_number
+      - email
+      - registered_address
+      - tax_residencies
+      - employment
+      type: object
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifiying the individual account owner.
+
+            '
+          example: pers_f1e3a7f504414b5e99041ebc1c0f55cd
+        firstname:
+          title: First Name
+          type: string
+          description: 'A string describing the user''s first name.
+
+            '
+          example: Erika
+        lastname:
+          title: Lastname
+          type: string
+          description: 'A string describing the user''s lastname.
+
+            '
+          example: Mustermann
+        gender:
+          $ref: '#/components/schemas/Gender'
+        date_of_birth:
+          title: Date Of Birth
+          type: string
+          format: date
+          description: 'A string describing the day of birth, like "1964-08-13".
+
+            '
+          example: '1964-08-13'
+        place_of_birth:
+          $ref: '#/components/schemas/PlaceOfBirthRequest'
+        nationalities:
+          title: Nationalities
+          type: array
+          items:
+            maxLength: 2
+            minLength: 2
+            type: string
+          description: 'The list of nationalities registered for a user.
+
+            '
+          example:
+          - DE
+        phone_number:
+          title: Phone Number
+          type: string
+          description: 'A user''s phone number, including the country calling code.
+
+            '
+          example: '+49172997318'
+        email:
+          title: Email
+          type: string
+          description: 'A user''s email address.
+
+            '
+          example: erika.mustermann@example.com
+        marital_status:
+          $ref: '#/components/schemas/MaritalStatus'
+        registered_address:
+          $ref: '#/components/schemas/Address'
+        tax_residencies:
+          title: Tax Residencies
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxResidency'
+          description: 'List of tax residencies.
+
+            '
+        employment:
+          $ref: '#/components/schemas/Employment'
+    SubmitDocumentAction:
+      properties:
+        type:
+          type: string
+          enum:
+          - submit_document
+          const: submit_document
+          title: Type
+        document:
+          $ref: '#/components/schemas/BusinessDocumentType'
+      type: object
+      required:
+      - type
+      - document
+      title: SubmitDocumentAction
+    StatusChange_CustomerAccountStatus_:
+      title: StatusChange[CustomerAccountStatus]
+      description: 'An object representing a change in the user account.
+
+        '
+      required:
+      - status
+      - timestamp
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CustomerAccountStatus'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+          description: 'The timestamp of the event.  It represents the point in time at which the account was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+    PersonCustomerRequest:
+      properties:
+        type:
+          type: string
+          enum:
+          - person
+          const: person
+          title: Type
+          description: 'The string `"person"` is used here to identify a person being onboarded.
+
+            '
+        id:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Person Identifier
+          description: 'The identifier for the person to create an account for.
+
+            '
+      type: object
+      required:
+      - type
+      - id
+      title: PersonCustomerRequest
+      example:
+        id: le_3a0baf04657b4fb9bcaa03d8120b5e9e
+        type: person
+    CustomerRequest:
+      title: CustomerRequest
+      description: 'An object representing the different properties of a user.
+
+        '
+      required:
+      - firstname
+      - lastname
+      - date_of_birth
+      - place_of_birth
+      - nationalities
+      - phone_number
+      - email
+      - registered_address
+      - tax_residencies
+      - employment
+      type: object
+      properties:
+        firstname:
+          title: First Name
+          maxLength: 100
+          type: string
+          example: Erika
+          description: 'A string describing the user''s first name.
+
+            '
+        lastname:
+          title: Lastname
+          maxLength: 100
+          type: string
+          example: Mustermann
+          description: 'A string describing the user''s last name.
+
+            '
+        gender:
+          $ref: '#/components/schemas/Gender'
+        date_of_birth:
+          title: Date Of Birth
+          type: string
+          format: date
+          description: 'A string describing the day of birth, like `"1964-08-13"`.
+
+            '
+          example: '1964-08-13'
+        place_of_birth:
+          $ref: '#/components/schemas/PlaceOfBirthRequest'
+        nationalities:
+          title: Nationalities
+          minItems: 1
+          type: array
+          items:
+            maxLength: 2
+            minLength: 2
+            type: string
+          description: 'A **complete** list of ISO 3166-1 alpha-2 codes, representing each country related to a user''s nationalities/citizenships.  It is important for this data point to be complete.
+
+            '
+          example:
+          - DE
+        phone_number:
+          title: Phone Number
+          maxLength: 45
+          type: string
+          description: 'A mobile phone number, including the country calling code.
+
+            '
+          example: '+49172997318'
+        email:
+          title: Email
+          type: string
+          format: email
+          description: 'A verified email address to contact the user.  This email address must match the one you have on record for the user.
+
+            '
+        marital_status:
+          $ref: '#/components/schemas/MaritalStatus'
+        registered_address:
+          $ref: '#/components/schemas/Address'
+        tax_residencies:
+          title: Tax Residencies
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxResidency'
+          description: 'A **complete** list of all of a user''s tax residencies.  It is important for this data point to be complete.
+
+            '
+        employment:
+          $ref: '#/components/schemas/Employment'
+    ExperienceType:
+      title: ExperienceType
+      enum:
+      - none
+      - from_1_to_5
+      - greater_than_5
+      type: string
+      description: 'A category describing the number of trades for a specific type of instrument in the last two years:
+
+        <ul> <li><code>none</code>: No trades in the last 2 years for this type of instrument. <li><code>from_1_to_5</code>: 1 – 5 trades in the last 2 years for this type of instrument. <li><code>greater_than_5</code>: 6 or more trades in the last 2 years for this type of instrument. </ul>
+
+        <strong>Note:</strong> This information is only required for the account onboarding. It cannot be updated at a later point in time. However, we will monitor the number of trades for any user and will automatically upgrade the experience profile.
+
+        '
+    AcceptAgreementRequest:
+      title: AcceptAgreementRequest
+      required:
+      - person
+      - agreement
+      - accepted_at
+      type: object
+      properties:
+        person:
+          title: Person Identifier
+          type: string
+          description: 'A person identifier specifying the individual accepting the agreement.
+
+            '
+          example: pers_8ec894e1ec764a339e172292dff9aeff
+        agreement:
+          title: Agreement Identifier
+          type: string
+          description: 'An agreement identifier specifying which agreement is being accepted.
+
+            '
+          example: agr_8ec894e1ec764a339e172292dff9aeff
+        accepted_at:
+          title: Accepted At
+          type: string
+          format: date-time
+          description: 'The timestamp when the agreement was accepted.
+
+            '
+          example: '2023-06-29T14:39:29Z'
+      description: 'A request to record acceptance of an agreement by a person for an account.
+
+        '
+    ExperienceDetailKnowledge-Input:
+      properties:
+        knowledge:
+          $ref: '#/components/schemas/KnowledgeLevelType'
+      type: object
+      required:
+      - knowledge
+      title: ExperienceDetail
+    VerificationRequest:
+      description: 'An object representing proof of ownership of the private key associated with the public key being registered.
+
+        '
+      properties:
+        nonce:
+          type: string
+          title: Nonce
+          description: 'The base64-url encoded form of random data used to create `signature`.
+
+            '
+        signature:
+          type: string
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `nonce` using the private key for the public key that''s being registered as an authenticator.
+
+            '
+      type: object
+      required:
+      - nonce
+      - signature
+      title: VerificationRequest
+    TaxResidency:
+      title: TaxResidency
+      description: 'An object representing a tax residency.
+
+        '
+      required:
+      - country
+      type: object
+      properties:
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: 'An ISO 3166-1 alpha-2 code, representing a country considering the user one of its tax payers.
+
+            '
+          example: DE
+        tax_identification_number:
+          title: Tax Identification Number
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: 'The TIN (Tax Identification Number) related to the user within the taxation regime within `country`.
+
+            '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

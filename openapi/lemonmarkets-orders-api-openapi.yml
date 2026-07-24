@@ -1,0 +1,1074 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Orders API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Orders
+paths:
+  /accounts/{account_id}/orders/{order_id}/cancel:
+    post:
+      summary: Cancel Order
+      operationId: cancel_order
+      tags:
+      - Orders
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Order Identifier
+        description: 'An order identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrderRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/orders/{order_id}/confirm:
+    post:
+      summary: Confirm Order
+      operationId: confirm_order
+      tags:
+      - Orders
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Order Identifier
+        description: 'An order identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmOrderRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/orders:
+    post:
+      summary: Create Order
+      operationId: create_order
+      tags:
+      - Orders
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      - name: Idempotency-Key
+        in: header
+        required: false
+        schema:
+          type: string
+          maxLength: 100
+          title: Idempotency Key
+        description: 'An optional idempotency key to safely retry requests without creating duplicate resources. Pass a unique string (UUID recommended, max 100 characters). Keys expire after 24 hours. For full details see the [Idempotency guide](/docs/idempotency).
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Orders
+      operationId: list_orders
+      tags:
+      - Orders
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/OrderStatus'
+          title: Status
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      - name: securities_account
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier.  Use this to filter the results to the orders related to a specific securities account.
+
+            '
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_OrderResponse_'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/orders/{order_id}:
+    get:
+      summary: Get Order
+      operationId: get_order
+      tags:
+      - Orders
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Order Identifier
+        description: 'An order identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    OrderType:
+      type: string
+      enum:
+      - batch
+      - market
+      title: OrderType
+      description: 'A category describing an order type:
+
+        <ul> <li><code>batch</code>: A batch order.  Batch orders are collected for all customers and executed on the market as one composite order. <li><code>market</code>: A market order.  Market orders are executed immediately at the current market price. </ul>
+
+        '
+    AppropriatenessConsentResponse:
+      title: AppropriatenessConsentResponse
+      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
+
+        '
+      type: object
+      properties:
+        required:
+          type: boolean
+          title: Consent Required
+          description: 'Requirement indicator for the appropriateness warning.
+
+            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
+
+            '
+      required:
+      - required
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    broker__apps__api__types__RegulatoryDisclosureResponse:
+      description: 'An object describing regulatory information, such as expected prices, quantities and costs as well as links to relevant documents.
+
+        '
+      required:
+      - estimated_amount
+      - estimated_price
+      - estimated_quantity
+      - service_costs_total
+      - service_costs_total_pct
+      - third_party_grants
+      - third_party_grants_pct
+      - exit_costs
+      - exit_costs_pct
+      properties:
+        kid:
+          type: string
+          format: uri
+          title: Key Investor Document (KID)
+          description: 'If present, a document that needs to be made available to the user.  A copy of this document will be added to the user''s `/documents` eventually.
+
+            '
+        estimated_amount:
+          type: string
+          format: number
+          title: Estimated Amount
+          description: 'An indication of the amount based on the most recent market data.
+
+            **NOTE:** This information is indicative only and does not have to match the final execution price.
+
+            '
+        estimated_price:
+          type: string
+          format: number
+          title: Estimated Price
+          description: 'A price indication based on the most recent market data.
+
+            **NOTE:** This information is indicative only and does not have to match the final execution price.
+
+            '
+        estimated_quantity:
+          type: string
+          format: number
+          exclusiveMinimum: 0
+          title: Estimated Quantity
+          description: 'A quantity indication based on the most recent market data.
+
+            **NOTE:** This information is indicative only and does not have to match the final execution quantity.
+
+            '
+        service_costs_total:
+          type: string
+          format: number
+          title: Service Costs Total (absolute)
+          description: 'Cost of investment services provided by lemon.markets; specified using the order''s currency.
+
+            '
+        service_costs_total_pct:
+          type: string
+          format: number
+          title: Service Costs Total (relative)
+          description: 'Relative value of `servic_costs_total` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        entry_costs:
+          type: string
+          format: number
+          title: Entry Costs (absolute)
+          description: 'The investment service costs related to the buy order; specified using the order''s currency.
+
+            '
+        entry_costs_pct:
+          type: string
+          format: number
+          title: Entry Costs (relative)
+          description: 'Relative value of `entry_costs` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        third_party_grants:
+          type: string
+          format: number
+          title: Third Party Grants (absolute)
+          description: 'Inducements paid to the broker by third parties; specified using the order''s currency.
+
+            '
+        third_party_grants_pct:
+          type: string
+          format: number
+          title: Third Party Grants (relative)
+          description: 'Relative value of `third_party_grants` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        product_costs:
+          type: string
+          format: number
+          title: Product Costs (absolute)
+          description: 'The product cost associated with owning the product; specified using the order''s currency.
+
+            '
+        product_costs_pct:
+          type: string
+          format: number
+          title: Product Costs (relative)
+          description: 'Relative value of `product_costs` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        running_costs:
+          type: string
+          format: number
+          title: Running Costs (absolute)
+          description: 'The investment service cost associated with owning the product; specified using the order''s currency.
+
+            '
+        running_costs_pct:
+          type: string
+          format: number
+          title: Running Costs (relative)
+          description: 'Relative value of `running_costs` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        exit_costs:
+          type: string
+          format: number
+          title: Exit Costs (absolute)
+          description: 'The service costs related to a sell order; specified using the order''s currency.
+
+            **Note:** In case of a buy order, this reflects an estimate of a corresponding sell order.
+
+            '
+        exit_costs_pct:
+          type: string
+          format: number
+          title: Exit Costs (relative)
+          description: 'Relative value of `exit_costs` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        acquisition_costs:
+          type: string
+          title: Acquisition Costs
+        acquisition_costs_pct:
+          type: string
+          title: Acquisition Costs Pct
+        custody_costs:
+          type: string
+          title: Custody Costs
+        custody_costs_pct:
+          type: string
+          title: Custody Costs Pct
+        impact_first_year:
+          type: string
+          format: number
+          title: Impact First Year (absolute)
+          description: 'An indication of the costs incurred during the first year of ownership; specified using the order''s currency. This includes both product and investment service costs.
+
+            **Note:** If the security is sold during the first year, the cost might be even higher.
+
+            '
+        impact_first_year_pct:
+          type: string
+          format: number
+          title: Impact First Year (relative)
+          description: 'Relative value of `impact_first_year` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        impact_subsequent_year:
+          type: string
+          format: number
+          title: Impact Subsequent Year (absolute)
+          description: 'An indication of the costs incurred during a year of ownership without transactions; specified using the order''s currency. This include both product and investment service costs.
+
+            '
+        impact_subsequent_year_pct:
+          type: string
+          format: number
+          title: Impact Subsequent Year (relative)
+          description: 'Relative value of `impact_subsequent_year` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+        impact_final_year:
+          type: string
+          format: number
+          title: Impact Final Year (absolute)
+          description: 'An indication of the cost incurred during the last year of ownership; specified using the order''s currency. This include both product and investment service cost.
+
+            **Note:** If the security is sold during the first year, the cost might be even higher.
+
+            '
+        impact_final_year_pct:
+          type: string
+          format: number
+          title: Impact Final Year (relative)
+          description: 'Relative value of `impact_final_year` in relation to the total value of the order; specified in percentage points (`"0.23"` means 0.23%).
+
+            '
+      type: object
+      title: RegulatoryDisclosureResponse
+    CancelOrderRequest:
+      properties:
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
+      type: object
+      title: CancelOrderRequest
+      description: 'An object providing information about the cancellation of an order.
+
+        '
+    SCAConfirmation:
+      title: Strong Customer Authentication
+      description: 'An object representing the confirmation for strong customer authentication.
+
+        '
+      properties:
+        client_credential_id:
+          type: string
+          title: Client Credential Identifier
+          description: 'The client-side identifier of the authenticator used to generate the signature.
+
+            '
+        signature:
+          type: string
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
+
+            '
+      type: object
+      required:
+      - client_credential_id
+      - signature
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    FeesRequest:
+      properties:
+        pct:
+          format: number
+          minimum: 0
+          type: string
+          title: Relative Fee
+          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value, i.e. `0.20 EUR` in case the trade is executed for `100 EUR` as the exchange.  In this example a customer would receive `99.80 EUR` for a sell order or pay `100.20 EUR` for a buy order.
+
+            **NOTE:**  For the time being, this property is mutually exclusive with fixed fees.  If you need to combine both, feel free to contact your partner manager.
+
+            '
+        base_amount:
+          format: number
+          minimum: 0
+          type: string
+          title: Fixed Fee
+          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
+
+            **NOTE:**  For the time being, this property is mutually exclusive with relative fees.  If you need to combine both, feel free to contact your partner manager.
+
+            '
+      type: object
+      title: FeesRequest
+      description: 'Order fee configuration.  Use this object to specify how to calculate order fees.
+
+        **NOTE:**  It is mandatory to specify `fees` for an order, even when charging no fees (use a fixed amount of `0` then).
+
+        '
+    CreateOrderRequest:
+      properties:
+        side:
+          $ref: '#/components/schemas/Side'
+        type:
+          $ref: '#/components/schemas/OrderType'
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
+
+            '
+        amount:
+          type: string
+          exclusiveMinimum: 0
+          title: Amount
+          description: 'The amount of cash to invest with this order.
+
+            '
+        quantity:
+          exclusiveMinimum: 0
+          type: string
+          title: Quantity
+          description: 'Specify the quantity of shares for the instrument to be sold.
+
+            '
+        fees:
+          $ref: '#/components/schemas/FeesRequest'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier.  Use this property to specify the securities account for order execution and settlement.  If the customer has only one securities account, this property is optional.  If the customer has more than one securities account, this property is required.
+
+            '
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
+      type: object
+      required:
+      - side
+      - type
+      - instrument
+      - currency
+      - fees
+      title: CreateOrderRequest
+    FeesResponse:
+      properties:
+        pct:
+          type: string
+          title: Relative Fee
+          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value.
+
+            '
+        base_amount:
+          type: string
+          title: Fixed Fee
+          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
+
+            '
+      type: object
+      title: FeesResponse
+      description: 'Order fee configuration.  This object specifies how to calculate order fees.
+
+        '
+    StrongCustomerAuthenticationRequest:
+      title: StrongCustomerAuthenticationRequest
+      description: 'An object representing a strong customer authentication challenge.
+
+        '
+      properties:
+        required:
+          type: boolean
+          title: Required
+          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
+
+            '
+        challenge:
+          type: string
+          title: Challenge
+          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
+
+            '
+      type: object
+      required:
+      - required
+      - challenge
+    ActorResponse:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorResponse
+      description: 'An object describing the individual performing an action.
+
+        '
+    StatusChangeResponse:
+      description: 'An object representing a change in an order.
+
+        '
+      properties:
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the order was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+        actor:
+          $ref: '#/components/schemas/ActorResponse'
+        reason:
+          allOf:
+          - $ref: '#/components/schemas/OrderRejectionReason'
+          nullable: true
+          description: 'The reason why this order was rejected. Only populated when the order status is `rejected`.
+
+            '
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[OrderStatus]
+    OrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - confirmed
+      - created
+      - executed
+      - rejected
+      title: OrderStatus
+      description: 'A category representing the state of an order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
+
+        '
+    EncodedPaginatedCollectionResponse_OrderResponse_:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+      - data
+      - pagination
+      title: Page of OrderResponse
+    OrderRejectionReason:
+      type: string
+      enum:
+      - insufficient_buying_power
+      - insufficient_available_securities
+      - insufficient_order_amount
+      - rejected_by_exchange
+      - manual_rejection
+      - unknown
+      title: Order rejection reason
+      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
+
+        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
+
+        '
+      example: insufficient_buying_power
+    OrderResponse:
+      properties:
+        id:
+          type: string
+          title: Order Identifier
+          description: 'The unique identifier for this order.
+
+            '
+        side:
+          $ref: '#/components/schemas/Side'
+        type:
+          $ref: '#/components/schemas/OrderType'
+        workflow:
+          type: string
+          title: Workflow Identifier
+          description: 'A reference to the workflow that created this order.  If the order has not been created using a workflow, the property will not be set.
+
+            '
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
+
+            '
+        amount:
+          type: string
+          format: number
+          title: Amount
+          description: 'The amount of cash for a buy order, `null` for a sell order.
+
+            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
+
+            '
+        quantity:
+          type: string
+          format: number
+          title: Quantity
+          description: 'The quantity of shares for a sell order, `null` for a buy order.
+
+            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
+
+            '
+        fee:
+          type: string
+          format: number
+          minimum: 0
+          title: Fee
+          description: 'The fee that will be charged by lemon.markets on your behalf.
+
+            '
+        fees:
+          $ref: '#/components/schemas/FeesResponse'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChangeResponse'
+          type: array
+          title: History
+        regulatory_disclosures:
+          $ref: '#/components/schemas/broker__apps__api__types__RegulatoryDisclosureResponse'
+        appropriateness_check:
+          $ref: '#/components/schemas/AppropriatenessConsentResponse'
+        sca:
+          $ref: '#/components/schemas/StrongCustomerAuthenticationRequest'
+        securities_account:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier.  This property indicates the securities account used for order execution and settlement.
+
+            '
+      type: object
+      required:
+      - id
+      - side
+      - type
+      - instrument
+      - fee
+      - fees
+      - currency
+    ActorRequest:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorRequest
+      description: 'An object describing the individual performing an action.
+
+        '
+    ConfirmOrderRequest:
+      properties:
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
+        appropriateness_consent:
+          type: boolean
+          title: Appropriateness Consent
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmOrderRequest
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

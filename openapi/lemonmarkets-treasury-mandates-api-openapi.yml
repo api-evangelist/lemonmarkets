@@ -1,0 +1,1583 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Treasury Mandates API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Treasury Mandates
+paths:
+  /accounts/{account_id}/treasury_mandates/{mandate_id}/cancel:
+    post:
+      summary: Cancel Treasury Mandate
+      description: Cancel a treasury mandate
+      operationId: cancel_treasury_mandate
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: mandate_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Mandate Id
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreasuryMandateResponse'
+              example:
+                id: trs_mand_bb176dfbabe14c6c9bb35eaf3342d223
+                instrument: IE0008643037
+                redirect_failure: my-app:/failure
+                redirect_success: my-app:/success
+                history:
+                - status: canceled
+                  timestamp: '2025-05-08T16:10:04.321121+00:00'
+                - status: created
+                  timestamp: '2025-05-08T15:59:20.701735+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/treasury_mandates:
+    post:
+      summary: Create Treasury Mandate
+      operationId: create_treasury_mandate
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTreasuryMandateRequest'
+            example:
+              instrument: IE0008643037
+              widget_styling:
+                background_color: '#FFFFFF'
+                text_color: '#000000'
+                button_background_color: '#007AFF'
+                button_text_color: '#FFFFFF'
+              redirect_failure: my-app:/failure
+              redirect_success: my-app:/success
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreasuryMandateCreationResponse'
+              example:
+                id: trs_mand_bb176dfbabe14c6c9bb35eaf3342d223
+                instrument: IE0008643037
+                widget_styling:
+                  background_color: '#FFFFFF'
+                  text_color: '#000000'
+                  button_background_color: '#007AFF'
+                  button_text_color: '#FFFFFF'
+                  button_position_style: sticky
+                redirect_failure: my-app:/failure
+                redirect_success: my-app:/success
+                history:
+                - status: created
+                  timestamp: '2025-05-08T15:59:20.701735+00:00'
+                widget_url: https://lemon-markets.example.com/?...
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Treasury Mandates
+      operationId: list_treasury_mandates
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TreasuryMandateStatus'
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_TreasuryMandateResponse_'
+              example:
+                data:
+                - history:
+                  - status: created
+                    timestamp: '2025-05-08T15:59:20.701735+00:00'
+                  id: trs_mand_bb176dfbabe14c6c9bb35eaf3342d223
+                  instrument: IE0008643037
+                  redirect_failure: my-app:/failure
+                  redirect_success: my-app:/success
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/treasury_transfers:
+    post:
+      summary: Create Treasury Transfer
+      operationId: create_treasury_transfer
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTreasuryTransferRequest'
+            example:
+              amount: '1250.00'
+              currency: EUR
+              treasury_mandate: trs_mand_a2fb6c7579f14ad4970271bf19416e30
+              type: deposit
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreasuryTransferResponse'
+              example:
+                id: trs_tfr_20d4e52ec6a74986a31efca9b6a2567d
+                treasury_mandate: trs_mand_a2fb6c7579f14ad4970271bf19416e30
+                type: deposit
+                amount: '1250.00'
+                currency: EUR
+                history:
+                - status: created
+                  timestamp: '2025-05-14T14:18:47.520025+00:00'
+                order: bord_f5f53afa402a45df9a79b868da2c18b9
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Treasury Transfers
+      operationId: list_treasury_transfers
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TreasuryTransferStatus'
+          title: Status
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_TreasuryTransferResponse_'
+              example:
+                data:
+                - amount: '1250.00'
+                  currency: EUR
+                  history:
+                  - status: created
+                    timestamp: '2025-05-14T14:18:47.520025+00:00'
+                  id: trs_tfr_20d4e52ec6a74986a31efca9b6a2567d
+                  treasury_mandate: trs_mand_a2fb6c7579f14ad4970271bf19416e30
+                  order: bord_f5f53afa402a45df9a79b868da2c18b9
+                  type: deposit
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /treasury_fees/{fee_id}:
+    get:
+      summary: Get Treasury Fee By Id
+      operationId: get_treasury_fee
+      tags:
+      - Treasury Mandates
+      description: 'Retrieves treasury fee details for the given fee ID belonging to the requesting partner.
+
+        '
+      parameters:
+      - name: fee_id
+        in: path
+        required: true
+        description: Unique identifier of a treasury fee.
+        schema:
+          type: string
+          title: Fee Identifier
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerTreasuryFeesResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No treasury fee was found for the given fee_id, owned by the requesting partner.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/treasury_financials:
+    get:
+      summary: Get Treasury Financials
+      operationId: get_treasury_financials
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountTreasuryFinancialsResponse'
+              example:
+                available_balance: '0.00'
+                currency: EUR
+                portfolio_balance: '1250.00'
+                unsettled_deposits: '1250.00'
+                unsettled_withdrawals: '0.00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/treasury_mandates/{mandate_id}:
+    get:
+      summary: Get Treasury Mandate
+      operationId: get_treasury_mandate
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: mandate_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Treasury Mandate Identifier
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreasuryMandateResponse'
+              example:
+                id: trs_mand_bb176dfbabe14c6c9bb35eaf3342d223
+                instrument: IE0008643037
+                redirect_failure: my-app:/failure
+                redirect_success: my-app:/success
+                history:
+                - status: created
+                  timestamp: '2025-05-08T15:59:20.701735+00:00'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/treasury_transfers/{treasury_transfer_id}:
+    get:
+      summary: Get Treasury Transfer
+      operationId: get_treasury_transfer
+      tags:
+      - Treasury Mandates
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: treasury_transfer_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Treasury Transfer Identifier
+        description: 'A treasury transfer identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TreasuryTransferResponse'
+              example:
+                amount: '1250.00'
+                currency: EUR
+                history:
+                - status: created
+                  timestamp: '2025-05-14T14:18:47.520025+00:00'
+                id: trs_tfr_20d4e52ec6a74986a31efca9b6a2567d
+                treasury_mandate: trs_mand_a2fb6c7579f14ad4970271bf19416e30
+                order: bord_f5f53afa402a45df9a79b868da2c18b9
+                type: deposit
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /treasury_fees/{fee_id}/customer_fees:
+    get:
+      summary: Get Customer Fee Composition for a Treasury Fee
+      operationId: list_customer_fees
+      tags:
+      - Treasury Mandates
+      description: 'Retrieves a paginated breakdown of individual customer fees that contribute to the given aggregated treasury fee.
+
+        '
+      parameters:
+      - name: fee_id
+        in: path
+        required: true
+        description: Unique identifier of the partner treasury fee.
+        schema:
+          type: string
+          title: Fee Id
+      - name: cursor
+        in: query
+        required: false
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is no need to specify both the `cursor` and any other filter parameter.
+
+          '
+        schema:
+          type: string
+          title: Cursor
+      - name: limit
+        in: query
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Paginated list of customer fees
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_CustomerTreasuryFeeResponse_'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /treasury_fees:
+    get:
+      summary: List Treasury Fees
+      operationId: list_treasury_fees
+      tags:
+      - Treasury Mandates
+      description: Retrieves a paginated list of monthly aggregated treasury fees owned by the requesting partner. Optionally filter by instrument or billing month range.
+      parameters:
+      - name: instrument
+        in: query
+        required: false
+        description: An ISIN (International Securities Identification Number) conforming to ISO 6166. This value uniquely identifies the instrument.
+        schema:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+      - name: from_month
+        in: query
+        required: false
+        description: Start of the billing period (inclusive), in format YYYY-MM (e.g., 2025-01).
+        schema:
+          type: string
+          pattern: ^\d{4}-(0[1-9]|1[0-2])$
+          title: From Month
+      - name: to_month
+        in: query
+        required: false
+        description: End of the billing period (inclusive), in format YYYY-MM (e.g., 2025-06).
+        schema:
+          type: string
+          pattern: ^\d{4}-(0[1-9]|1[0-2])$
+          title: To Month
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Cursor
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is no need to specify both the `cursor` and any other filter parameter.
+
+          '
+      - name: limit
+        in: query
+        required: false
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Paginated list of treasury fees
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_PartnerTreasuryFeesResponse_'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request (e.g., invalid instrument, from_month, or to_month formats)
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    EncodedPaginatedCollectionResponse_PartnerTreasuryFeesResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PartnerTreasuryFeesResponse'
+          type: array
+          title: Data
+          description: List of aggregated partner treasury fees.
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+          description: Pagination metadata used for retrieving subsequent pages.
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[PartnerTreasuryFeesResponse]
+    EncodedPaginatedCollectionResponse_CustomerTreasuryFeeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CustomerTreasuryFeeResponse'
+          type: array
+          title: Data
+          description: List of customer-level treasury fees contributing to a partner's aggregated fee.
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+          description: Pagination metadata used for retrieving subsequent pages.
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[CustomerTreasuryFeeResponse]
+    PartnerTreasuryFeesResponse:
+      properties:
+        id:
+          title: Id
+          type: string
+          description: Unique identifier for the aggregated partner treasury fee.
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) that uniquely identifies the instrument related to the fee, following ISO 6166.
+
+            '
+        total_fee_amount:
+          type: string
+          title: Total Fee Amount
+          description: Total amount of fees aggregated for the billing period.
+        currency:
+          type: string
+          title: Currency
+          description: Three-letter ISO 4217 currency code (e.g., "USD", "EUR").
+        billing_period:
+          $ref: '#/components/schemas/BillingPeriod'
+          description: Billing period information, including date range and billing month.
+      type: object
+      required:
+      - id
+      - instrument
+      - total_fee_amount
+      - currency
+      - billing_period
+      title: PartnerTreasuryFeesResponse
+    WidgetStyling:
+      description: 'Optional styling configuration for the treasury mandate widget. All fields are optional and allow customization of the widget''s appearance to match your application''s design.
+
+        '
+      properties:
+        background_color:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Background Color
+          description: 'The background color of the widget in hex format (e.g., <code>#FFFFFF</code>). Defaults to <code>#f9f9f9</code>.
+
+            '
+        text_color:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Text Color
+          description: 'The color of the text in the widget in hex format (e.g., <code>#000000</code>). Defaults to <code>#444444</code>.
+
+            '
+        text_size:
+          type: string
+          pattern: ^\d+(\.\d+)?px$
+          title: Text Size
+          description: 'The size of the text in pixel format (e.g., <code>16px</code>). Defaults to <code>16px</code>.
+
+            '
+        text_line_height:
+          type: string
+          pattern: ^\d+(\.\d+)?$
+          title: Text Line Height
+          description: 'The line height of the text as a numeric value (e.g., <code>1.5</code>). Defaults to <code>1.75</code>.
+
+            '
+        logo_color:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Logo Color
+          description: 'The color of the lemon.markets logo in the footer in hex format (e.g., <code>#000000</code>). When provided, this overrides the logo with a monochrome version in your specified color. Otherwise, it defaults to the standard lemon.markets logo colors.
+
+            '
+        button_text_color:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Button Text Color
+          description: 'The color of the button text in hex format (e.g., <code>#FFFFFF</code>). Defaults to <code>#ffffff</code> (white).
+
+            '
+        button_background_color:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Button Background Color
+          description: 'The background color of the button in hex format (e.g., <code>#007AFF</code>). Defaults to <code>#111111</code>.
+
+            '
+        button_text_color_hover:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Button Text Color Hover
+          description: 'The color of the button text on hover in hex format (e.g., <code>#FFFFFF</code>). Defaults to <code>#ffffff</code> (white).
+
+            '
+        button_background_color_hover:
+          type: string
+          pattern: ^#[0-9a-fA-F]{6}$
+          title: Button Background Color Hover
+          description: 'The background color of the button on hover in hex format (e.g., <code>#0051D5</code>). Defaults to <code>#222222</code>.
+
+            '
+        button_corner_radius:
+          type: string
+          pattern: ^\d+(\.\d+)?px$
+          title: Button Corner Radius
+          description: 'The corner radius of the button in pixel format (e.g., <code>8px</code>). Defaults to <code>100px</code>.
+
+            '
+      type: object
+      title: WidgetStyling
+    CreateTreasuryMandateRequest:
+      description: 'An object representing a treasury mandate to be created.
+
+        '
+      properties:
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold via the mandate.
+
+            '
+        widget_styling:
+          type:
+            $ref: '#/components/schemas/WidgetStyling'
+          title: Widget Styling
+          description: 'Optional styling configuration for the treasury mandate widget. Use this to customize the appearance of the widget to match your application''s design.
+
+            '
+        redirect_success:
+          type: string
+          title: Redirect Success
+          description: 'The redirect target that will be opened after successful acceptance of a mandate.
+
+            '
+        redirect_failure:
+          type: string
+          title: Redirect Failure
+          description: 'The redirect target that will be opened after failure to accept a mandate.
+
+            '
+      type: object
+      required:
+      - instrument
+      - redirect_success
+      - redirect_failure
+      title: CreateTreasuryMandateRequest
+    TreasuryTransferResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The unique identifier for this treasury transfer.
+
+            '
+        treasury_mandate:
+          type: string
+          title: Treasury Mandate Identifier
+          description: 'A treasury mandate identifier.  This field indicates which treasury mandate will be used to perform the transaction.
+
+            '
+        order:
+          type: string
+          title: Order Identifier
+          description: 'A treasury mandate identifier.  This field indicates the underlying order used to perform the transaction.
+
+            '
+        type:
+          $ref: '#/components/schemas/TreasuryTransferType'
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount of money to transfer.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TreasuryTransferStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - treasury_mandate
+      - order
+      - type
+      - amount
+      - currency
+      - history
+      title: TreasuryTransferResponse
+    TreasuryTransferStatus:
+      type: string
+      enum:
+      - canceled
+      - created
+      - pending
+      - processed
+      - rejected
+      - settled
+      title: TreasuryTransferStatus
+      description: 'A category describing the a treasury transfer status:
+
+        <ul> <li><code>canceled</code>: The treasury transfer is canceled. <li><code>created</code>: The treasury transfer is created and waiting for confirmation. <li><code>pending</code>: The treasury transfer is pending execution and waiting to be processed. <li><code>processed</code>: The treasury transfer is processed and waiting to be settled. <li><code>rejected</code>: The treasury transfer is rejected. <li><code>settled</code>: The treasury transfer is settled. </ul>
+
+        '
+    CustomerAccountTreasuryFinancialsResponse:
+      properties:
+        portfolio_balance:
+          type: string
+          format: number
+          title: Portfolio Balance
+          description: 'The current portfolio balance.  This is the number you want to display as the balance to your customers
+
+            '
+        available_balance:
+          type: string
+          format: number
+          title: Available Balance
+          description: 'The available portfolio balance for withdrawals
+
+            '
+        unsettled_deposits:
+          type: string
+          format: number
+          title: Unsettled Deposits
+          description: 'The value of deposits that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
+
+            '
+        unsettled_withdrawals:
+          type: string
+          format: number
+          title: Unsettled Withdrawals
+          description: 'The value of withdrawals that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - portfolio_balance
+      - available_balance
+      - unsettled_deposits
+      - unsettled_withdrawals
+      - currency
+      title: CustomerAccountTreasuryFinancialsResponse
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    StatusChange_TreasuryMandateStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/TreasuryMandateStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the treasury mandate was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange of TreasuryMandateStatus
+    EncodedPaginatedCollectionResponse_TreasuryTransferResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TreasuryTransferResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TreasuryTransferResponse]
+    TreasuryMandateResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'An identifier for the treasury mandate.
+
+            '
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold via the mandate.
+
+            '
+        redirect_success:
+          type: string
+          title: Redirect Success
+          description: 'The redirect target that will be opened after successful acceptance of a mandate.
+
+            '
+        redirect_failure:
+          type: string
+          title: Redirect Failure
+          description: 'The redirect target that will be opened after failure to accept a mandate.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TreasuryMandateStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - instrument
+      - redirect_success
+      - redirect_failure
+      - history
+      title: TreasuryMandateResponse
+    StatusChange_TreasuryTransferStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/TreasuryTransferStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the treasury transfer was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[TreasuryTransferStatus]
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginatedCollectionResponse_TreasuryMandateResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TreasuryMandateResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TreasuryMandateResponse]
+    BillingPeriod:
+      properties:
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+          description: The first date (inclusive) in the billing period for the associated fee.
+        end_date:
+          type: string
+          format: date
+          title: End Date
+          description: The last date (inclusive) in the billing period for the associated fee.
+        billing_month:
+          type: string
+          pattern: ^\d{4}-(0[1-9]|1[0-2])$
+          title: Billing Month
+          description: 'A string representing the billing month in `YYYY-MM` format (e.g., 2025-08).
+
+            '
+      type: object
+      required:
+      - start_date
+      - end_date
+      - billing_month
+      title: BillingPeriod
+    TreasuryMandateStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - confirmed
+      - created
+      - rejected
+      description: 'A category representing the status of a treasury mandate:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>rejected</code> </ul>
+
+        '
+      title: TreasuryMandateStatus
+    CustomerTreasuryFeeResponse:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: Unique identifier for the customer account to which the fee applies.
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) uniquely identifying the instrument for which the customer incurred fees.
+
+            '
+        total_fee_amount:
+          type: string
+          title: Total Fee Amount
+          description: The total amount of treasury fees charged to the customer for the instrument.
+        currency:
+          type: string
+          title: Currency
+          description: An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is "EUR".
+      type: object
+      required:
+      - account
+      - instrument
+      - total_fee_amount
+      - currency
+      title: CustomerTreasuryFeeResponse
+    TreasuryMandateCreationResponse:
+      description: 'An object representing a treasury mandate.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'An identifier for the treasury mandate.
+
+            '
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold via the mandate.
+
+            '
+        widget_styling:
+          type:
+            $ref: '#/components/schemas/WidgetStyling'
+          title: Widget Styling
+          description: 'The styling configuration applied to the treasury mandate widget, if provided during creation.
+
+            '
+        redirect_success:
+          type: string
+          title: Redirect Success
+          description: 'The redirect target that will be opened after successful acceptance of a mandate.
+
+            '
+        redirect_failure:
+          type: string
+          title: Redirect Failure
+          description: 'The redirect target that will be opened after failure to accept a mandate.
+
+            '
+        widget_url:
+          type: string
+          title: Widget URL
+          format: uri
+          description: 'A web URL.  Use this URL to present the user flow for mandate acceptance.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TreasuryMandateStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - instrument
+      - redirect_success
+      - redirect_failure
+      - widget_url
+      - history
+      title: TreasuryMandateCreationResponse
+    CreateTreasuryTransferRequest:
+      properties:
+        treasury_mandate:
+          type: string
+          title: Treasury Mandate Identifier
+          description: 'A treasury mandate identifier.  This field indicates which treasury mandate will be used to perform the transaction.
+
+            '
+        type:
+          $ref: '#/components/schemas/TreasuryTransferType'
+        amount:
+          type: string
+          format: number
+          exclusiveMinimum: 0
+          title: Amount
+          description: 'The amount of money to transfer.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - treasury_mandate
+      - type
+      - amount
+      - currency
+      title: CreateTreasuryTransferRequest
+    TreasuryTransferType:
+      type: string
+      enum:
+      - deposit
+      - withdrawal
+      title: TreasuryTransferType
+      description: 'A category describing the a treasury transfer direction:
+
+        <ul> <li><code>deposit</code> <li><code>withdrawal</code> </ul>
+
+        '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

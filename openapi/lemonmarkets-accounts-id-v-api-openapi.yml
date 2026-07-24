@@ -1,0 +1,531 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Accounts: ID+V API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: 'Accounts: ID+V'
+paths:
+  /persons/{person_id}/identifications/{identification_id}:
+    get:
+      tags:
+      - 'Accounts: ID+V'
+      summary: Get Person Identification
+      operationId: get_person_identification
+      description: 'Get information about the identification process for a person.
+
+        '
+      parameters:
+      - name: identification_id
+        required: true
+        schema:
+          type: string
+          title: Identification Identifier
+        in: path
+        example: ident_baeab6ad40434217900615f5c64b1cd7
+        description: 'An identifier referring to a person identification process.
+
+          '
+      - name: person_id
+        required: true
+        schema:
+          title: Person Identifier
+          type: string
+        in: path
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentificationResponse'
+              example:
+                history:
+                - status: started
+                  timestamp: '2024-05-22T11:46:43.650535+00:00'
+                - status: created
+                  timestamp: '2024-05-22T11:46:43.650535+00:00'
+                id: ident_baeab6ad40434217900615f5c64b1cd7
+                method: kyc_reliance
+                person:
+                  id: pers_0453deb1c90448c99f24adaa833cfda9
+                  type: customer
+                status: started
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/identity_verification:
+    post:
+      summary: Start Identity Verification
+      operationId: start_identity_verification
+      tags:
+      - 'Accounts: ID+V'
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Principal
+          type: string
+        name: LMG-Data-Privacy-Access-Principal
+        in: header
+      - required: true
+        schema:
+          title: Lmg-Data-Privacy-Access-Justification
+          type: string
+        name: LMG-Data-Privacy-Access-Justification
+        in: header
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateKYCRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateKYCResponse'
+              example:
+                url: https://example.com/video-ident?id=123456789
+                video_ident_id: '123456789'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        5XX:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /persons/{person_id}/identifications/{identification_id}/submit:
+    post:
+      summary: Submit Identification Payload
+      operationId: submit_identification_payload
+      tags:
+      - 'Accounts: ID+V'
+      parameters:
+      - name: identification_id
+        required: true
+        schema:
+          type: string
+          title: Identification Identifier
+        in: path
+        example: ident_baeab6ad40434217900615f5c64b1cd7
+        description: 'An identifier referring to a person identification process.
+
+          '
+      - name: person_id
+        required: true
+        schema:
+          title: Person Identifier
+          type: string
+        in: path
+        example: pers_0453deb1c90448c99f24adaa833cfda9
+        description: 'A person identifier.
+
+          '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitKycRelianceDataRequest'
+            example:
+              completed_at: '2024-05-22T11:24:56.000Z'
+              id_document:
+                expiry_date: '2024-05-22'
+                issuing_country: DE
+                number: ID123ABC
+                type: id_card
+              politically_exposed_person: false
+              reference: ID+V_0123456
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentificationResponse'
+              example:
+                history:
+                - status: succeeded
+                  timestamp: '2024-05-22T11:49:44.912978+00:00'
+                - status: started
+                  timestamp: '2024-05-22T11:46:43.650535+00:00'
+                - status: created
+                  timestamp: '2024-05-22T11:46:43.650535+00:00'
+                id: ident_baeab6ad40434217900615f5c64b1cd7
+                method: kyc_reliance
+                person:
+                  id: pers_0453deb1c90448c99f24adaa833cfda9
+                  type: customer
+                status: succeeded
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    InitiateKYCResponse:
+      title: InitiateKYCResponse
+      description: 'An object describing a pending video-identification process.
+
+        '
+      required:
+      - url
+      - video_ident_id
+      type: object
+      properties:
+        url:
+          title: Web URL
+          type: string
+          format: uri
+          description: "A web URL. Use this URL to present the user with the web version for initiating the video identification process.\nFor different reasons, it may not be possible for the user to complete the video identification process on the mobile device.  In this case, it is a good idea to offer a sharing option, e.g. so they can send the link to their own email address and complete the process on a different device.  We expect these reasons (and others) to prevent the video identification process from completing:\n<ul> <li>Older devices that lack the resources (e.g. memory) to run the all of components involved at the same\n    time.\n<li>Devices that are locked down for privacy reasons. This can both be company devices under MDM (mobile\n    device management) or advanced used utiliting parental controls to block any access to the device's\n    microphone and/or camera capabilities.\n</ul>\n"
+          example: https://example.com/video-ident?id=123-456-789
+        video_ident_id:
+          title: Process Identifier
+          type: string
+          description: 'An identifier representing the process on the side of the video identification provider.
+
+            '
+    PersonResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier representing this person.
+
+            '
+        type:
+          $ref: '#/components/schemas/PersonType'
+      type: object
+      required:
+      - id
+      - type
+      title: PersonResponse
+      description: 'An object representing a person to be verified.
+
+        '
+    InitiateKYCRequest:
+      title: InitiateKYCRequest
+      description: 'An object describing client-side configuration for the identity verification process.
+
+        '
+      required:
+      - redirect_success
+      - redirect_failure
+      type: object
+      properties:
+        redirect_success:
+          title: Redirect Success
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/success
+          description: 'The redirect target that will be opened after a successful video-identification process.
+
+            '
+        redirect_failure:
+          title: Redirect Failure
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/failure
+          description: 'The redirect target that will be opened after a failed video-identification process.
+
+            '
+    PersonIdentificationMethod:
+      type: string
+      const: kyc_reliance
+      title: PersonIdentificationMethod
+      description: 'A category representing the identification method used.
+
+        <ul> <li><code>kyc_reliance</code>:  Use this for KYC reliance implementations. </ul>
+
+        '
+    IdentificationResponse:
+      title: IdentificationResponse
+      description: 'An object representing a process for person identification.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this person identification process.
+
+            '
+        person:
+          $ref: '#/components/schemas/PersonResponse'
+        method:
+          $ref: '#/components/schemas/PersonIdentificationMethod'
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_PersonIdentificationStatus_'
+          type: array
+          title: History
+          default: []
+          description: 'A history of the status changes for the person identification process.
+
+            '
+      type: object
+      required:
+      - id
+      - person
+      - method
+      - status
+    PersonType:
+      type: string
+      const: customer
+      title: PersonType
+      description: 'A category representing the relationship of a person to an account.
+
+        <ul> <li><code>customer</code> </ul>
+
+        '
+    SubmitKycRelianceDataRequest:
+      properties:
+        reference:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Reference
+          description: 'A reference to the ID+V process previously completed.  The string must neither be empty and nor contain only whitespace characters.
+
+            '
+        completed_at:
+          type: string
+          format: date-time
+          title: Completed At
+          description: 'The point in time at which the ID+V process referenced by `reference` has been completed.
+
+            '
+        id_document:
+          $ref: '#/components/schemas/IdentificationDocument'
+        politically_exposed_person:
+          type: boolean
+          title: Politically Exposed Person
+          description: 'Indicate whether or not the person was identified as a politically exposed person (PEP).
+
+            '
+      type: object
+      required:
+      - reference
+      - completed_at
+      - id_document
+      title: SubmitKycRelianceDataRequest
+      description: 'An object describing a previously completed ID+V process for a person in the context of KYC reliance.
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    PersonIdentificationStatus:
+      type: string
+      enum:
+      - created
+      - failed
+      - started
+      - succeeded
+      title: PersonIdentificationStatus
+      description: 'A category representing the status on a person identification process.
+
+        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
+
+        '
+    IdentificationDocument:
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentificationDocumentType'
+        number:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Number
+          description: 'The number used to identify the document, such as the passport number.  The string must neither be empty and nor contain only whitespace characters.
+
+            '
+        expiry_date:
+          type: string
+          format: date
+          title: Expiry Date
+          description: 'The expiry date as indicated on the document.
+
+            **Note:**  For some documents this may be the last day being valid, for others this may indicate the first day of being expired.
+
+            '
+        issuing_country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Nationality
+          description: 'The ISO 3166-1 alpha-2 code representing the issuing government.
+
+            '
+      type: object
+      required:
+      - type
+      - number
+      - expiry_date
+      - issuing_country
+      title: IdentificationDocument
+      description: 'An object representing a government issued identity document.
+
+        '
+    StatusChange_PersonIdentificationStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[PersonIdentificationStatus]
+    IdentificationDocumentType:
+      type: string
+      enum:
+      - id_card
+      - passport
+      title: IdentificationDocumentType
+      description: 'A category representing a givernment issued identification document.
+
+        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
+
+        '
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

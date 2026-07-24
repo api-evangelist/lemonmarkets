@@ -1,0 +1,702 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Taxes API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Taxes
+paths:
+  /accounts/{account_id}/tax_exemption_orders/{tax_exemption_order_id}/cancel:
+    post:
+      summary: Cancel Tax Exemption Order
+      operationId: cancel_tax_exemption_order
+      tags:
+      - Taxes
+      parameters:
+      - name: tax_exemption_order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Tax Exemption Order Identifier
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxExemptionOrderResponse'
+              example:
+                amount_total: '123.45'
+                currency: EUR
+                history:
+                - status: canceling
+                  timestamp: '2024-11-27T13:21:21.537340+00:00'
+                - status: accepted
+                  timestamp: '2024-11-27T12:27:27.369001+00:00'
+                - status: created
+                  timestamp: '2024-11-27T12:27:26.162280+00:00'
+                id: tax_ex_7ed656e0438b47e192469e162d158408
+                type: individual
+                valid_from: '2024'
+                valid_until: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/tax_exemption_orders:
+    post:
+      summary: Create Tax Exemption Order
+      operationId: create_tax_exemption_order
+      tags:
+      - Taxes
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaxExemptionOrderRequest'
+            example:
+              amount_total: '123.45'
+              currency: EUR
+              type: individual
+              valid_from: '2024'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxExemptionOrderResponse'
+              example:
+                amount_total: '123.45'
+                currency: EUR
+                history:
+                - status: created
+                  timestamp: '2024-11-27T12:27:26.162280+00:00'
+                id: tax_ex_7ed656e0438b47e192469e162d158408
+                type: individual
+                valid_from: '2024'
+                valid_until: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: 'Error in ''body.amount_total'': Decimal input should have no more than 2 decimal places'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Account has no tax identification number associated with it
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+    get:
+      summary: List Tax Exemption Orders
+      operationId: list_tax_exemption_orders
+      tags:
+      - Taxes
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TaxExemptionOrderStatus'
+          title: Status
+          description: 'Use this parameter to filter for tax exemption orders of a specific status.
+
+            '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          **NOTE:** Tax exemption usage will only be updated in a batch process.  It may take a while until tax exemption orders are considered.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_TaxExemptionOrderResponse_'
+              example:
+                data:
+                - amount_total: '123.45'
+                  currency: EUR
+                  history:
+                  - status: accepted
+                    timestamp: '2024-11-27T12:27:27.369001+00:00'
+                  - status: created
+                    timestamp: '2024-11-27T12:27:26.162280+00:00'
+                  id: tax_ex_7ed656e0438b47e192469e162d158408
+                  type: individual
+                  valid_from: '2024'
+                  valid_until: null
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/tax_exemption_orders/{tax_exemption_order_id}:
+    get:
+      summary: Get Tax Exemption Order
+      operationId: get_tax_exemption_order
+      tags:
+      - Taxes
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+      - name: tax_exemption_order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Identifier for Tax Exemption Order
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxExemptionOrderResponse'
+              example:
+                amount_total: '123.45'
+                currency: EUR
+                history:
+                - status: accepted
+                  timestamp: '2024-11-27T12:27:27.369001+00:00'
+                - status: created
+                  timestamp: '2024-11-27T12:27:26.162280+00:00'
+                id: tax_ex_7ed656e0438b47e192469e162d158408
+                type: individual
+                valid_from: '2024'
+                valid_until: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/tax_exemption_usages:
+    get:
+      summary: List Tax Exemption Usages
+      operationId: list_tax_exemption_usages
+      tags:
+      - Taxes
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Account Identifier
+      - name: year
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Year
+          description: 'Use this parameter to filter for tax exemption usage of a specific year.
+
+            '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    TaxExemptionType:
+      type: string
+      enum:
+      - individual
+      const: individual
+      title: TaxExemptionType
+      description: 'A category describing the type of a tax exemption order:
+
+        <ul> <li><code>individual</code>:  Tax exemption limits for individuals apply to this order. </ul>
+
+        '
+    TaxExemptionUsageResponse:
+      properties:
+        year:
+          type: string
+          title: Year
+          description: 'The year for the tax exemption usage.
+
+            '
+        amount_total:
+          type: string
+          title: Amount Total
+          description: 'The total amount of the corresponding tax exemption order.
+
+            '
+        amount_used:
+          type: string
+          title: Amount Used
+          description: 'The utilized amount of the corresponding tax exemption order.  Use the difference between `amount_total - amount_used` to determine the amount still available.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount_total` and `amount_used` listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - year
+      - amount_total
+      - amount_used
+      - currency
+      title: TaxExemptionUsageResponse
+    EncodedPaginatedCollectionResponse_TaxExemptionOrderResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TaxExemptionOrderResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TaxExemptionOrderResponse]
+    TaxExemptionOrderResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this tax exemption order.
+
+            '
+        amount_total:
+          type: string
+          title: Amount Total
+          description: 'The amount to be exempt from taxation using the value from `currency`.
+
+            '
+        type:
+          $ref: '#/components/schemas/TaxExemptionType'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is "EUR".
+
+            '
+        valid_from:
+          type: string
+          title: Valid From
+          description: 'A string specifying the first year for this tax exemption order to be effective.
+
+            '
+          example: '2025'
+        valid_until:
+          type: string
+          title: Valid Until
+          description: 'A string specifying the last year to consider this tax exemtption.
+
+            This is either be the same value as `valid_from` (to restrict the tax exemption to one year) or `null` (valid until the next tax exemption will be submitted).
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TaxExemptionOrderStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - amount_total
+      - type
+      - currency
+      - valid_from
+      - history
+      title: TaxExemptionOrderResponse
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    TaxExemptionOrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - created
+      - rejected
+      title: TaxExemptionOrderStatus
+      description: 'A category describing the status of a tax exemption order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>created</code> <li><code>rejected</code> </ul>
+
+        '
+    StatusChange_TaxExemptionOrderStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/TaxExemptionOrderStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the tax exemption was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange of TaxExemptionOrderStatus
+    EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TaxExemptionUsageResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TaxExemptionUsageResponse]
+    CreateTaxExemptionOrderRequest:
+      properties:
+        amount_total:
+          maximum: 1000
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          title: Amount Total
+          description: 'The amount to be exempt from capital gains.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is "EUR".
+
+            '
+        type:
+          $ref: '#/components/schemas/TaxExemptionType'
+        valid_from:
+          type: string
+          title: Valid From
+          description: 'A string specifying the first year for this tax exemption order to be effective.
+
+            '
+        valid_until:
+          type: string
+          title: Valid Until
+          description: 'A string specifying the last year to consider this tax exemtption.
+
+            **NOTE:**  Must either be the same value as `valid_from` (to restrict the tax exemption to one year) or `null` (valid until the next tax exemption will be submitted).
+
+            '
+      type: object
+      required:
+      - amount_total
+      - currency
+      - type
+      - valid_from
+      title: CreateTaxExemptionOrderRequest
+      description: 'An object specifying a tax exemption order.
+
+        '
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

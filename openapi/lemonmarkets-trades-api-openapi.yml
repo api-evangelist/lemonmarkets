@@ -1,0 +1,425 @@
+openapi: 3.1.0
+info:
+  title: 'lemon.markets Brokerage API 🍋 Accounts: General Trades API'
+  version: 0.1.0
+servers:
+- url: https://sandbox.api.lemon.markets/v1
+  description: Sandbox
+tags:
+- name: Trades
+paths:
+  /accounts/{account_id}/trades/{trade_id}:
+    get:
+      summary: Get Trade
+      tags:
+      - Trades
+      operationId: get_trade
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: trade_id
+        in: path
+        required: true
+        description: 'A trade identifier.
+
+          '
+        schema:
+          type: string
+          title: Trade Identifier
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeResponse'
+              example:
+                amount: '100.00'
+                currency: EUR
+                executed_at: '2023-06-29T14:39:29+00:00'
+                execution_venue: XGAT
+                fee: '0.10'
+                id: tr_611041a7e62c4e7d82a8dd86f91e7277
+                instrument: IE00B0M62X26
+                order: bord_b088cafa88564670a4b7e1acc7e30b5b
+                price: '216.0199'
+                quantity: '0.46292'
+                side: buy
+                taxes: []
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+  /accounts/{account_id}/trades:
+    get:
+      summary: List Trades
+      tags:
+      - Trades
+      operationId: list_trades
+      parameters:
+      - name: account_id
+        required: true
+        schema:
+          title: Account Identifier
+          type: string
+        in: path
+        example: cusa_20323d55bb264d42b0b225d293591049
+        description: 'An account identifier.
+
+          '
+      - name: cursor
+        required: false
+        schema:
+          title: Cursor
+          type: string
+        description: 'A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.
+
+          A cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.
+
+          '
+        in: query
+      - name: limit
+        description: 'In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.
+
+          '
+        required: false
+        schema:
+          title: Limit
+          maximum: 100
+          minimum: 1
+          type: integer
+          default: 100
+        in: query
+      - name: instrument
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. Use this filter to restrict the returned list to trades for a specific instrument.
+
+            '
+        example: bord_0fef2e8b7962404d94454d8c47caa364
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Order
+          description: 'An order identifier.  Use this to filter the results to the trades related to a specific order.
+
+            '
+      - name: securities_account
+        in: query
+        required: false
+        schema:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier.  Use this to filter the results to the trades related to a specific securities account.
+
+            '
+      - name: LMG-Data-Privacy-Access-Principal
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Principal
+      - name: LMG-Data-Privacy-Access-Justification
+        in: header
+        required: true
+        schema:
+          type: string
+          title: Lmg-Data-Privacy-Access-Justification
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_TradeResponse_'
+              example:
+                data:
+                - amount: '100.00'
+                  currency: EUR
+                  executed_at: '2023-06-29T14:39:29.927565+00:00'
+                  execution_venue: XGAT
+                  fee: '0.10'
+                  id: tr_611041a7e62c4e7d82a8dd86f91e7277
+                  instrument: IE00B0M62X26
+                  order: bord_b088cafa88564670a4b7e1acc7e30b5b
+                  price: '216.0199'
+                  quantity: '0.46292'
+                  side: buy
+                  taxes: []
+                pagination:
+                  next_cursor: null
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        5XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server Error
+components:
+  schemas:
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    Direction:
+      type: string
+      enum:
+      - debit
+      - credit
+      title: Direction
+      description: 'A category representing the direction of a payment or transaction flow:
+
+        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    Page_TradeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TradeResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page of TradeResponse
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    TradeResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this transaction.
+
+            '
+        side:
+          $ref: '#/components/schemas/Side'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument that was traded.
+
+            '
+        quantity:
+          type: string
+          title: Quantity
+          format: number
+          description: 'The quantity of shares traded.
+
+            '
+        price:
+          type: string
+          title: Price
+          format: number
+          description: 'The execution price of the trade (indicated per one share).
+
+            '
+        amount:
+          type: string
+          title: Amount
+          format: number
+          description: 'The monetary value of the trade.
+
+            '
+        taxes:
+          items:
+            $ref: '#/components/schemas/TaxResponseField'
+          type: array
+          title: Taxes
+        fee:
+          type: string
+          format: number
+          title: Fee
+          description: 'The fee that was be charged by lemon.markets on your behalf.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is `"EUR"`.
+
+            '
+        order:
+          type: string
+          title: Order
+          description: 'An identifier referencing the order triggering the trade.
+
+            '
+        execution_venue:
+          type: string
+          title: Execution Venue
+          description: 'An ISO-10383 four-letter code.  Its value represents the market on which the trade took place.  May be `null` for small trades that did not cause a trade on a public market.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier. This field represents the securities account associated with a trade.
+
+            '
+        executed_at:
+          type: string
+          format: date-time
+          title: Executed At
+          example: '2023-06-29T14:39:29+00:00'
+          description: 'The venue execution timestamp: the point in time at which the trade was executed on the trading venue
+
+            '
+      type: object
+      required:
+      - id
+      - side
+      - instrument
+      - quantity
+      - price
+      - amount
+      - fee
+      - currency
+      - order
+      - execution_venue
+      - securities_account
+      - executed_at
+      title: TradeResponse
+    TaxResponseField:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: 'A string identifying the type of tax that was withheld for a trade:
+
+            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
+
+            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The monetary amount representing this tax.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+      type: object
+      required:
+      - type
+      - amount
+      - direction
+      title: TaxResponseField
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
