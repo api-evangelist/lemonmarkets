@@ -1,0 +1,143 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.lemon.markets/docs/idempotency
+docs: https://developer.lemon.markets/docs
+derived_from: openapi/lemonmarkets-brokerage-openapi.json
+api: lemon.markets Brokerage API
+
+authentication:
+  style: bearer-token
+  header: Authorization
+  format: 'Bearer <your-api-key>'
+  scheme: bearerAuth
+  oauth2: false
+  notes: >-
+    Single HTTP bearer API key. The OpenAPI declares the bearerAuth scheme under
+    components.securitySchemes but does not apply it via a global or per-operation
+    security[] requirement, so the requirement is documented rather than machine-
+    enforced in the spec.
+  detail: authentication/lemonmarkets-authentication.yml
+
+data_privacy_headers:
+  supported: true
+  required_on: 91 of 96 operations
+  headers:
+  - name: LMG-Data-Privacy-Access-Principal
+    description: Identifies the principal (person or system) on whose behalf the data is accessed.
+  - name: LMG-Data-Privacy-Access-Justification
+    description: States the business justification for accessing customer data.
+  notes: >-
+    A lemon.markets-specific access-accountability contract. Nearly every operation that
+    touches customer data requires both headers, giving a per-request audit trail of who
+    accessed what and why — a GDPR/BaFin-oriented convention not commonly seen in other APIs.
+
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  standard: draft-ietf-httpapi-idempotency-key-header
+  docs: https://developer.lemon.markets/docs/idempotency
+  key_format: any string, UUID recommended
+  max_key_length: 100
+  retention: 24h
+  scope: per key + payload + endpoint
+  optional: true
+  supported_operations:
+  - operationId: create_order
+    method: POST
+    path: /accounts/{account_id}/orders
+  behavior:
+  - scenario: first request with a new key
+    outcome: processed normally, 201 response cached against the key
+  - scenario: replay with same key and same payload
+    outcome: cached 201 returned, no duplicate resource created
+  - scenario: replay with same key but different payload
+    outcome: 422 Unprocessable Content
+  - scenario: replay with same key but different endpoint
+    outcome: 422 Unprocessable Content
+  - scenario: key exceeds 100 characters
+    outcome: 422 Unprocessable Content
+  - scenario: original request failed validation (400/422)
+    outcome: key not consumed, may be retried with a corrected payload
+  - scenario: key older than 24 hours
+    outcome: cached response expired, key may be reused
+  notes: >-
+    Documented as designed to extend to further write operations over time; currently
+    scoped to order placement. Omitting the header preserves prior (non-idempotent) behaviour.
+
+pagination:
+  style: cursor
+  request_params:
+  - name: cursor
+    in: query
+    description: Opaque cursor returned as pagination.next_cursor by the previous page.
+  - name: limit
+    in: query
+    description: Page size.
+  response_envelope:
+    data: array of the collection elements
+    pagination.next_cursor: cursor for the next page; absent/null on the last page
+  applies_to: 35 list operations
+  source: openapi/lemonmarkets-brokerage-openapi.json
+
+error_envelope:
+  format: custom-json
+  rfc9457: false
+  content_type: application/json
+  schema: ErrorResponse
+  shape:
+    message: string
+  example:
+    message: Unprocessable Content
+  statuses_declared_on_every_operation: ['400', '401', '404', '422', 5XX]
+  catalog: errors/lemonmarkets-problem-types.yml
+  notes: >-
+    A flat {"message": "..."} envelope. The API does not use application/problem+json
+    (RFC 9457) and does not publish machine-readable error codes.
+
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /v1
+  detail: lifecycle/lemonmarkets-lifecycle.yml
+
+deprecation:
+  style: changelog-announcement
+  sunset_header: unknown
+  notes: >-
+    Deprecations are announced in the dated changelog and inline in the API reference
+    (e.g. the "DEPRECATED" notice on submit_document). No RFC 8594 Sunset/Deprecation
+    header support is documented.
+  detail: lifecycle/lemonmarkets-lifecycle.yml
+
+rate_limiting:
+  documented: false
+  notes: >-
+    No rate-limit policy or rate-limit response headers are published in the developer
+    documentation or declared in the OpenAPI. The docs do note the API supports HTTP/2
+    multiplexing with 100+ streams per TCP+TLS connection and is built for concurrent requests.
+
+request_tracing:
+  request_id_header: null
+  documented: false
+
+events:
+  model: webhooks
+  catalog: asyncapi/lemonmarkets-brokerage-webhooks.yml
+  poll_endpoint: GET /v1/events
+  notes: >-
+    Events are notifications, not state. The docs are explicit that the REST API is the
+    source of truth and consumers should re-fetch entity state on each event.
+
+date_time_formats:
+  docs: https://developer.lemon.markets/docs/fundamental-date-and-time-formats
+  timestamps: ISO 8601 with offset, e.g. 2023-06-23T07:29:55.465000+00:00
+  dates: ISO 8601 date, e.g. 1964-08-13
+
+number_formats:
+  docs: https://developer.lemon.markets/docs/fundamental-number-formats
+  monetary_values: decimal strings, e.g. "100.00"
+  currency: ISO 4217; EUR is the only currently supported currency
+
+identifiers:
+  style: prefixed-opaque
+  detail: data-model/lemonmarkets-data-model.yml

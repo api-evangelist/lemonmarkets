@@ -1,0 +1,120 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/lemonmarkets-brokerage-openapi.json
+docs: https://developer.lemon.markets/docs
+api: lemon.markets Brokerage API
+
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'API reference publishes OpenAPI 3.1.0 documents per operation; merged spec has
+    78 paths / 96 operations / 304 component schemas.'
+
+- id: http-bearer-auth
+  conforms: true
+  evidence: components.securitySchemes.bearerAuth (type http, scheme bearer)
+
+- id: oauth2
+  conforms: false
+  evidence: no oauth2 security scheme declared and no OAuth documented
+
+- id: oidc
+  conforms: false
+  evidence: no openIdConnect scheme; /.well-known/openid-configuration returns 404
+
+- id: idempotency-key-header
+  conforms: true
+  spec: draft-ietf-httpapi-idempotency-key-header
+  evidence: >-
+    Idempotency-Key header documented and declared as an OpenAPI parameter on create_order,
+    with cached-replay semantics, 100-char limit and 24h retention.
+  source: https://developer.lemon.markets/docs/idempotency
+
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Error responses use application/json with a flat {"message": string} ErrorResponse
+    schema, not application/problem+json.
+
+- id: cursor-pagination
+  conforms: true
+  evidence: cursor + limit query parameters on 35 list operations; responses carry
+    {data[], pagination.next_cursor}
+
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: deprecations announced in the changelog only; no Sunset or Deprecation headers documented
+
+- id: webhooks
+  conforms: true
+  evidence: 'POST /v1/webhooks registration with signature_secret; 85 typed events;
+    GET /v1/events polling equivalent'
+
+- id: asyncapi
+  conforms: false
+  evidence: no AsyncAPI document published for the webhook surface
+
+- id: json-api
+  conforms: false
+  evidence: custom response envelope, not JSON:API media type
+
+- id: odata
+  conforms: false
+
+- id: scim2
+  conforms: false
+
+- id: fapi
+  conforms: false
+  evidence: >-
+    No FAPI profile claimed. Auth is a static bearer API key — no mTLS, no
+    proof-of-possession, no OAuth authorization server.
+
+- id: psd2
+  conforms: false
+  evidence: >-
+    lemon.markets is licensed as a securities/investment firm under WpIG, not as a PSD2
+    payment institution; the API is a brokerage rather than payment-initiation surface.
+
+- id: iso4217-currency
+  conforms: true
+  evidence: 'currency fields documented as ISO 4217 three-letter codes (EUR only at present)'
+
+- id: iso6166-isin
+  conforms: true
+  evidence: instruments are addressed by ISIN (e.g. /instruments/{isin}, US0378331005)
+
+- id: iso8601-datetime
+  conforms: true
+  evidence: timestamps published as ISO 8601 with UTC offset; dedicated date/time formats guide
+  source: https://developer.lemon.markets/docs/fundamental-date-and-time-formats
+
+- id: http2
+  conforms: true
+  evidence: >-
+    Docs state the API supports HTTP/2 multiplexing with 100+ streams per TCP+TLS connection.
+  source: https://developer.lemon.markets/docs/mirror-data-using-events
+
+- id: tls1.3
+  conforms: true
+  evidence: security/lemonmarkets-domain-security.yml — TLSv1.3 on all probed hosts
+
+regulatory_authorizations:
+  note: >-
+    Regulatory licensing published on the company website. This is a supervisory
+    authorization, not an audited security-compliance certification (no SOC 2 / ISO 27001 /
+    PCI DSS attestation is published), so no `Compliance` pointer is wired.
+  regulator: BaFin
+  regime: Wertpapierinstitutsgesetz (WpIG) — German Securities Institutions Act
+  authorizations:
+  - principal broking
+  - investment broking
+  - portfolio management
+  - safekeeping and administration of financial instruments
+  source: https://www.lemon.markets/
+
+gaps:
+- securitySchemes are declared but never applied via a global or per-operation `security[]`
+  requirement — the auth requirement is documented but not machine-enforceable from the spec.
+- No published security.txt, trust center, or vulnerability disclosure programme.
+- No rate-limit policy or rate-limit response headers documented.

@@ -1,0 +1,84 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.lemon.markets/reference/get_instrument-1
+docs: https://developer.lemon.markets/docs/getting-started
+api: lemon.markets Brokerage API
+
+environments:
+- name: sandbox
+  base_url: https://sandbox.api.lemon.markets/v1
+  description: >-
+    The environment declared as servers[0] in every published OpenAPI fragment in the
+    lemon.markets API reference, and used in every documented curl example.
+  default_in_docs: true
+- name: production
+  base_url: https://api.lemon.markets/v1
+  description: >-
+    Live environment. Not published in the reference servers[] block; host verified live
+    (resolves to apps-prod-live ALB in eu-central-1, returns 401/403 without credentials).
+  verified: dns+http-probe
+
+access:
+  model: invite-only
+  notes: >-
+    The developer hub states the Brokerage API is invite-only; sandbox credentials are
+    issued by lemon.markets after contact rather than through public self-service signup.
+  contact: https://www.lemon.markets/en-de/contact
+
+credentials:
+  style: bearer-api-key
+  header: 'Authorization: Bearer <your-api-key>'
+  test_live_separation: separate hosts (sandbox.api.lemon.markets vs api.lemon.markets)
+  key_prefix_documented: false
+
+test_values:
+- family: trading-halt test ISINs
+  operation: get_instrument
+  scope: Sandbox only; available on GET /instruments/{isin} only — these ISINs do not
+    appear in the GET /instruments listing endpoint.
+  source: https://developer.lemon.markets/reference/get_instrument-1
+  values:
+  - value: XF0000000046
+    behavior: Buy-side halt — returns an instrument with an active trading halt on buy orders only.
+  - value: XF0000000053
+    behavior: Sell-side halt — returns an instrument with an active trading halt on sell orders only.
+  - value: XF0000000061
+    behavior: Both-sides halt — returns an instrument with an active trading halt on both buy and sell orders.
+  related_behavior: >-
+    Sandbox POST /accounts/{account_id}/orders honours these predefined trading halts and
+    returns a 422 error when an order would be halted.
+- family: monthly-yield test ISINs
+  operation: get_latest_yield
+  scope: Sandbox only; available on this endpoint only.
+  source: https://developer.lemon.markets/reference/get_latest_yield
+  values:
+  - value: XF0000000012
+    behavior: 'Success case — returns predictable yield data (0.30% monthly, 3.60% annualized).'
+  - value: XF0000000020
+    behavior: 'No yield data — returns a 404: "No yield data available for instrument XF0000000020".'
+  - value: XF0000000038
+    behavior: 'Non-distributing fund — returns a 400: "Profit model of instrument XF0000000038 is not distributing".'
+
+example_identifiers:
+  note: >-
+    Values published as `example` in the OpenAPI fragments and docs guides. Illustrative
+    only — not guaranteed to resolve in any given sandbox tenant.
+  values:
+  - context: account_id
+    value: cusa_20323d55bb264d42b0b225d293591049
+  - context: instrument (real ISIN used in the idempotency guide)
+    value: US0378331005
+  - context: instrument (real ISIN used in the idempotency guide)
+    value: DE0007236101
+
+webhook_testing:
+  approach: >-
+    The webhook setup guide walks through registering a webhook.site URL against
+    POST /v1/webhooks with the event list ["account.created"], then triggering it by
+    creating an account in sandbox.
+  docs: https://developer.lemon.markets/docs/webhooks-setup
+  first_party_tooling: none published
+
+test_clocks: not published
+fixture_tooling: not published
+cli_triggers: not published

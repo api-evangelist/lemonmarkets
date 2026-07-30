@@ -1,0 +1,147 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the lemon.markets Brokerage API
+  version: 1.0.0
+extends: openapi/lemonmarkets-brokerage-openapi.json
+x-generated: '2026-07-19'
+x-method: generated
+x-source: >-
+  Enhancements derived from the lemon.markets developer hub (idempotency, webhooks, sandbox
+  and changelog guides) plus this repo's artifacts. The harvested spec itself is never mutated.
+
+actions:
+# ---- provenance + catalog metadata ----
+- target: $.info
+  update:
+    x-apievangelist-slug: lemonmarkets
+    x-apievangelist-artifacts:
+      conventions: conventions/lemonmarkets-conventions.yml
+      errors: errors/lemonmarkets-problem-types.yml
+      lifecycle: lifecycle/lemonmarkets-lifecycle.yml
+      authentication: authentication/lemonmarkets-authentication.yml
+      webhooks: asyncapi/lemonmarkets-brokerage-webhooks.yml
+      sandbox: sandbox/lemonmarkets-sandbox.yml
+      data_model: data-model/lemonmarkets-data-model.yml
+      changelog: changelog/lemonmarkets-changelog.yml
+    x-spec-provenance: >-
+      Assembled from the 96 per-operation OpenAPI 3.1.0 documents published on
+      developer.lemon.markets/reference. Content is verbatim from the provider; only the
+      merge is ours.
+    contact:
+      name: lemon.markets
+      url: https://www.lemon.markets/en-de/contact
+    license:
+      name: Proprietary — invite-only partner API
+      url: https://www.lemon.markets/en-de/terms-of-use
+
+# ---- production server, absent from the published fragments ----
+- target: $.servers
+  update:
+  - url: https://api.lemon.markets/v1
+    description: >-
+      Production. Not listed in the published reference fragments; host verified live by
+      DNS + HTTP probe (apps-prod-live ALB, eu-central-1; 403 without credentials).
+    x-verified: dns+http-probe 2026-07-19
+
+# ---- make the documented auth requirement machine-enforceable ----
+- target: $
+  update:
+    security:
+    - bearerAuth: []
+    x-auth-note: >-
+      The published spec declares components.securitySchemes.bearerAuth but applies no
+      global or per-operation security[] requirement. This overlay applies it globally so
+      tooling can enforce what the documentation states.
+
+- target: $.components.securitySchemes.bearerAuth
+  update:
+    description: >-
+      Static partner API key sent as `Authorization: Bearer <your-api-key>`. Sandbox and
+      production keys are distinct and non-interchangeable. Access is invite-only.
+    x-key-issuance: invite-only, issued by lemon.markets to onboarded partners
+
+# ---- cross-cutting conventions ----
+- target: $.info
+  update:
+    x-conventions:
+      pagination:
+        style: cursor
+        params: [cursor, limit]
+        response_fields: [data, pagination.next_cursor]
+      error_envelope:
+        format: custom-json
+        schema: ErrorResponse
+        rfc9457: false
+      idempotency:
+        header: Idempotency-Key
+        standard: draft-ietf-httpapi-idempotency-key-header
+        retention: 24h
+        max_length: 100
+        operations: [create_order]
+      data_privacy_headers:
+        - LMG-Data-Privacy-Access-Principal
+        - LMG-Data-Privacy-Access-Justification
+      versioning:
+        scheme: uri-path
+        current: v1
+      rate_limits:
+        documented: false
+
+# ---- webhook/event surface, not modelled in the spec ----
+- target: $.info
+  update:
+    x-events:
+      model: webhooks
+      registration_operation: create_webhook
+      poll_operation: list_events
+      event_count: 85
+      signature: signature_secret returned at registration
+      ack_deadline_seconds: 10
+      delivery: at-least-once, ordering not guaranteed
+      catalog: asyncapi/lemonmarkets-brokerage-webhooks.yml
+
+# ---- sandbox test values ----
+- target: $.info
+  update:
+    x-sandbox:
+      base_url: https://sandbox.api.lemon.markets/v1
+      trading_halt_isins:
+        XF0000000046: buy-side halt
+        XF0000000053: sell-side halt
+        XF0000000061: both-sides halt
+      yield_isins:
+        XF0000000012: success — 0.30% monthly, 3.60% annualized
+        XF0000000020: 404 no yield data
+        XF0000000038: 400 non-distributing profit model
+      catalog: sandbox/lemonmarkets-sandbox.yml
+
+# ---- idempotency guidance on the one operation that supports it ----
+- target: $.paths['/accounts/{account_id}/orders'].post
+  update:
+    x-idempotent: true
+    x-idempotency-key-header: Idempotency-Key
+    x-retry-guidance: >-
+      Retry 5XX responses with exponential backoff reusing the same Idempotency-Key; the
+      cached 201 is returned instead of creating a duplicate order. A replay with a changed
+      payload returns 422.
+
+# ---- deprecation, announced in the changelog ----
+- target: $.paths['/businesses/{business_id}/submit_document'].post
+  update:
+    deprecated: true
+    x-deprecated-on: '2026-06-24'
+    x-replacement-operation: submit_document_upload
+    x-deprecation-notice: https://developer.lemon.markets/changelog/2026-06-24
+
+# ---- regulatory context ----
+- target: $.info
+  update:
+    x-regulatory:
+      regulator: BaFin
+      regime: Wertpapierinstitutsgesetz (WpIG)
+      authorizations:
+      - principal broking
+      - investment broking
+      - portfolio management
+      - safekeeping and administration of financial instruments
+      source: https://www.lemon.markets/

@@ -1,0 +1,86 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/lemonmarkets-brokerage-openapi.json
+docs: https://developer.lemon.markets/docs/idempotency
+api: lemon.markets Brokerage API
+
+format: custom-json
+rfc9457: false
+content_type: application/json
+schema: ErrorResponse
+envelope:
+  message:
+    type: string
+    required: true
+    description: Human-readable description of the failure.
+example:
+  message: Unprocessable Content
+
+notes: >-
+  lemon.markets does not use application/problem+json and publishes no machine-readable
+  error-code registry — there is no `code`, `type` or `errors[]` field, only a single
+  `message` string. Callers must branch on HTTP status, not on an error code. The statuses
+  below are declared uniformly across the API: 400, 401, 404 and 5XX on all 96 operations
+  and 422 on 92 of 96.
+
+problems:
+- status: 400
+  title: Bad Request
+  schema: ErrorResponse
+  occurrences: 96
+  meaning: The request was malformed or a parameter value was invalid.
+  remediation: Correct the request payload or query parameters and retry.
+  known_examples:
+  - 'Profit model of instrument XF0000000038 is not distributing (get_latest_yield, sandbox test ISIN)'
+
+- status: 401
+  title: Unauthorized
+  schema: ErrorResponse
+  occurrences: 96
+  meaning: Missing, malformed or invalid bearer API key.
+  remediation: >-
+    Supply a valid `Authorization: Bearer <your-api-key>` header for the environment being
+    called. Sandbox and production keys are not interchangeable.
+
+- status: 404
+  title: Not Found
+  schema: ErrorResponse
+  occurrences: 96
+  meaning: The addressed resource does not exist or is not visible to the calling partner.
+  remediation: Verify the identifier and that the resource belongs to your partner tenant.
+  known_examples:
+  - 'No yield data available for instrument XF0000000020 (get_latest_yield, sandbox test ISIN)'
+
+- status: 422
+  title: Unprocessable Entity
+  schema: ErrorResponse
+  occurrences: 92
+  meaning: >-
+    The request was well-formed but semantically rejected — failed business validation,
+    an idempotency-key conflict, or an order against a halted instrument.
+  remediation: Inspect `message`; for idempotency conflicts reissue with a fresh key or the
+    original payload.
+  known_causes:
+  - cause: Idempotency-Key replayed with a different payload
+    source: https://developer.lemon.markets/docs/idempotency
+  - cause: Idempotency-Key replayed against a different endpoint
+    source: https://developer.lemon.markets/docs/idempotency
+  - cause: Idempotency-Key longer than 100 characters
+    source: https://developer.lemon.markets/docs/idempotency
+  - cause: Order created against an instrument with an active trading halt (sandbox)
+    source: https://developer.lemon.markets/reference/get_instrument-1
+
+- status: 5XX
+  title: Server Error
+  schema: ErrorResponse
+  occurrences: 96
+  meaning: An unexpected server-side failure.
+  remediation: >-
+    Retry with exponential backoff. For order placement, retry using the same
+    Idempotency-Key so the retry cannot create a duplicate order.
+  cross_reference: conventions/lemonmarkets-conventions.yml#idempotency
+
+gaps:
+- No named error codes or error `type` URIs are published.
+- Error responses carry no field-level validation detail (no `loc`/`field` pointers).
+- No documented `Retry-After` or rate-limit error class.

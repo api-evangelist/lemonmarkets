@@ -1,0 +1,74 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.lemon.markets/changelog
+api: lemon.markets Brokerage API
+
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /v1
+  spec_version: 0.1.0
+  spec_declared_in: openapi/lemonmarkets-brokerage-openapi.json
+  docs: https://developer.lemon.markets/changelog
+  notes: >-
+    A single major version (v1) in the URI path. Additive changes ship continuously and are
+    announced in the dated changelog; there is no dated-version or version-header scheme.
+
+deprecation:
+  policy_url: https://developer.lemon.markets/changelog
+  policy_published: false
+  practice: >-
+    Deprecations are announced as explicit "Deprecation Warning" notices in the dated
+    changelog and repeated inline in the affected API reference page. Deprecated fields and
+    endpoints continue to function and are stated to be removed "in a future version"; no
+    fixed sunset window is published.
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  migration_guides:
+  - title: API Changes (2025-01)
+    url: https://developer.lemon.markets/docs/2025-01
+  announced_deprecations:
+  - target: 'POST /businesses/{business_id}/submit_document (operationId: submit_document)'
+    announced: '2026-06-24'
+    replacement: 'POST /submit_document (operationId: submit_document_upload)'
+    status: deprecated
+  - target: '`id` field in PersonCustomerResponse and BusinessCustomerResponse'
+    announced: '2026-07-07'
+    replacement: '`person` for person customers, `business` for business customers'
+    status: deprecated, removal pending
+  - target: '`person_customer` query parameter on GET /accounts'
+    announced: '2026-07-15'
+    replacement: 'behaviour will become the default (as if person_customer=true)'
+    status: deprecation pre-announced
+
+deprecated_operations:
+- operation: openapi/lemonmarkets-brokerage-openapi.json#submit_document
+  path: /businesses/{business_id}/submit_document
+  method: post
+  evidence: '"⚠️ DEPRECATED" notice in the operation description'
+  replacement: submit_document_upload
+
+status_page:
+  url: https://status.lemon.markets/
+  provider: Better Stack (statuspage.betteruptime.com)
+  verified: '2026-07-19 (HTTP 200)'
+
+sla:
+  published: false
+  uptime_target: null
+  notes: No public SLA or uptime commitment is published on the developer hub or website.
+
+support:
+  contact: https://www.lemon.markets/en-de/contact
+  model: partner/invite-only — no public developer support forum or community channel.
+
+regulatory:
+  regulator: BaFin (Bundesanstalt für Finanzdienstleistungsaufsicht)
+  regime: German Securities Institutions Act (Wertpapierinstitutsgesetz, WpIG)
+  authorizations:
+  - principal broking
+  - investment broking
+  - portfolio management
+  - safekeeping and administration of financial instruments
+  source: https://www.lemon.markets/

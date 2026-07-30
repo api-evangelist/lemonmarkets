@@ -1,0 +1,119 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.lemon.markets/reference/list_events-1
+docs:
+- https://developer.lemon.markets/docs/webhooks-setup
+- https://developer.lemon.markets/docs/webhooks-implementation
+- https://developer.lemon.markets/docs/mirror-data-using-events
+spec_type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  lemon.markets publishes no AsyncAPI document. This artifact captures the real, published
+  webhook/event surface: the EventType enum harvested verbatim from the OpenAPI component
+  schema behind the List Events reference, plus the delivery contract from the webhook guides.
+  No AsyncAPI has been synthesised.
+
+api: lemon.markets Brokerage API
+
+registration:
+  operation: create_webhook
+  method: POST
+  path: /v1/webhooks
+  request:
+    url: HTTPS endpoint that will receive events
+    events: array of EventType values to subscribe to
+  response_201:
+    id: webhook identifier (wbh_ prefix)
+    url: the registered endpoint
+    events: the subscribed event types
+    signature_secret: secret used to authenticate inbound webhook messages
+  management_operations: [create_webhook, list_webhooks, delete_webhook]
+
+polling_alternative:
+  operation: list_events
+  method: GET
+  path: /v1/events
+  note: The same event payload format is available for polling.
+
+delivery:
+  transport: HTTPS POST
+  authentication: signature_secret issued at registration
+  ack_requirement: return 200 OK within 10 seconds or delivery is retried
+  ordering: not guaranteed — events may arrive out of order
+  duplicates: at-least-once — events may be delivered multiple times; consumers must dedupe on event id
+  retries: yes (on non-200 or timeout)
+  source_of_truth: >-
+    The REST API, not the event payload. The docs instruct consumers to treat events as
+    triggers and re-fetch entity state from the API before updating local state.
+
+payload:
+  content_type: application/json
+  fields:
+    id: event identifier (evt_ prefix)
+    type: EventType value
+    created_at: ISO 8601 timestamp with offset
+    context: object of identifiers for the entities the event relates to
+  example:
+    id: evt_a8b11a37eccc49ecacb372e3a92a184d
+    type: account.created
+    created_at: '2023-06-29T14:40:30.523373+00:00'
+    context:
+      account: cusa_33531f7f801d4ce997747470ab7208fd
+
+context_shapes:
+  note: context is polymorphic by event type; the OpenAPI declares these context keys.
+  keys: [account, batch_order, identification, order, person, securities_account,
+    securities_transfer, sweep, tax_exemption_order, trade, transaction, treasury_mandate,
+    treasury_transfer, update, workflow]
+  caution: >-
+    The docs explicitly warn against branching logic on the context structure, which may
+    evolve; use the event type and re-fetch entity state instead.
+
+event_count: 85
+event_completeness: >-
+  Harvested verbatim from the EventType enum. The provider notes "This list is not final,
+  more types of events will be added in the future."
+
+events:
+  account: [account.closed, account.created, account.opened, account.rejected]
+  batch_order: [batch_order.accepted, batch_order.canceled, batch_order.canceling,
+    batch_order.confirmed, batch_order.created, batch_order.executed, batch_order.rejected]
+  cash_account: [cash_account.created]
+  check: [check.action_required, check.processing, check.pending, check.succeeded, check.failed]
+  corporate_action: [corporate_action.created, corporate_action.processed]
+  deposit: [deposit.created, deposit.rejected, deposit.received]
+  dividend_distribution: [dividend_distribution.created]
+  document: [document.created]
+  identification: [identification.created, identification.failed, identification.started,
+    identification.succeeded]
+  income_distribution: [income_distribution.created]
+  order: [order.accepted, order.canceled, order.canceling, order.confirmed, order.created,
+    order.executed, order.rejected]
+  securities_account: [securities_account.created, securities_account.opened,
+    securities_account.rejected, securities_account.closed]
+  securities_transfer: [securities_transfer.created, securities_transfer.completed]
+  settlement: [settlement.created]
+  sweep: [sweep.canceled, sweep.created, sweep.processed, sweep.rejected, sweep.started]
+  tax: [tax.canceled, tax.created, tax.processed]
+  tax_exemption_order: [tax_exemption_order.accepted, tax_exemption_order.canceled,
+    tax_exemption_order.canceling, tax_exemption_order.created, tax_exemption_order.rejected]
+  trade: [trade.cash_settled, trade.created, trade.taxes_processed]
+  treasury_mandate: [treasury_mandate.accepted, treasury_mandate.canceled,
+    treasury_mandate.confirmed, treasury_mandate.created, treasury_mandate.rejected]
+  treasury_transfer: [treasury_transfer.created, treasury_transfer.pending,
+    treasury_transfer.processed, treasury_transfer.canceled, treasury_transfer.canceling,
+    treasury_transfer.settled, treasury_transfer.rejected]
+  update: [update.created, update.succeeded, update.failed]
+  withdrawal: [withdrawal.accepted, withdrawal.canceled, withdrawal.confirmed,
+    withdrawal.created, withdrawal.processed, withdrawal.rejected]
+  workflow: [workflow.created, workflow.confirmed, workflow.canceled]
+
+consumer_guidance:
+  docs: https://developer.lemon.markets/docs/mirror-data-using-events
+  principles:
+  - Acknowledge with 200 OK immediately (<10s); never process synchronously in the endpoint.
+  - Process idempotently, keyed on the event id.
+  - Process in order per entity; partition the queue by entity id.
+  - On out-of-order arrival, fetch current entity state from the API and treat it as authoritative.
+  - Never skip events; move permanent failures to a dead letter queue.
+  - Reconcile periodically against the API to catch missed deliveries.

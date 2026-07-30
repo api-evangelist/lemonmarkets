@@ -1,0 +1,237 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/lemonmarkets-brokerage-openapi.json
+docs: https://developer.lemon.markets/reference
+api: lemon.markets Brokerage API
+
+identifier_convention:
+  style: prefixed-opaque
+  format: <prefix>_<32-hex>
+  example: cusa_20323d55bb264d42b0b225d293591049
+  note: Prefixes below were observed in published OpenAPI examples.
+  prefixes:
+  - {prefix: cusa_, entity: "customer account", occurrences: 68}
+  - {prefix: pers_, entity: "person", occurrences: 51}
+  - {prefix: agr_, entity: "agreement", occurrences: 31}
+  - {prefix: bord_, entity: "batch order", occurrences: 13}
+  - {prefix: evt_, entity: "event", occurrences: 10}
+  - {prefix: wf_, entity: "workflow", occurrences: 6}
+  - {prefix: ident_, entity: "identification", occurrences: 6}
+  - {prefix: upd_, entity: "data update request", occurrences: 5}
+  - {prefix: wtd_, entity: "withdrawal", occurrences: 4}
+  - {prefix: wbh_, entity: "webhook", occurrences: 4}
+  - {prefix: ca_, entity: "corporate action", occurrences: 4}
+  - {prefix: txn_, entity: "transaction", occurrences: 4}
+  - {prefix: taxev_, entity: "tax exemption order", occurrences: 3}
+  - {prefix: ubo_, entity: "beneficial owner", occurrences: 2}
+  - {prefix: rep_, entity: "legal representative", occurrences: 2}
+  - {prefix: tr_, entity: "trade", occurrences: 2}
+  - {prefix: doc_, entity: "document", occurrences: 2}
+  - {prefix: psa_, entity: "securities account", occurrences: 1}
+  - {prefix: ptx_, entity: "person transaction", occurrences: 1}
+  - {prefix: cst_, entity: "cash settlement", occurrences: 1}
+  - {prefix: sca_, entity: "securities account", occurrences: 1}
+
+entity_count: 26
+entities:
+- name: account
+  description: "The customer (securities) account — the root entity almost every operation hangs off. Path parameter account_id."
+  id_prefix: cusa_
+  operations: [create_account, get_account, list_accounts]
+- name: person
+  description: "A natural person customer, or a person attached to a business (legal representative, beneficial owner)."
+  id_prefix: pers_
+  operations: [create_person, get_person, list_persons]
+- name: business
+  description: "A business customer, with legal representatives and beneficial owners."
+- name: securities_account
+  description: "The securities account (depot) held under a customer account."
+  id_prefix: psa_
+  operations: [create_securities_account, get_securities_account, list_securities_accounts]
+- name: order
+  description: "A single buy/sell order against an instrument."
+  id_prefix: ord_
+  operations: [cancel_order, confirm_order, create_order, get_order, list_orders]
+- name: batch_order
+  description: "A batch of orders submitted and confirmed together."
+  id_prefix: bord_
+  operations: [cancel_batch_order, confirm_batch_order, create_batch_order, get_batch_order, list_batch_orders]
+- name: trade
+  description: "The execution resulting from an order."
+  id_prefix: tr_
+  operations: [get_trade, list_trades]
+- name: instrument
+  description: "A tradable instrument addressed by ISIN (ETF, ETP, stock, bond, fund)."
+  operations: [get_instrument, list_instruments]
+- name: transaction
+  description: "A cash movement on the account."
+  id_prefix: txn_
+  operations: [get_transaction_by_id, get_transactions, list_settlement_accounts_transactions]
+- name: withdrawal
+  description: "A customer cash withdrawal, created then confirmed."
+  id_prefix: wtd_
+  operations: [confirm_withdrawal, create_withdrawal, get_withdrawal, list_withdrawals]
+- name: sweep
+  description: "A balance sweep between accounts."
+  operations: [get_sweep, list_sweeps]
+- name: settlement
+  description: "Cash settlement records and settlement items."
+  id_prefix: cst_
+  operations: [get_settlement, list_settlements]
+- name: workflow
+  description: "A scheduled/recurring instruction, e.g. a savings plan."
+  id_prefix: wf_
+  operations: [cancel_workflow, confirm_workflow, create_workflow, get_workflow, list_workflows]
+- name: webhook
+  description: "A registered webhook endpoint subscription."
+  id_prefix: wbh_
+  operations: [create_webhook, delete_webhook, list_webhooks]
+- name: event
+  description: "An emitted domain event; also delivered by webhook."
+  id_prefix: evt_
+  operations: [list_events]
+- name: identification
+  description: "A KYC identity-verification process for a person."
+  id_prefix: ident_
+  operations: [get_person_identification]
+- name: agreement
+  description: "A contractual document the customer must accept."
+  id_prefix: agr_
+  operations: [get_agreements]
+- name: document
+  description: "A stored or submitted document."
+  id_prefix: doc_
+  operations: [get_document, list_documents_of_account]
+- name: corporate_action
+  description: "A corporate action, account-level or instrument-level."
+  id_prefix: ca_
+  operations: [get_corporate_action, get_corporate_action_general, list_corporate_actions, list_corporate_actions_general]
+- name: income_distribution
+  description: "An income/dividend distribution to an account."
+  operations: [get_income_distribution, list_income_distributions]
+- name: tax_exemption_order
+  description: "A Freistellungsauftrag — German tax exemption order."
+  id_prefix: taxev_
+  operations: [cancel_tax_exemption_order, create_tax_exemption_order, get_tax_exemption_order, list_tax_exemption_orders]
+- name: treasury_mandate
+  description: "A treasury mandate held by a partner."
+  operations: [cancel_treasury_mandate, create_treasury_mandate, get_treasury_mandate, list_treasury_mandates]
+- name: treasury_transfer
+  description: "A transfer executed under a treasury mandate."
+  operations: [create_treasury_transfer, get_treasury_transfer, list_treasury_transfers]
+- name: update
+  description: "A person data update request."
+  id_prefix: upd_
+  operations: [create_person_data_update, get_person_data_update, list_person_data_updates]
+- name: beneficial_owner
+  description: "A beneficial owner of a business customer."
+  id_prefix: ubo_
+  operations: [add_beneficial_owner, list_beneficial_owners]
+- name: legal_representative
+  description: "A legal representative of a business customer."
+  id_prefix: rep_
+  operations: [add_legal_representative, list_legal_representatives]
+
+relationships:
+- {from: account, to: person, type: belongs_to, via: customer.person, note: "A person-customer account references its person."}
+- {from: account, to: business, type: belongs_to, via: customer.business, note: "A business-customer account references its business."}
+- {from: account, to: securities_account, type: has_many, via: account_id, note: "Securities accounts are created under a customer account."}
+- {from: account, to: order, type: has_many, via: account_id, note: "Orders are placed on an account."}
+- {from: account, to: transaction, type: has_many, via: account_id, note: "Cash transactions belong to an account."}
+- {from: account, to: withdrawal, type: has_many, via: account_id, note: "Withdrawals are raised against an account."}
+- {from: account, to: document, type: has_many, via: account_id, note: "Documents are listed per account."}
+- {from: account, to: agreement, type: has_many, via: agreements, note: "Accounts carry the list of currently valid signed agreements."}
+- {from: account, to: tax_exemption_order, type: has_many, via: account_id, note: "Tax exemption orders are held per account."}
+- {from: account, to: corporate_action, type: has_many, via: account_id, note: "Account-level corporate actions."}
+- {from: account, to: position, type: has_many, via: account_id, note: "Positions are read per account."}
+- {from: business, to: beneficial_owner, type: has_many, via: business_id, note: "Beneficial owners of a business customer."}
+- {from: business, to: legal_representative, type: has_many, via: business_id, note: "Legal representatives of a business customer."}
+- {from: person, to: identification, type: has_many, via: person_id, note: "A person runs one or more identification processes."}
+- {from: person, to: update, type: has_many, via: person_id, note: "Person data update requests."}
+- {from: order, to: instrument, type: belongs_to, via: instrument, note: "An order references an instrument by ISIN."}
+- {from: order, to: trade, type: has_many, via: order_id, note: "Executions of an order."}
+- {from: batch_order, to: order, type: has_many, via: orders, note: "A batch order groups individual orders."}
+- {from: trade, to: instrument, type: belongs_to, via: instrument, note: "A trade references the traded instrument."}
+- {from: workflow, to: order, type: has_many, via: workflow_id, note: "A savings-plan workflow generates recurring orders."}
+- {from: settlement, to: settlement_item, type: has_many, via: settlement_id, note: "A settlement contains settlement items."}
+- {from: treasury_mandate, to: treasury_transfer, type: has_many, via: mandate_id, note: "Transfers executed under a mandate."}
+- {from: treasury_fee, to: customer_fee, type: has_many, via: fee_id, note: "Aggregated treasury fee broken down into customer fees."}
+- {from: instrument, to: corporate_action, type: has_many, via: isin, note: "Instrument-level corporate actions."}
+- {from: event, to: account, type: belongs_to, via: context.account, note: "Events carry entity identifiers in their context object."}
+- {from: webhook, to: event, type: has_many, via: events, note: "A webhook subscribes to a set of event types."}
+
+derived_reference_fields:
+  note: id-reference fields detected on response schemas during derivation.
+  AcceptAgreement: [person:belongs_to]
+  AcceptedAgreement: [person:belongs_to]
+  AccountEventContext: [account:belongs_to]
+  Actor: [person:belongs_to]
+  BatchOrder: [instrument:belongs_to]
+  BatchOrderEventContext: [account:belongs_to, batch_order:belongs_to]
+  BeneficialOwner: [person:belongs_to]
+  BusinessCustomer: [business:belongs_to]
+  BusinessDocumentUploadRequestV2: [business:belongs_to]
+  BusinessDocumentUploadResponseV2: [business:belongs_to]
+  CompleteIdentificationAction: [identification:belongs_to, person:belongs_to]
+  CorporateActionCashDividend: [instrument:belongs_to, securities_account:belongs_to]
+  CorporateActionIncomeDistribution: [instrument:belongs_to, securities_account:belongs_to]
+  CreateBatchOrderRequestBuy: [instrument:belongs_to]
+  CreateBatchOrderRequestSell: [instrument:belongs_to]
+  CreateOrder: [instrument:belongs_to, securities_account:belongs_to]
+  CreateTreasuryMandate: [instrument:belongs_to]
+  CreateTreasuryTransfer: [treasury_mandate:belongs_to]
+  CustomerAccountCheckEventContext: [account:belongs_to]
+  CustomerTreasuryFee: [account:belongs_to, instrument:belongs_to]
+  CustomerWorkflowDocumentEventContext: [account:belongs_to, document:belongs_to, workflow:belongs_to]
+  CustomerWorkflowEventContext: [account:belongs_to, workflow:belongs_to]
+  CustomerWorkflowOrderTradeDocumentEventContext: [account:belongs_to, batch_order:belongs_to, document:belongs_to, order:belongs_to, trade:belongs_to, transaction:belongs_to, workflow:belongs_to]
+  DepositEventContext: [account:belongs_to]
+  DepositTransactionEventContext: [account:belongs_to, transaction:belongs_to]
+  DividendDistributionEventContext: [account:belongs_to, securities_account:belongs_to, transaction:belongs_to]
+  DocumentEventContext: [account:belongs_to, document:belongs_to]
+  IdentificationEventContext: [identification:belongs_to, person:belongs_to]
+  IncomeDistribution: [instrument:belongs_to]
+  IncomeDistributionConfirmationDocumentEventContext: [account:belongs_to, document:belongs_to]
+  IncomeDistributionEventContext: [account:belongs_to, securities_account:belongs_to]
+  InstrumentLevelCashDividend: [instrument:belongs_to]
+  InstrumentLevelIncomeDistribution: [instrument:belongs_to]
+  LegalRepresentative: [person:belongs_to]
+  Nav: [instrument:belongs_to]
+  Order: [instrument:belongs_to, securities_account:belongs_to, workflow:belongs_to]
+  OrderData: [instrument:belongs_to, securities_account:belongs_to]
+  OrderDocumentEventContext: [account:belongs_to, batch_order:belongs_to, document:belongs_to]
+  OrderEventContext: [account:belongs_to, order:belongs_to]
+  OrderTradeDocumentEventContext: [account:belongs_to, batch_order:belongs_to, document:belongs_to, trade:belongs_to]
+  OrderWorkflowEventContext: [account:belongs_to, order:belongs_to, workflow:belongs_to]
+  PartnerTreasuryFees: [instrument:belongs_to]
+  PersonCustomer: [person:belongs_to]
+  PersonDataUpdateEventContext: [person:belongs_to]
+  PersonDocumentUpload: [person:belongs_to]
+  QuoteResponseWithType: [instrument:belongs_to]
+  SecuritiesAccountEventContext: [account:belongs_to, securities_account:belongs_to]
+  SecuritiesComponent: [instrument:belongs_to]
+  SecuritiesTransferEventContext: [account:belongs_to, transaction:belongs_to]
+  SettlementAccountTransactionResponse2: [settlement:belongs_to]
+  SettlementEventContext: [settlement:belongs_to]
+  SettlementItem: [account:belongs_to]
+  TaxExemptionOrderEventContext: [account:belongs_to]
+  TaxGeneralEventContext: [account:belongs_to, transaction:belongs_to]
+  TaxInstrumentTransactionEventContext: [account:belongs_to, instrument:belongs_to, transaction:belongs_to]
+  Trade: [instrument:belongs_to, order:belongs_to, securities_account:belongs_to]
+  TradeEventContext: [account:belongs_to, order:belongs_to, securities_account:belongs_to, trade:belongs_to]
+  TradeSettledEventContext: [account:belongs_to, order:belongs_to, trade:belongs_to, transaction:belongs_to]
+  TreasuryMandate: [instrument:belongs_to]
+  TreasuryMandateCreation: [instrument:belongs_to]
+  TreasuryMandateEventContext: [account:belongs_to, treasury_mandate:belongs_to]
+  TreasuryTransfer: [order:belongs_to, treasury_mandate:belongs_to]
+  TreasuryTransferEventContext: [account:belongs_to, order:belongs_to]
+  TreasuryTransferSettlementEventContext: [account:belongs_to, order:belongs_to, trade:belongs_to]
+  WithdrawalEventContext: [account:belongs_to, withdrawal:belongs_to]
+  WithdrawalTransactionEventContext: [account:belongs_to, transaction:belongs_to, withdrawal:belongs_to]
+
+notes:
+- The account (cusa_) is the aggregate root; 57 of 96 operations take an account_id path parameter.
+- Business customers add a second identity subtree (business -> legal representatives, beneficial owners).
+- Every state transition on order, batch_order, withdrawal, workflow, treasury_mandate and
+  tax_exemption_order is mirrored by a webhook event type — see asyncapi/lemonmarkets-brokerage-webhooks.yml.
+- Confirm/cancel are modelled as sub-resource POSTs rather than PATCHes on the parent.

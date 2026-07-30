@@ -1,0 +1,47 @@
+generated: '2026-07-19'
+method: searched
+source: live HTTP probes of the lemon.markets website, developer hub and API hosts
+probed: '2026-07-19'
+result: none
+summary: >-
+  No /.well-known/ discovery documents are published on any lemon.markets host. The website
+  and developer hub return 404 for all five probed paths; both API hosts return 403 because
+  the entire origin sits behind bearer authentication, so nothing is exposed unauthenticated.
+  This is a real, expected negative result — recorded so a later run does not re-probe blindly.
+
+hosts:
+- host: https://www.lemon.markets
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://developer.lemon.markets
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://api.lemon.markets
+  note: whole origin requires a bearer token; unauthenticated requests return 403
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+- host: https://sandbox.api.lemon.markets
+  note: whole origin requires a bearer token; unauthenticated requests return 403
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+
+recommendations:
+- Publish /.well-known/security.txt (RFC 9116) on www.lemon.markets — a BaFin-licensed
+  investment firm with no machine-discoverable security contact is a notable gap.
+- Consider /.well-known/api-catalog (RFC 9727) pointing at the developer hub.

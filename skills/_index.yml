@@ -1,0 +1,42 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/lemonmarkets-brokerage-openapi.json
+api: lemon.markets Brokerage API
+note: >-
+  lemon.markets publishes no AGENTS.md or provider-authored agent skills. These are generated
+  from the harvested OpenAPI plus the developer-hub guides; every operationId referenced was
+  verified against openapi/lemonmarkets-brokerage-openapi.json.
+
+skills:
+- file: lemonmarkets-onboard-account.md
+  name: Onboard a customer and open a securities account
+  description: Agreements, suitability profile, KYC identity verification and securities
+    account opening for a new retail customer.
+  api: openapi/lemonmarkets-brokerage-openapi.json
+  operations: [get_agreements, create_account, accept_agreement, get_account,
+    get_account_checks, set_experience_profile, update_knowledge,
+    start_identity_verification, get_person_identification,
+    submit_identification_payload, create_securities_account]
+
+- file: lemonmarkets-place-order.md
+  name: Place, confirm and reconcile an order
+  description: Instrument lookup, idempotent order placement, confirmation, execution
+    tracking and trade/position reconciliation.
+  api: openapi/lemonmarkets-brokerage-openapi.json
+  operations: [list_instruments, get_instrument, get_prices,
+    get_financials_accounts__account_id__financials_get, create_order, confirm_order,
+    get_order, list_orders, cancel_order, list_trades, get_positions]
+
+- file: lemonmarkets-consume-events.md
+  name: Consume webhook events and mirror lemon.markets state
+  description: Webhook registration, signature verification, fast acknowledgement, idempotent
+    processing and periodic reconciliation of a local mirror.
+  api: openapi/lemonmarkets-brokerage-openapi.json
+  operations: [create_webhook, list_webhooks, delete_webhook, list_events, get_account, get_order]
+
+- file: lemonmarkets-savings-plan.md
+  name: Set up a recurring savings plan
+  description: Create, confirm, monitor and cancel a recurring-investment workflow (Sparplan).
+  api: openapi/lemonmarkets-brokerage-openapi.json
+  operations: [get_instrument, create_workflow, confirm_workflow, get_workflow,
+    list_workflows, cancel_workflow, list_orders, get_positions]

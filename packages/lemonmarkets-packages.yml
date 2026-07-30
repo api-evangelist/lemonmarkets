@@ -1,0 +1,74 @@
+generated: '2026-07-19'
+method: searched
+source: https://github.com/lemon-markets
+registries_probed: [npm, pypi, github]
+api: lemon.markets Brokerage API
+
+summary:
+  maintained_first_party_sdks: 0
+  archived_first_party_sdks: 1
+  placeholder_reservations: 1
+  third_party: 2
+  finding: >-
+    lemon.markets ships no maintained first-party client library for the current Brokerage
+    API. The one real first-party SDK (sdk-python) was built for the retired retail trading
+    API and was archived in 2023. Partners integrate against the REST API directly. No
+    `SDKs` pointer is wired in apis.yml because no maintained SDK exists.
+
+packages:
+- language: python
+  registry: github
+  name: lemon-markets/sdk-python
+  url: https://github.com/lemon-markets/sdk-python
+  official: true
+  status: archived
+  archived: true
+  last_push: '2023-05-01'
+  stars: 26
+  description: Python SDK for the lemon.markets API.
+  applies_to: legacy retail trading/market-data API, not the current Brokerage API
+
+- language: python
+  registry: pypi
+  name: lemonmarkets
+  url: https://pypi.org/project/lemonmarkets/
+  install: pip install lemonmarkets
+  official: true
+  status: placeholder
+  version: 0.0.0
+  publisher_email: cto@lemon.markets
+  description: >-
+    Name reservation published by lemon.markets. Version 0.0.0 with no functional release;
+    listed for provenance, not usable as a client library.
+
+- language: javascript
+  registry: npm
+  name: lemon-markets
+  url: https://www.npmjs.com/package/lemon-markets
+  official: false
+  source_repo: https://github.com/19h/lemon-markets-ts
+  description: Community TypeScript client for the legacy lemon.markets API.
+
+- language: javascript
+  registry: npm
+  name: lemon.markets.js
+  url: https://www.npmjs.com/package/lemon.markets.js
+  official: false
+  source_repo: https://github.com/limo-trading/lemon.markets.js
+  description: Community JavaScript/TypeScript SDK for the legacy lemon.markets API.
+
+registries_with_no_first_party_result:
+- maven-central
+- nuget
+- pkg.go.dev
+- rubygems
+- packagist
+- crates.io
+
+github_organization:
+  url: https://github.com/lemon-markets
+  public_repos: 15
+  active_repos: 1
+  note: >-
+    14 of 15 public repos are archived — legacy SDK, demos and content/tutorial projects
+    from the retail trading era. Only demo-portfolio-performance remains unarchived.

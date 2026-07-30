@@ -1,0 +1,122 @@
+# Brokerage API Documentation
+
+> Documentation for Brokerage API
+
+## Guides
+- [Getting Started](https://developer.lemon.markets/docs/getting-started.md): This page will help you get started with the 🍋.markets Brokerage API. You'll be up and running in a jiffy!
+- [Create Business Account](https://developer.lemon.markets/docs/create-business-account.md): This page will help you get familiar with the endpoints to create a business account.
+- [Create Account](https://developer.lemon.markets/docs/create-account.md): This page will help you get familiar with the account endpoint.
+- [Create BPO Account](https://developer.lemon.markets/docs/create-bpo-account.md): This page will help you get familiar with creating a BPO account.
+- [Date and Time Formats](https://developer.lemon.markets/docs/fundamental-date-and-time-formats.md): Understand the date formats used in the 🍋.markets Brokerage API
+- [Number Formats](https://developer.lemon.markets/docs/fundamental-number-formats.md): Understand the number and date formats used in the 🍋.markets Brokerage API
+- [Webhook Setup](https://developer.lemon.markets/docs/webhooks-setup.md): Set up a Webhook to be notified about events as they occur.
+- [Webhook Implementation](https://developer.lemon.markets/docs/webhooks-implementation.md): Implement your own webhook listener.
+- [Savings Plans: Recurring Investments using Workflows](https://developer.lemon.markets/docs/recurring-investments.md): Set up recurring investment schemes using workflows.
+- [API Changes (2025-01)](https://developer.lemon.markets/docs/2025-01.md): Learn to prepare for upcoming changes
+- [Idempotency](https://developer.lemon.markets/docs/idempotency.md): Learn how to use the Idempotency-Key header to safely retry requests without creating duplicate orders.
+- [Data Mirroring using Events](https://developer.lemon.markets/docs/mirror-data-using-events.md): Learn how to process events from lemon.markets to establish a mirrored shadow copy of the data.
+
+## API Reference
+- [Create Account](https://developer.lemon.markets/reference/create_account-1.md)
+- [List Accounts](https://developer.lemon.markets/reference/list_accounts-1.md)
+- [Get Account](https://developer.lemon.markets/reference/get_account-1.md)
+- [Create Authenticator](https://developer.lemon.markets/reference/create_authenticator-1.md)
+- [List Authenticators](https://developer.lemon.markets/reference/list_authenticators-1.md)
+- [Get Account Checks](https://developer.lemon.markets/reference/get_account_checks-1.md)
+- [Set Experience Profile](https://developer.lemon.markets/reference/set_experience_profile-1.md)
+- [Get Experience Profile](https://developer.lemon.markets/reference/get_experience_profile-1.md)
+- [Update Knowledge](https://developer.lemon.markets/reference/update_knowledge-1.md)
+- [Accept Agreement](https://developer.lemon.markets/reference/accept_agreement.md)
+- [Start Identity Verification](https://developer.lemon.markets/reference/start_identity_verification-1.md)
+- [Get Person Identification](https://developer.lemon.markets/reference/get_person_identification-1.md): Get information about the identification process for a person.
+- [Submit Identification Payload](https://developer.lemon.markets/reference/submit_identification_payload-1.md)
+- [Create Securities Account](https://developer.lemon.markets/reference/create_securities_account-1.md)
+- [List Securities Accounts](https://developer.lemon.markets/reference/list_securities_accounts-1.md)
+- [Get Securities Account](https://developer.lemon.markets/reference/get_securities_account-1.md)
+- [List Businesses](https://developer.lemon.markets/reference/list_businesses-1.md)
+- [Create Business](https://developer.lemon.markets/reference/create_business-1.md)
+- [Get Business](https://developer.lemon.markets/reference/get_business-1.md)
+- [List Beneficial Owners](https://developer.lemon.markets/reference/list_beneficial_owners-1.md)
+- [Add Beneficial Owner](https://developer.lemon.markets/reference/add_beneficial_owner-1.md)
+- [Submit Document](https://developer.lemon.markets/reference/submit_document-1.md): **⚠️ DEPRECATED**: This endpoint is deprecated. Please use the new unified `/submit_document` endpoint instead, which supports both person and business documents through a discriminated union approach.  See [Submit Document](/reference/submit_document_upload) for the replacement endpoint.
+- [List Legal Representatives](https://developer.lemon.markets/reference/list_legal_representatives-1.md)
+- [Add Legal Representative](https://developer.lemon.markets/reference/add_legal_representative-1.md)
+- [List Persons](https://developer.lemon.markets/reference/list_persons-1.md)
+- [Create Person](https://developer.lemon.markets/reference/create_person-1.md)
+- [Get Person](https://developer.lemon.markets/reference/get_person-1.md)
+- [Create Person Data Update Request](https://developer.lemon.markets/reference/create_person_data_update.md)
+- [List Person Data Update Requests](https://developer.lemon.markets/reference/list_person_data_updates.md)
+- [Get Person Data Update Request](https://developer.lemon.markets/reference/get_person_data_update.md)
+- [Get Financials](https://developer.lemon.markets/reference/get_financials_accounts__account_id__financials_get-1.md)
+- [Get Positions](https://developer.lemon.markets/reference/get_positions-1.md)
+- [List Balance Sweeps](https://developer.lemon.markets/reference/list_sweeps-1.md)
+- [Get Balance Sweep](https://developer.lemon.markets/reference/get_sweep-1.md)
+- [Get Transactions](https://developer.lemon.markets/reference/get_transactions-1.md)
+- [Get Transaction](https://developer.lemon.markets/reference/get_transaction_by_id-1.md)
+- [List Withdrawals](https://developer.lemon.markets/reference/list_withdrawals-1.md)
+- [Create Withdrawal](https://developer.lemon.markets/reference/create_withdrawal-1.md)
+- [Get Withdrawal](https://developer.lemon.markets/reference/get_withdrawal-1.md)
+- [Confirm Withdrawal](https://developer.lemon.markets/reference/confirm_withdrawal-1.md)
+- [Create Batch Order](https://developer.lemon.markets/reference/create_batch_order-1.md)
+- [List Batch Orders](https://developer.lemon.markets/reference/list_batch_orders-1.md)
+- [Get Batch Order](https://developer.lemon.markets/reference/get_batch_order-1.md)
+- [Confirm Batch Order](https://developer.lemon.markets/reference/confirm_batch_order-1.md)
+- [Cancel Batch Order](https://developer.lemon.markets/reference/cancel_batch_order-1.md)
+- [List Income Distributions](https://developer.lemon.markets/reference/list_income_distributions-1.md)
+- [Get Income Distribution](https://developer.lemon.markets/reference/get_income_distribution-1.md)
+- [Create Order](https://developer.lemon.markets/reference/create_order-1.md)
+- [List Orders](https://developer.lemon.markets/reference/list_orders-1.md)
+- [Get Order](https://developer.lemon.markets/reference/get_order-1.md)
+- [Cancel Order](https://developer.lemon.markets/reference/cancel_order-1.md)
+- [Confirm Order](https://developer.lemon.markets/reference/confirm_order-1.md)
+- [List Trades](https://developer.lemon.markets/reference/list_trades-1.md)
+- [Get Trade](https://developer.lemon.markets/reference/get_trade-1.md)
+- [Get Treasury Financials](https://developer.lemon.markets/reference/get_treasury_financials-1.md)
+- [Create Treasury Mandate](https://developer.lemon.markets/reference/create_treasury_mandate-1.md)
+- [List Treasury Mandates](https://developer.lemon.markets/reference/list_treasury_mandates-1.md)
+- [Get Treasury Mandate](https://developer.lemon.markets/reference/get_treasury_mandate-1.md)
+- [Cancel Treasury Mandate](https://developer.lemon.markets/reference/cancel_treasury_mandate-1.md): Cancel a treasury mandate
+- [Create Treasury Transfer](https://developer.lemon.markets/reference/create_treasury_transfer-1.md)
+- [List Treasury Transfers](https://developer.lemon.markets/reference/list_treasury_transfers-1.md)
+- [Get Treasury Transfer](https://developer.lemon.markets/reference/get_treasury_transfer-1.md)
+- [List Treasury Fees](https://developer.lemon.markets/reference/list_treasury_fees.md): Retrieves a paginated list of monthly aggregated treasury fees owned by the requesting partner. Optionally filter by instrument or billing month range.
+- [Get Treasury Fee By Id](https://developer.lemon.markets/reference/get_treasury_fee.md): Retrieves treasury fee details for the given fee ID belonging to the requesting partner.
+- [Get Customer Fee Composition for a Treasury Fee](https://developer.lemon.markets/reference/list_customer_fees.md): Retrieves a paginated breakdown of individual customer fees that contribute to the given aggregated treasury fee.
+- [List Tax Exemption Orders](https://developer.lemon.markets/reference/list_tax_exemption_orders-1.md)
+- [Create Tax Exemption Order](https://developer.lemon.markets/reference/create_tax_exemption_order-1.md)
+- [Get Tax Exemption Order](https://developer.lemon.markets/reference/get_tax_exemption_order-1.md)
+- [Cancel Tax Exemption Order](https://developer.lemon.markets/reference/cancel_tax_exemption_order-1.md)
+- [List Tax Exemption Usages](https://developer.lemon.markets/reference/list_tax_exemption_usages-1.md)
+- [List Documents](https://developer.lemon.markets/reference/list_documents_of_account-1.md)
+- [Get Document](https://developer.lemon.markets/reference/get_document-1.md)
+- [Get Latest Agreements](https://developer.lemon.markets/reference/get_agreements-1.md): When opening an account, the user has to agree to accept certain types of contractual documents, like privacy policy or terms and conditions.
+- [Submit Document](https://developer.lemon.markets/reference/submit_document_upload.md): Submit a document for either a person or a business. This endpoint returns a presigned upload URL that can be used to upload the document file.  The request must specify either a person document or a business document based on the `type` field. The response will contain a presigned `upload_location` URL that expires after a certain time.
+- [List Instruments](https://developer.lemon.markets/reference/list_instruments-1.md)
+- [Get Instrument](https://developer.lemon.markets/reference/get_instrument-1.md): Returns details for a specific instrument identified by its ISIN. <strong>Test ISINs for Trading Halts</strong> You can use the following static ISINs to test different predetermined scenarios regarding Trading Halts. The test ISINs are not enabled on our side and are only available in the Sandbox environment. <ul> <li><code>XF0000000046</code> - <strong>Buy-side halt</strong>: Returns an instrument with an active trading halt on buy orders only <li><code>XF0000000053</code> - <strong>Sell-side halt</strong>: Returns an instrument with an active trading halt on sell orders only <li><code>XF0000000061</code> - <strong>Both-sides halt</strong>: Returns an instrument with an active trading halt on both buy and sell orders </ul> <strong>Note:</strong> <ul> <li>These test ISINs are only available on this endpoint. They will not appear in the <code>GET /instruments</code> listing endpoint. <li>The Sandbox behavior of <code>POST /accounts/{account_id}/orders</code> takes these predefined Trading Halts into account: it will thus return a 422 Error when attempting to create an order that would be Halted. </ul>
+- [Get Prices](https://developer.lemon.markets/reference/get_prices-1.md)
+- [Get Latest Monthly Yield](https://developer.lemon.markets/reference/get_latest_yield.md): Returns the latest monthly annualized yield available for the specified instrument.  **Sandbox Test ISINs**  You can use the following static ISINs to test different scenarios with predetermined responses. The test ISINs do not need to be enabled on our side and are only available on this endpoint in the Sandbox environment. - `XF0000000012` - **Success case**: Returns predictable yield data (0.30% monthly, 3.60% annualized) - `XF0000000020` - **No yield data**: Returns a 404 error: "No yield data available for instrument XF0000000020" - `XF0000000038` - **Non-distributing fund**: Returns a 400 error: "Profit model of instrument XF0000000038 is not distributing"
+- [Get Events](https://developer.lemon.markets/reference/list_events-1.md)
+- [Create Webhook](https://developer.lemon.markets/reference/create_webhook-1.md)
+- [List Webhooks](https://developer.lemon.markets/reference/list_webhooks-1.md)
+- [Delete Webhook](https://developer.lemon.markets/reference/delete_webhook-1.md)
+- [Create Workflow](https://developer.lemon.markets/reference/create_workflow-1.md)
+- [List Workflows](https://developer.lemon.markets/reference/list_workflows-1.md)
+- [Get Workflow](https://developer.lemon.markets/reference/get_workflow-1.md)
+- [Cancel Workflow](https://developer.lemon.markets/reference/cancel_workflow-1.md)
+- [Confirm Workflow](https://developer.lemon.markets/reference/confirm_workflow-1.md)
+- [List Settlement Accounts](https://developer.lemon.markets/reference/list_settlement_accounts-1.md)
+- [List Settlements](https://developer.lemon.markets/reference/list_settlements-1.md)
+- [Get Settlement](https://developer.lemon.markets/reference/get_settlement-1.md)
+- [List Settlement Items](https://developer.lemon.markets/reference/list_settlement_items-1.md)
+- [List Settlement Accounts Transactions](https://developer.lemon.markets/reference/list_settlement_accounts_transactions-1.md)
+- [List Corporate Actions (Account-level)](https://developer.lemon.markets/reference/list_corporate_actions.md)
+- [Get Corporate Action (Account-level)](https://developer.lemon.markets/reference/get_corporate_action.md)
+- [List Corporate Actions (Instrument-level)](https://developer.lemon.markets/reference/list_corporate_actions_general.md)
+- [Get Corporate Action (Instrument-level)](https://developer.lemon.markets/reference/get_corporate_action_general.md)
+
+## Changelog
+- [2026-07-15](https://developer.lemon.markets/changelog/2026-07-15.md)
+- [2026-07-10](https://developer.lemon.markets/changelog/2026-07-10.md)
+- [2026-07-13](https://developer.lemon.markets/changelog/2026-07-13.md)
+- [2026-07-07](https://developer.lemon.markets/changelog/2026-07-07.md)
+- [2026-06-24](https://developer.lemon.markets/changelog/2026-06-24.md)

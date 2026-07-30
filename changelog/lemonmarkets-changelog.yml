@@ -1,0 +1,86 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.lemon.markets/changelog
+api: lemon.markets Brokerage API
+
+scheme: dated
+format: one dated entry per release, each with a Summary line and per-product-area sections
+current_version: v1
+url: https://developer.lemon.markets/changelog
+window: 'recent — 2026-06-24 through 2026-07-15 (the five entries indexed in llms.txt)'
+notes: >-
+  lemon.markets publishes deprecations inside the dated changelog rather than in a separate
+  deprecation policy. Breaking changes are pre-announced as "Deprecation Warning" and the
+  field/endpoint stays in place until a future version removes it.
+
+entries:
+- date: '2026-07-15'
+  summary: Accounts
+  url: https://developer.lemon.markets/changelog/2026-07-15
+  breaking: false
+  areas: [Accounts]
+  additions:
+  - Added the `person_customer` query parameter to `GET /accounts` (List Accounts). When
+    true, returns a simplified person customer object containing only the type and person
+    ID instead of full customer details, matching `GET /accounts/{account_id}`.
+  deprecations:
+  - The `person_customer` parameter will be deprecated in a future version; once deprecated
+    all responses will behave as if `person_customer=true`.
+
+- date: '2026-07-13'
+  summary: Customer account responses now include accepted agreements
+  url: https://developer.lemon.markets/changelog/2026-07-13
+  breaking: false
+  areas: [Accounts]
+  additions:
+  - '`CustomerAccountResponse` now includes an `agreements` field listing all currently
+    valid and signed agreements for the account.'
+  affected_operations: [get_account, list_accounts, create_account, accept_agreement]
+
+- date: '2026-07-10'
+  summary: Corporate Actions
+  url: https://developer.lemon.markets/changelog/2026-07-10
+  breaking: false
+  areas: [Corporate Actions, Events + Webhooks]
+  additions:
+  - Added instrument-level corporate actions endpoints `GET /corporate_actions` and
+    `GET /corporate_actions/{corporate_action_id}`, returning corporate action data without
+    customer-specific fields such as taxes or settlement amounts. Response is polymorphic
+    over `cash_dividend` and `income_distribution`.
+  - Added webhook event types `corporate_action.created` and `corporate_action.processed`.
+  affected_operations: [list_corporate_actions_general, get_corporate_action_general]
+
+- date: '2026-07-07'
+  summary: Accept Agreement endpoint
+  url: https://developer.lemon.markets/changelog/2026-07-07
+  breaking: false
+  areas: [Accounts]
+  additions:
+  - Added `POST /accounts/{account}/accept_agreement`, allowing agreement acceptance after
+    an account is already provisioned. Takes person identifier, agreement identifier and
+    acceptance timestamp; returns PersonCustomerResponse or BusinessCustomerResponse.
+  deprecations:
+  - The `id` field in PersonCustomerResponse and BusinessCustomerResponse is deprecated —
+    use `person` for person customers and `business` for business customers. `id` will be
+    removed in a future version.
+  affected_operations: [accept_agreement]
+
+- date: '2026-06-24'
+  summary: Documents
+  url: https://developer.lemon.markets/changelog/2026-06-24
+  breaking: false
+  areas: [Documents, Businesses]
+  additions:
+  - Added unified `POST /submit_document`, consolidating document submission for both person
+    and business documents (person identification bundles, business articles of association,
+    commercial register extracts, shareholder lists) via a discriminated union. Returns a
+    presigned upload URL.
+  deprecations:
+  - '`POST /businesses/{business_id}/submit_document` is deprecated in favour of the unified
+    `POST /submit_document` endpoint.'
+  affected_operations: [submit_document_upload, submit_document]
+
+earlier_migration_guide:
+  title: API Changes (2025-01)
+  url: https://developer.lemon.markets/docs/2025-01
+  note: A dedicated guide for preparing for the 2025-01 wave of API changes.
