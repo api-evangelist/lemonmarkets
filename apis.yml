@@ -1,27 +1,497 @@
 aid: lemonmarkets
 name: lemon.markets
-description: 'lemon.markets is a company surfaced as a portfolio company of creandum and added to the
-  API Evangelist network as a stub for enrichment. Sector: fintech. This profile is a lead awaiting the
-  enrichment pipeline.'
+description: 'lemon.markets is a Berlin-based, BaFin-licensed investment firm that sells brokerage
+  infrastructure as an API. Its Brokerage API lets fintechs, banks and platforms embed investing —
+  account opening and KYC/identification, securities accounts, order placement and execution, trades,
+  positions, transactions, withdrawals, settlements, corporate actions, income distributions, tax
+  exemption orders (Freistellungsauftrag) and treasury products — without building or licensing a
+  broker-dealer stack themselves. Coverage spans 10,000+ ETFs, ETPs, stocks, bonds and funds, and the
+  platform supports omnibus, fully disclosed and BPO (business process outsourcing) operating models.
+  The REST API is complemented by a webhook/event surface, an Idempotency-Key contract on order
+  placement, and a sandbox environment with published test ISINs. API access is invite-only.'
 url: https://raw.githubusercontent.com/api-evangelist/lemonmarkets/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://www.lemon.markets/favicon.ico
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - creandum
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
 - Fintech
-apis: []
+- Brokerage
+- Investing
+- Trading
+- Embedded Finance
+- Banking as a Service
+- Securities
+- Wealth Management
+- Germany
+- Europe
+apis:
+- aid: lemonmarkets:lemonmarkets-accounts-general-api
+  name: 'lemon.markets Accounts: General API'
+  description: 'The Accounts: General API from lemon.markets — 6 operation(s) for accounts: general.'
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - 'Accounts: General'
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-accounts-general-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-accounts-id-v-api
+  name: 'lemon.markets Accounts: ID+V API'
+  description: 'The Accounts: ID+V API from lemon.markets — 3 operation(s) for accounts: id+v.'
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - 'Accounts: ID+V'
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-accounts-id-v-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-batch-orders-api
+  name: lemon.markets Batch Orders API
+  description: The Batch Orders API from lemon.markets — 4 operation(s) for batch orders.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Batch Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-batch-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-businesses-api
+  name: lemon.markets Businesses API
+  description: The Businesses API from lemon.markets — 5 operation(s) for businesses.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Businesses
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-businesses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-cash-settlement-api
+  name: lemon.markets Cash Settlement API
+  description: The Cash Settlement API from lemon.markets — 5 operation(s) for cash settlement.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Cash Settlement
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-cash-settlement-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-corporate-actions-api
+  name: lemon.markets Corporate Actions API
+  description: The Corporate Actions API from lemon.markets — 6 operation(s) for corporate actions.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Corporate Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-corporate-actions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-documents-api
+  name: lemon.markets Documents API
+  description: The Documents API from lemon.markets — 4 operation(s) for documents.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-documents-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-events-webhooks-api
+  name: lemon.markets Events + Webhooks API
+  description: The Events + Webhooks API from lemon.markets — 3 operation(s) for events + webhooks.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Events + Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-events-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-instruments-api
+  name: lemon.markets Instruments API
+  description: The Instruments API from lemon.markets — 4 operation(s) for instruments.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Instruments
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-instruments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-money-positions-api
+  name: lemon.markets Money + Positions API
+  description: The Money + Positions API from lemon.markets — 9 operation(s) for money + positions.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Money + Positions
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-money-positions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-orders-api
+  name: lemon.markets Orders API
+  description: The Orders API from lemon.markets — 4 operation(s) for orders.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-persons-api
+  name: lemon.markets Persons API
+  description: The Persons API from lemon.markets — 4 operation(s) for persons.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Persons
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-persons-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-securities-accounts-api
+  name: lemon.markets Securities Accounts API
+  description: The Securities Accounts API from lemon.markets — 2 operation(s) for securities accounts.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Securities Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-securities-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-taxes-api
+  name: lemon.markets Taxes API
+  description: The Taxes API from lemon.markets — 4 operation(s) for taxes.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Taxes
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-taxes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-trades-api
+  name: lemon.markets Trades API
+  description: The Trades API from lemon.markets — 2 operation(s) for trades.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Trades
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-trades-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-treasury-mandates-api
+  name: lemon.markets Treasury Mandates API
+  description: The Treasury Mandates API from lemon.markets — 9 operation(s) for treasury mandates.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Treasury Mandates
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-treasury-mandates-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- aid: lemonmarkets:lemonmarkets-workflows-api
+  name: lemon.markets Workflows API
+  description: Use workflows to perform repetitive tasks automatically.
+  humanURL: https://developer.lemon.markets/
+  baseURL: https://api.lemon.markets/v1
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/lemonmarkets-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://developer.lemon.markets/docs
+  - type: APIReference
+    url: https://developer.lemon.markets/reference
+  - type: GettingStarted
+    url: https://developer.lemon.markets/docs/getting-started
+  - type: ChangeLog
+    url: https://developer.lemon.markets/changelog
+  - type: Sandbox
+    url: sandbox/lemonmarkets-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/lemonmarkets-brokerage-webhooks.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/lemonmarkets-agentic-access.yml
+- type: DomainSecurity
+  url: security/lemonmarkets-domain-security.yml
+- type: Authentication
+  url: authentication/lemonmarkets-authentication.yml
+- type: Conventions
+  url: conventions/lemonmarkets-conventions.yml
+- type: Idempotency
+  url: conventions/lemonmarkets-conventions.yml
+- type: ErrorCatalog
+  url: errors/lemonmarkets-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/lemonmarkets-lifecycle.yml
+- type: Deprecation
+  url: https://developer.lemon.markets/changelog
+- type: Conformance
+  url: conformance/lemonmarkets-conformance.yml
+- type: DataModel
+  url: data-model/lemonmarkets-data-model.yml
+- type: Packages
+  url: packages/lemonmarkets-packages.yml
+- type: WellKnown
+  url: well-known/lemonmarkets-well-known.yml
+- type: MCPServer
+  url: mcp/lemonmarkets-mcp.yml
+- type: LLMsTxt
+  url: llms/lemonmarkets-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Webhooks
+  url: asyncapi/lemonmarkets-brokerage-webhooks.yml
+- type: Sandbox
+  url: sandbox/lemonmarkets-sandbox.yml
+- type: Overlay
+  url: overlays/lemonmarkets-brokerage-overlay.yaml
 - type: Website
   url: https://www.lemon.markets/
+- type: DeveloperPortal
+  url: https://developer.lemon.markets/
+- type: Documentation
+  url: https://developer.lemon.markets/docs
+- type: APIReference
+  url: https://developer.lemon.markets/reference
+- type: GettingStarted
+  url: https://developer.lemon.markets/docs/getting-started
+- type: ChangeLog
+  url: https://developer.lemon.markets/changelog
+- type: ChangeLog
+  url: changelog/lemonmarkets-changelog.yml
+  name: Structured changelog artifact
+- type: StatusPage
+  url: https://status.lemon.markets/
+- type: GitHubOrganization
+  url: https://github.com/lemon-markets
+- type: Support
+  url: https://www.lemon.markets/en-de/contact
+- type: TermsOfService
+  url: https://www.lemon.markets/en-de/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.lemon.markets/en-de/privacy-policy
+- type: Imprint
+  url: https://www.lemon.markets/en-de/imprint
+- type: LinkedIn
+  url: https://www.linkedin.com/company/lemon-markets/
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
