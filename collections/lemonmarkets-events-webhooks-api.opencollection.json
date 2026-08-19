@@ -1,0 +1,247 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Events + Webhooks API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events + Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/webhooks",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "List Webhooks"
+        },
+        {
+          "info": {
+            "name": "Create Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/webhooks",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Webhook"
+        },
+        {
+          "info": {
+            "name": "Delete Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sandbox.api.lemon.markets/v1/webhooks/:webhook_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "wbh_0953534cf20f414098533680abd6b1c7",
+                "type": "path",
+                "description": "A webhook identifier.\n"
+              }
+            ]
+          },
+          "docs": "Delete Webhook"
+        },
+        {
+          "info": {
+            "name": "Get Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/events",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "context.account",
+                "value": "",
+                "type": "query",
+                "description": "An account identifier.  Specify one to restrict responses to events with a matching `account` in their `context` object.\n"
+              },
+              {
+                "name": "context.batch_order",
+                "value": "",
+                "type": "query",
+                "description": "A batch order identifier.  Specify one to restrict responses to events with a matching `batch_order` in their `context` object.\n"
+              },
+              {
+                "name": "context.identification",
+                "value": "",
+                "type": "query",
+                "description": "A person identification identifier.  Specify one to restrict responses to events with a matching `identification` in their `context` object.\n"
+              },
+              {
+                "name": "context.order",
+                "value": "",
+                "type": "query",
+                "description": "An order identifier.  Specify one to restrict the responses to events with a matching `order` in their `context` object.\n"
+              },
+              {
+                "name": "context.person",
+                "value": "",
+                "type": "query",
+                "description": "A person identifier.  Specify one to restrict responses to events with a matching `person` in their `context` object.\n"
+              },
+              {
+                "name": "context.securities_account",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "context.securities_transfer",
+                "value": "",
+                "type": "query",
+                "description": "A securities transfer identifier.  Specify one to restrict responses to events with a matching `securities_transfer` in their `context` object.\n"
+              },
+              {
+                "name": "context.sweep",
+                "value": "",
+                "type": "query",
+                "description": "A sweep identifier.  Specify one to restrict responses to events with a matching `sweep` in their `context` object.\n"
+              },
+              {
+                "name": "context.tax_exemption_order",
+                "value": "",
+                "type": "query",
+                "description": "A tax exemption order identifier.  Specify one to restrict responses to events with a matching `tax_exemption_order` in their `context` object.\n"
+              },
+              {
+                "name": "context.trade",
+                "value": "",
+                "type": "query",
+                "description": "A trade identifier.  Specify one to restrict responses to events with a matching `trade` in their `context` object.\n"
+              },
+              {
+                "name": "context.transaction",
+                "value": "",
+                "type": "query",
+                "description": "A transaction identifier.  Specify one to restrict responses to events with a matching `transaction` in their `context` object.\n"
+              },
+              {
+                "name": "context.treasury_mandate",
+                "value": "",
+                "type": "query",
+                "description": "A treasury mandate identifier.  Specify one to restrict responses to events with a matching `treasury_mandate` in their `context` object.\n"
+              },
+              {
+                "name": "context.treasury_transfer",
+                "value": "",
+                "type": "query",
+                "description": "A treasury transfer identifier.  Specify one to restrict responses to events with a matching `treasury_transfer` in their `context` object.\n"
+              },
+              {
+                "name": "context.update",
+                "value": "",
+                "type": "query",
+                "description": "A person data update request identifier.  Specify one to restrict responses to events with a matching `update` in their `context` object.\n"
+              },
+              {
+                "name": "context.workflow",
+                "value": "",
+                "type": "query",
+                "description": "A workflow identifier.  Specify one to restruct responses to events with a matching `workflow` in their `context` object.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "A timestamp in the past.  Specify `since` to avoid getting results for events that have happened before the specified timestamp.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Events"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

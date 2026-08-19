@@ -3,11 +3,9 @@ method: derived
 source: openapi/lemonmarkets-brokerage-openapi.json
 status: candidate
 published_server: none
-search_note: >-
-  No official or community MCP server for lemon.markets was found on the provider's
-  developer hub, GitHub organisation, npm, or the public MCP registries. The tool list
-  below is a candidate surface derived one-to-one from the published OpenAPI operations,
-  not a server lemon.markets operates.
+search_note: No official or community MCP server for lemon.markets was found on the provider's developer
+  hub, GitHub organisation, npm, or the public MCP registries. The tool list below is a candidate surface
+  derived one-to-one from the published OpenAPI operations, not a server lemon.markets operates.
 server:
   name: lemonmarkets
   title: lemon.markets Brokerage API
@@ -20,585 +18,590 @@ server:
   required_headers:
   - LMG-Data-Privacy-Access-Principal
   - LMG-Data-Privacy-Access-Justification
-  notes: >-
-    Any real implementation must forward the two LMG-Data-Privacy-Access-* headers on the
-    91 operations that require them, and must send an Idempotency-Key on create_order.
+  notes: Any real implementation must forward the two LMG-Data-Privacy-Access-* headers on the 91 operations
+    that require them, and must send an Idempotency-Key on create_order.
 tool_count: 96
 tools:
 - name: accept_agreement
-  description: "Accept Agreement"
+  description: Accept Agreement
   operation: POST /accounts/{account}/accept_agreement
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#accept_agreement
   kind: write
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: create_account
-  description: "Create Account"
+  description: Create Account
   operation: POST /accounts
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_account
   kind: write
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: create_authenticator
-  description: "Create Authenticator"
+  description: Create Authenticator
   operation: POST /accounts/{account_id}/authenticators
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_authenticator
   kind: write
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: get_account
-  description: "Get Account"
+  description: Get Account
   operation: GET /accounts/{account_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_account
   kind: read
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: get_account_checks
-  description: "Get Account Checks"
+  description: Get Account Checks
   operation: GET /accounts/{account_id}/checks
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_account_checks
   kind: read
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: get_experience_profile
-  description: "Get Experience Profile"
+  description: Get Experience Profile
   operation: GET /accounts/{account_id}/experience
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_experience_profile
   kind: read
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: list_accounts
-  description: "List Accounts"
+  description: List Accounts
   operation: GET /accounts
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_accounts
   kind: read
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: list_authenticators
-  description: "List Authenticators"
+  description: List Authenticators
   operation: GET /accounts/{account_id}/authenticators
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_authenticators
   kind: read
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: set_experience_profile
-  description: "Set Experience Profile"
+  description: Set Experience Profile
   operation: POST /accounts/{account_id}/experience
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#set_experience_profile
   kind: write
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: update_knowledge
-  description: "Update Knowledge"
+  description: Update Knowledge
   operation: PATCH /accounts/{account_id}/experience
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#update_knowledge
   kind: write
-  group: "Accounts: General"
+  group: 'Accounts: General'
 - name: get_person_identification
-  description: "Get Person Identification"
+  description: Get Person Identification
   operation: GET /persons/{person_id}/identifications/{identification_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_person_identification
   kind: read
-  group: "Accounts: ID+V"
+  group: 'Accounts: ID+V'
 - name: start_identity_verification
-  description: "Start Identity Verification"
+  description: Start Identity Verification
   operation: POST /accounts/{account_id}/identity_verification
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#start_identity_verification
   kind: write
-  group: "Accounts: ID+V"
+  group: 'Accounts: ID+V'
 - name: submit_identification_payload
-  description: "Submit Identification Payload"
+  description: Submit Identification Payload
   operation: POST /persons/{person_id}/identifications/{identification_id}/submit
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#submit_identification_payload
   kind: write
-  group: "Accounts: ID+V"
+  group: 'Accounts: ID+V'
 - name: cancel_batch_order
-  description: "Cancel Batch Order"
+  description: Cancel Batch Order
   operation: POST /accounts/{account_id}/batch_orders/{order_id}/cancel
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#cancel_batch_order
   kind: write
-  group: "Batch Orders"
+  group: Batch Orders
 - name: confirm_batch_order
-  description: "Confirm Batch Order"
+  description: Confirm Batch Order
   operation: POST /accounts/{account_id}/batch_orders/{order_id}/confirm
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#confirm_batch_order
   kind: write
-  group: "Batch Orders"
+  group: Batch Orders
 - name: create_batch_order
-  description: "Create Batch Order"
+  description: Create Batch Order
   operation: POST /accounts/{account_id}/batch_orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_batch_order
   kind: write
-  group: "Batch Orders"
+  group: Batch Orders
 - name: get_batch_order
-  description: "Get Batch Order"
+  description: Get Batch Order
   operation: GET /accounts/{account_id}/batch_orders/{order_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_batch_order
   kind: read
-  group: "Batch Orders"
+  group: Batch Orders
 - name: list_batch_orders
-  description: "List Batch Orders"
+  description: List Batch Orders
   operation: GET /accounts/{account_id}/batch_orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_batch_orders
   kind: read
-  group: "Batch Orders"
+  group: Batch Orders
 - name: add_beneficial_owner
-  description: "Add Beneficial Owner"
+  description: Add Beneficial Owner
   operation: POST /businesses/{business_id}/beneficial_owners
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#add_beneficial_owner
   kind: write
-  group: "Businesses"
+  group: Businesses
 - name: add_legal_representative
-  description: "Add Legal Representative"
+  description: Add Legal Representative
   operation: POST /businesses/{business_id}/legal_representatives
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#add_legal_representative
   kind: write
-  group: "Businesses"
+  group: Businesses
 - name: create_business
-  description: "Create Business"
+  description: Create Business
   operation: POST /businesses
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_business
   kind: write
-  group: "Businesses"
+  group: Businesses
 - name: get_business
-  description: "Get Business"
+  description: Get Business
   operation: GET /businesses/{business_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_business
   kind: read
-  group: "Businesses"
+  group: Businesses
 - name: list_beneficial_owners
-  description: "List Beneficial Owners"
+  description: List Beneficial Owners
   operation: GET /businesses/{business_id}/beneficial_owners
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_beneficial_owners
   kind: read
-  group: "Businesses"
+  group: Businesses
 - name: list_businesses
-  description: "List Businesses"
+  description: List Businesses
   operation: GET /businesses
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_businesses
   kind: read
-  group: "Businesses"
+  group: Businesses
 - name: list_legal_representatives
-  description: "List Legal Representatives"
+  description: List Legal Representatives
   operation: GET /businesses/{business_id}/legal_representatives
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_legal_representatives
   kind: read
-  group: "Businesses"
+  group: Businesses
 - name: submit_document
-  description: "Submit Document"
+  description: Submit Document
   operation: POST /businesses/{business_id}/submit_document
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#submit_document
   kind: write
-  group: "Businesses"
+  group: Businesses
   deprecated: true
 - name: get_settlement
-  description: "Get Settlement"
+  description: Get Settlement
   operation: GET /settlement_accounts/{settlement_account_id}/settlements/{settlement_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_settlement
   kind: read
-  group: "Cash Settlement"
+  group: Cash Settlement
 - name: list_settlement_accounts
-  description: "List Settlement Accounts"
+  description: List Settlement Accounts
   operation: GET /settlement_accounts
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_settlement_accounts
   kind: read
-  group: "Cash Settlement"
+  group: Cash Settlement
 - name: list_settlement_accounts_transactions
-  description: "List Settlement Accounts Transactions"
+  description: List Settlement Accounts Transactions
   operation: GET /settlement_accounts/{settlement_account_id}/transactions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_settlement_accounts_transactions
   kind: read
-  group: "Cash Settlement"
+  group: Cash Settlement
 - name: list_settlement_items
-  description: "List Settlement Items"
+  description: List Settlement Items
   operation: GET /settlement_accounts/{settlement_account_id}/settlements/{settlement_id}/items
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_settlement_items
   kind: read
-  group: "Cash Settlement"
+  group: Cash Settlement
 - name: list_settlements
-  description: "List Settlements"
+  description: List Settlements
   operation: GET /settlement_accounts/{settlement_account_id}/settlements
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_settlements
   kind: read
-  group: "Cash Settlement"
+  group: Cash Settlement
 - name: get_corporate_action
-  description: "Get Corporate Action (Account-level)"
+  description: Get Corporate Action (Account-level)
   operation: GET /accounts/{account_id}/corporate_actions/{corporate_action_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_corporate_action
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: get_corporate_action_general
-  description: "Get Corporate Action (Instrument-level)"
+  description: Get Corporate Action (Instrument-level)
   operation: GET /corporate_actions/{corporate_action_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_corporate_action_general
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: get_income_distribution
-  description: "Get Income Distribution"
+  description: Get Income Distribution
   operation: GET /accounts/{account_id}/income_distributions/{income_distribution_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_income_distribution
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: list_corporate_actions
-  description: "List Corporate Actions (Account-level)"
+  description: List Corporate Actions (Account-level)
   operation: GET /accounts/{account_id}/corporate_actions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_corporate_actions
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: list_corporate_actions_general
-  description: "List Corporate Actions (Instrument-level)"
+  description: List Corporate Actions (Instrument-level)
   operation: GET /corporate_actions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_corporate_actions_general
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: list_income_distributions
-  description: "List Income Distributions"
+  description: List Income Distributions
   operation: GET /accounts/{account_id}/income_distributions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_income_distributions
   kind: read
-  group: "Corporate Actions"
+  group: Corporate Actions
 - name: get_agreements
-  description: "Get Latest Agreements"
+  description: Get Latest Agreements
   operation: GET /agreements
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_agreements
   kind: read
-  group: "Documents"
+  group: Documents
 - name: get_document
-  description: "Get Document"
+  description: Get Document
   operation: GET /accounts/{account_id}/documents/{document_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_document
   kind: read
-  group: "Documents"
+  group: Documents
 - name: list_documents_of_account
-  description: "List Documents"
+  description: List Documents
   operation: GET /accounts/{account_id}/documents
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_documents_of_account
   kind: read
-  group: "Documents"
+  group: Documents
 - name: submit_document_upload
-  description: "Submit Document"
+  description: Submit Document
   operation: POST /submit_document
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#submit_document_upload
   kind: write
-  group: "Documents"
+  group: Documents
 - name: create_webhook
-  description: "Create Webhook"
+  description: Create Webhook
   operation: POST /webhooks
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_webhook
   kind: write
-  group: "Events + Webhooks"
+  group: Events + Webhooks
 - name: delete_webhook
-  description: "Delete Webhook"
+  description: Delete Webhook
   operation: DELETE /webhooks/{webhook_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#delete_webhook
   kind: write
-  group: "Events + Webhooks"
+  group: Events + Webhooks
 - name: list_events
-  description: "Get Events"
+  description: Get Events
   operation: GET /events
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_events
   kind: read
-  group: "Events + Webhooks"
+  group: Events + Webhooks
 - name: list_webhooks
-  description: "List Webhooks"
+  description: List Webhooks
   operation: GET /webhooks
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_webhooks
   kind: read
-  group: "Events + Webhooks"
+  group: Events + Webhooks
 - name: get_instrument
-  description: "Get Instrument"
+  description: Get Instrument
   operation: GET /instruments/{isin}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_instrument
   kind: read
-  group: "Instruments"
+  group: Instruments
 - name: get_latest_yield
-  description: "Get Latest Monthly Yield"
+  description: Get Latest Monthly Yield
   operation: GET /instruments/{instrument}/yield
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_latest_yield
   kind: read
-  group: "Instruments"
+  group: Instruments
 - name: get_prices
-  description: "Get Prices"
+  description: Get Prices
   operation: GET /instruments/{isin}/prices
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_prices
   kind: read
-  group: "Instruments"
+  group: Instruments
 - name: list_instruments
-  description: "List Instruments"
+  description: List Instruments
   operation: GET /instruments
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_instruments
   kind: read
-  group: "Instruments"
+  group: Instruments
 - name: confirm_withdrawal
-  description: "Confirm Withdrawal"
+  description: Confirm Withdrawal
   operation: POST /accounts/{account_id}/withdrawals/{withdrawal_id}/confirm
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#confirm_withdrawal
   kind: write
-  group: "Money + Positions"
+  group: Money + Positions
 - name: create_withdrawal
-  description: "Create Withdrawal"
+  description: Create Withdrawal
   operation: POST /accounts/{account_id}/withdrawals
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_withdrawal
   kind: write
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_financials_accounts__account_id__financials_get
-  description: "Get Financials"
+  description: Get Financials
   operation: GET /accounts/{account_id}/financials
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_financials_accounts__account_id__financials_get
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_positions
-  description: "Get Positions"
+  description: Get Positions
   operation: GET /accounts/{account_id}/positions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_positions
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_sweep
-  description: "Get Balance Sweep"
+  description: Get Balance Sweep
   operation: GET /accounts/{account_id}/sweeps/{sweep_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_sweep
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_transaction_by_id
-  description: "Get Transaction"
+  description: Get Transaction
   operation: GET /accounts/{account_id}/transactions/{transaction_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_transaction_by_id
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_transactions
-  description: "Get Transactions"
+  description: Get Transactions
   operation: GET /accounts/{account_id}/transactions
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_transactions
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: get_withdrawal
-  description: "Get Withdrawal"
+  description: Get Withdrawal
   operation: GET /accounts/{account_id}/withdrawals/{withdrawal_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_withdrawal
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: list_sweeps
-  description: "List Balance Sweeps"
+  description: List Balance Sweeps
   operation: GET /accounts/{account_id}/sweeps
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_sweeps
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: list_withdrawals
-  description: "List Withdrawals"
+  description: List Withdrawals
   operation: GET /accounts/{account_id}/withdrawals
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_withdrawals
   kind: read
-  group: "Money + Positions"
+  group: Money + Positions
 - name: cancel_order
-  description: "Cancel Order"
+  description: Cancel Order
   operation: POST /accounts/{account_id}/orders/{order_id}/cancel
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#cancel_order
   kind: write
-  group: "Orders"
+  group: Orders
 - name: confirm_order
-  description: "Confirm Order"
+  description: Confirm Order
   operation: POST /accounts/{account_id}/orders/{order_id}/confirm
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#confirm_order
   kind: write
-  group: "Orders"
+  group: Orders
 - name: create_order
-  description: "Create Order"
+  description: Create Order
   operation: POST /accounts/{account_id}/orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_order
   kind: write
-  group: "Orders"
+  group: Orders
 - name: get_order
-  description: "Get Order"
+  description: Get Order
   operation: GET /accounts/{account_id}/orders/{order_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_order
   kind: read
-  group: "Orders"
+  group: Orders
 - name: list_orders
-  description: "List Orders"
+  description: List Orders
   operation: GET /accounts/{account_id}/orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_orders
   kind: read
-  group: "Orders"
+  group: Orders
 - name: create_person
-  description: "Create Person"
+  description: Create Person
   operation: POST /persons
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_person
   kind: write
-  group: "Persons"
+  group: Persons
 - name: create_person_data_update
-  description: "Create Person Data Update Request"
+  description: Create Person Data Update Request
   operation: POST /persons/{person_id}/updates
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_person_data_update
   kind: write
-  group: "Persons"
+  group: Persons
 - name: get_person
-  description: "Get Person"
+  description: Get Person
   operation: GET /persons/{person_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_person
   kind: read
-  group: "Persons"
+  group: Persons
 - name: get_person_data_update
-  description: "Get Person Data Update Request"
+  description: Get Person Data Update Request
   operation: GET /persons/{person_id}/updates/{update_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_person_data_update
   kind: read
-  group: "Persons"
+  group: Persons
 - name: list_person_data_updates
-  description: "List Person Data Update Requests"
+  description: List Person Data Update Requests
   operation: GET /persons/{person_id}/updates
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_person_data_updates
   kind: read
-  group: "Persons"
+  group: Persons
 - name: list_persons
-  description: "List Persons"
+  description: List Persons
   operation: GET /persons
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_persons
   kind: read
-  group: "Persons"
+  group: Persons
 - name: create_securities_account
-  description: "Create Securities Account"
+  description: Create Securities Account
   operation: POST /accounts/{account_id}/securities_accounts
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_securities_account
   kind: write
-  group: "Securities Accounts"
+  group: Securities Accounts
 - name: get_securities_account
-  description: "Get Securities Account"
+  description: Get Securities Account
   operation: GET /accounts/{account_id}/securities_accounts/{securities_account_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_securities_account
   kind: read
-  group: "Securities Accounts"
+  group: Securities Accounts
 - name: list_securities_accounts
-  description: "List Securities Accounts"
+  description: List Securities Accounts
   operation: GET /accounts/{account_id}/securities_accounts
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_securities_accounts
   kind: read
-  group: "Securities Accounts"
+  group: Securities Accounts
 - name: cancel_tax_exemption_order
-  description: "Cancel Tax Exemption Order"
+  description: Cancel Tax Exemption Order
   operation: POST /accounts/{account_id}/tax_exemption_orders/{tax_exemption_order_id}/cancel
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#cancel_tax_exemption_order
   kind: write
-  group: "Taxes"
+  group: Taxes
 - name: create_tax_exemption_order
-  description: "Create Tax Exemption Order"
+  description: Create Tax Exemption Order
   operation: POST /accounts/{account_id}/tax_exemption_orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_tax_exemption_order
   kind: write
-  group: "Taxes"
+  group: Taxes
 - name: get_tax_exemption_order
-  description: "Get Tax Exemption Order"
+  description: Get Tax Exemption Order
   operation: GET /accounts/{account_id}/tax_exemption_orders/{tax_exemption_order_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_tax_exemption_order
   kind: read
-  group: "Taxes"
+  group: Taxes
 - name: list_tax_exemption_orders
-  description: "List Tax Exemption Orders"
+  description: List Tax Exemption Orders
   operation: GET /accounts/{account_id}/tax_exemption_orders
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_tax_exemption_orders
   kind: read
-  group: "Taxes"
+  group: Taxes
 - name: list_tax_exemption_usages
-  description: "List Tax Exemption Usages"
+  description: List Tax Exemption Usages
   operation: GET /accounts/{account_id}/tax_exemption_usages
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_tax_exemption_usages
   kind: read
-  group: "Taxes"
+  group: Taxes
 - name: get_trade
-  description: "Get Trade"
+  description: Get Trade
   operation: GET /accounts/{account_id}/trades/{trade_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_trade
   kind: read
-  group: "Trades"
+  group: Trades
 - name: list_trades
-  description: "List Trades"
+  description: List Trades
   operation: GET /accounts/{account_id}/trades
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_trades
   kind: read
-  group: "Trades"
+  group: Trades
 - name: cancel_treasury_mandate
-  description: "Cancel Treasury Mandate"
+  description: Cancel Treasury Mandate
   operation: POST /accounts/{account_id}/treasury_mandates/{mandate_id}/cancel
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#cancel_treasury_mandate
   kind: write
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: create_treasury_mandate
-  description: "Create Treasury Mandate"
+  description: Create Treasury Mandate
   operation: POST /accounts/{account_id}/treasury_mandates
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_treasury_mandate
   kind: write
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: create_treasury_transfer
-  description: "Create Treasury Transfer"
+  description: Create Treasury Transfer
   operation: POST /accounts/{account_id}/treasury_transfers
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_treasury_transfer
   kind: write
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: get_treasury_fee
-  description: "Get Treasury Fee By Id"
+  description: Get Treasury Fee By Id
   operation: GET /treasury_fees/{fee_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_treasury_fee
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: get_treasury_financials
-  description: "Get Treasury Financials"
+  description: Get Treasury Financials
   operation: GET /accounts/{account_id}/treasury_financials
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_treasury_financials
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: get_treasury_mandate
-  description: "Get Treasury Mandate"
+  description: Get Treasury Mandate
   operation: GET /accounts/{account_id}/treasury_mandates/{mandate_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_treasury_mandate
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: get_treasury_transfer
-  description: "Get Treasury Transfer"
+  description: Get Treasury Transfer
   operation: GET /accounts/{account_id}/treasury_transfers/{treasury_transfer_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_treasury_transfer
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: list_customer_fees
-  description: "Get Customer Fee Composition for a Treasury Fee"
+  description: Get Customer Fee Composition for a Treasury Fee
   operation: GET /treasury_fees/{fee_id}/customer_fees
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_customer_fees
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: list_treasury_fees
-  description: "List Treasury Fees"
+  description: List Treasury Fees
   operation: GET /treasury_fees
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_treasury_fees
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: list_treasury_mandates
-  description: "List Treasury Mandates"
+  description: List Treasury Mandates
   operation: GET /accounts/{account_id}/treasury_mandates
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_treasury_mandates
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: list_treasury_transfers
-  description: "List Treasury Transfers"
+  description: List Treasury Transfers
   operation: GET /accounts/{account_id}/treasury_transfers
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_treasury_transfers
   kind: read
-  group: "Treasury Mandates"
+  group: Treasury Mandates
 - name: cancel_workflow
-  description: "Cancel Workflow"
+  description: Cancel Workflow
   operation: POST /accounts/{account_id}/workflows/{workflow_id}/cancel
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#cancel_workflow
   kind: write
-  group: "Workflows"
+  group: Workflows
 - name: confirm_workflow
-  description: "Confirm Workflow"
+  description: Confirm Workflow
   operation: POST /accounts/{account_id}/workflows/{workflow_id}/confirm
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#confirm_workflow
   kind: write
-  group: "Workflows"
+  group: Workflows
 - name: create_workflow
-  description: "Create Workflow"
+  description: Create Workflow
   operation: POST /accounts/{account_id}/workflows
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#create_workflow
   kind: write
-  group: "Workflows"
+  group: Workflows
 - name: get_workflow
-  description: "Get Workflow"
+  description: Get Workflow
   operation: GET /accounts/{account_id}/workflows/{workflow_id}
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#get_workflow
   kind: read
-  group: "Workflows"
+  group: Workflows
 - name: list_workflows
-  description: "List Workflows"
+  description: List Workflows
   operation: GET /accounts/{account_id}/workflows
   source_operation: openapi/lemonmarkets-brokerage-openapi.json#list_workflows
   kind: read
-  group: "Workflows"
+  group: Workflows
+deployment:
+  mode: none
+  verified: derived
+  tools: 96
+  checked: '2026-08-12'
+  source: catalog MCP census

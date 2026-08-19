@@ -1,0 +1,2588 @@
+{
+  "item": [
+    {
+      "id": "9455bd49-ae95-4b9b-9822-b78977ed2615",
+      "name": "Workflows",
+      "description": {
+        "content": "Use workflows to perform repetitive tasks automatically.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4f357547-e0d9-47e0-8f18-eb4dcf4288b6",
+          "name": "Cancel Workflow",
+          "request": {
+            "name": "Cancel Workflow",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "workflows",
+                ":workflow_id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unified_orders",
+                  "value": "false",
+                  "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) An account identifier.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflow_id",
+                  "description": "(Required) A workflow identifier.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Principal",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Justification",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "974fa725-b22a-4182-a1c2-452f8334c04c",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"action\": {\n    \"amount\": \"1.25\",\n    \"currency\": \"EUR\",\n    \"fee\": \"0.00\",\n    \"instrument\": \"LU0290358497\",\n    \"side\": \"buy\",\n    \"type\": \"batch_order.create_and_confirm\"\n  },\n  \"history\": [\n    {\n      \"status\": \"canceled\",\n      \"timestamp\": \"2024-04-23T11:30:20.434025+00:00\"\n    },\n    {\n      \"status\": \"created\",\n      \"timestamp\": \"2024-04-23T11:00:12.152244+00:00\"\n    }\n  ],\n  \"id\": \"wf_f2aa90bcc16a43ddb2098c8a5da9f55b\",\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ea04c88-519c-4ca8-afe5-99e7b685868f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e4d0848-d98f-4605-b96f-86b648545977",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d720c50f-3ccb-49e9-95be-d72785332863",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86571e30-b833-4e3c-abaf-c114e73d2a0d",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06a7bafa-8206-4a4a-b5c8-b2f47938e08f",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad75346f-032e-4ea6-be43-3be27e959da3",
+          "name": "Confirm Workflow",
+          "request": {
+            "name": "Confirm Workflow",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "workflows",
+                ":workflow_id",
+                "confirm"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unified_orders",
+                  "value": "false",
+                  "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) An account identifier.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflow_id",
+                  "description": "(Required) A workflow identifier.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Principal",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Justification",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appropriateness_consent\": \"<boolean>\",\n  \"sca\": {\n    \"client_credential_id\": \"<string>\",\n    \"signature\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d255826b-806e-4aa8-b934-37915b899ef4",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"action\": {\n    \"amount\": \"5.00\",\n    \"currency\": \"EUR\",\n    \"fee\": \"0.10\",\n    \"instrument\": \"IE00BYXYX521\",\n    \"side\": \"buy\",\n    \"type\": \"batch_order.create_and_confirm\"\n  },\n  \"history\": [\n    {\n      \"status\": \"confirmed\",\n      \"timestamp\": \"2024-04-19T07:49:22.783350+00:00\"\n    },\n    {\n      \"status\": \"created\",\n      \"timestamp\": \"2024-04-19T07:34:37.359894+00:00\"\n    }\n  ],\n  \"id\": \"wf_acb4235bf09342b6a3b3d1401ae7576f\",\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "125d1f2c-3585-4595-9ef2-3559202f3783",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11265038-d0b6-46bf-bf51-56fb4be0b73f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f2b2314-f6a3-4317-bf36-2e5f55f3011a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb0330f0-2efa-414b-88f7-ec2085896c9a",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47e5df9e-f623-4253-8b31-b523d04c22e0",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id",
+                    "confirm"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appropriateness_consent\": true,\n  \"sca\": {\n    \"client_credential_id\": \"local_authenticator_id\",\n    \"signature\": \"<base64>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a9cb76eb-b068-45b4-949f-ad9b28291ec3",
+          "name": "Create Workflow",
+          "request": {
+            "name": "Create Workflow",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "workflows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unified_orders",
+                  "value": "false",
+                  "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) An account identifier.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Principal",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Justification",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trigger\": {\n    \"type\": \"<string>\",\n    \"cadence\": \"<string>\",\n    \"start_after\": \"<date>\"\n  },\n  \"action\": {\n    \"type\": \"<string>\",\n    \"order\": {\n      \"type\": \"<string>\",\n      \"side\": \"<string>\",\n      \"instrument\": \"<string>\",\n      \"amount\": \"<number>\",\n      \"fee\": \"<number>\",\n      \"currency\": \"<string>\",\n      \"securities_account\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "69d04388-922f-4f87-b0df-62b04c38f5b6",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"action\": {\n    \"amount\": \"1.25\",\n    \"currency\": \"EUR\",\n    \"fee\": \"0.00\",\n    \"instrument\": \"LU0290358497\",\n    \"side\": \"buy\",\n    \"type\": \"batch_order.create_and_confirm\"\n  },\n  \"appropriateness_consent\": {\n    \"required\": false\n  },\n  \"history\": [\n    {\n      \"status\": \"created\",\n      \"timestamp\": \"2024-04-23T11:00:12.152244+00:00\"\n    }\n  ],\n  \"id\": \"wf_f2aa90bcc16a43ddb2098c8a5da9f55b\",\n  \"regulatory_disclosures\": {\n    \"acquisition_costs\": \"0.00\",\n    \"acquisition_costs_pct\": \"0.00\",\n    \"custody_costs\": \"0.00\",\n    \"custody_costs_pct\": \"0.00\",\n    \"entry_costs\": \"0.00\",\n    \"entry_costs_pct\": \"0.00\",\n    \"estimated_amount\": \"1.25\",\n    \"estimated_price\": \"141.3099\",\n    \"estimated_quantity\": \"0.00885\",\n    \"exit_costs\": \"0.00\",\n    \"exit_costs_pct\": \"0.00\",\n    \"impact_final_year\": \"0.00\",\n    \"impact_final_year_pct\": \"0.00\",\n    \"impact_first_year\": \"0.00\",\n    \"impact_first_year_pct\": \"0.00\",\n    \"impact_subsequent_year\": \"0.00\",\n    \"impact_subsequent_year_pct\": \"0.10\",\n    \"kid\": \"https://kid.sandbox.lemon.markets/2023-11-17/LU0290358497-ac81558ef3e50c8eb4a01f7a68800963.pdf\",\n    \"product_costs\": \"0.00\",\n    \"product_costs_pct\": \"0.10\",\n    \"recurring_impact_total\": \"19.05\",\n    \"recurring_impact_total_pct\": \"25.40\",\n    \"recurring_impact_year_1\": \"0.81\",\n    \"recurring_impact_year_1_pct\": \"5.40\",\n    \"recurring_impact_year_2\": \"2.31\",\n    \"recurring_impact_year_2_pct\": \"7.70\",\n    \"recurring_impact_year_3\": \"3.81\",\n    \"recurring_impact_year_3_pct\": \"8.47\",\n    \"recurring_impact_year_4\": \"5.31\",\n    \"recurring_impact_year_4_pct\": \"8.85\",\n    \"recurring_impact_year_5\": \"6.81\",\n    \"recurring_impact_year_5_pct\": \"9.08\",\n    \"running_costs\": \"0.00\",\n    \"running_costs_pct\": \"0.10\",\n    \"service_costs_total\": \"0.00\",\n    \"service_costs_total_pct\": \"0.03\",\n    \"third_party_grants\": \"0.00\",\n    \"third_party_grants_pct\": \"0.03\"\n  },\n  \"sca\": {\n    \"challenge\": \"pVz8_N6cNdepukvaApmdww==\",\n    \"required\": false\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a67ac3e9-1f46-4540-8b05-80acdde9897d",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6382ab11-fdaa-429d-b06a-942d50fbdb28",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f3bf39c-cb6f-43e1-b69b-793a97433edc",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b137532-7301-450f-8312-f8fb18d2b1a7",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acadbe8a-bbcb-41f6-8816-00200bf92070",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": {\n    \"type\": \"order.create_and_confirm\",\n    \"order\": {\n      \"amount\": \"1.25\",\n      \"currency\": \"EUR\",\n      \"fee\": \"0.00\",\n      \"instrument\": \"LU0290358497\",\n      \"side\": \"buy\",\n      \"type\": \"batch\"\n    }\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e2571f2c-c6ac-47a3-9ce1-6df0993ddb6c",
+          "name": "List Workflows",
+          "request": {
+            "name": "List Workflows",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "workflows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "unified_orders",
+                  "value": "false",
+                  "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) An account identifier.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Principal",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Justification",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c8ad55ea-ea76-4dd7-95fa-c5b3a6c3a2f3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"action\": {\n        \"amount\": \"5.00\",\n        \"currency\": \"EUR\",\n        \"fee\": \"0.10\",\n        \"instrument\": \"IE00BYXYX521\",\n        \"side\": \"buy\",\n        \"type\": \"batch_order.create_and_confirm\"\n      },\n      \"history\": [\n        {\n          \"status\": \"confirmed\",\n          \"timestamp\": \"2024-04-19T07:49:22.783350+00:00\"\n        },\n        {\n          \"status\": \"created\",\n          \"timestamp\": \"2024-04-19T07:34:37.359894+00:00\"\n        }\n      ],\n      \"id\": \"wf_acb4235bf09342b6a3b3d1401ae7576f\",\n      \"trigger\": {\n        \"cadence\": \"monthly\",\n        \"type\": \"schedule\"\n      }\n    },\n    {\n      \"action\": {\n        \"amount\": \"5.00\",\n        \"currency\": \"EUR\",\n        \"fee\": \"0.00\",\n        \"instrument\": \"IE00BYXYX521\",\n        \"side\": \"buy\",\n        \"type\": \"batch_order.create_and_confirm\"\n      },\n      \"appropriateness_consent\": {\n        \"required\": false\n      },\n      \"history\": [\n        {\n          \"status\": \"created\",\n          \"timestamp\": \"2024-04-19T07:33:57.802570+00:00\"\n        }\n      ],\n      \"id\": \"wf_41bfe60078764fca9bef7c3ed7d04c0d\",\n      \"regulatory_disclosures\": {\n        \"acquisition_costs\": \"0.00\",\n        \"acquisition_costs_pct\": \"0.00\",\n        \"custody_costs\": \"0.00\",\n        \"custody_costs_pct\": \"0.00\",\n        \"entry_costs\": \"0.00\",\n        \"entry_costs_pct\": \"0.00\",\n        \"estimated_amount\": \"5.00\",\n        \"estimated_price\": \"28.3988\",\n        \"estimated_quantity\": \"0.17606\",\n        \"exit_costs\": \"0.00\",\n        \"exit_costs_pct\": \"0.00\",\n        \"impact_final_year\": \"0.00\",\n        \"impact_final_year_pct\": \"0.00\",\n        \"impact_first_year\": \"0.00\",\n        \"impact_first_year_pct\": \"0.00\",\n        \"impact_subsequent_year\": \"0.01\",\n        \"impact_subsequent_year_pct\": \"0.19\",\n        \"kid\": \"https://kid.sandbox.lemon.markets/2023-11-17/IE00BYXYX521-5f534eec417153a5f638ad091f0a2962.pdf\",\n        \"product_costs\": \"0.01\",\n        \"product_costs_pct\": \"0.19\",\n        \"recurring_impact_total\": \"144.90\",\n        \"recurring_impact_total_pct\": \"48.30\",\n        \"recurring_impact_year_1\": \"6.18\",\n        \"recurring_impact_year_1_pct\": \"10.30\",\n        \"recurring_impact_year_2\": \"17.58\",\n        \"recurring_impact_year_2_pct\": \"14.65\",\n        \"recurring_impact_year_3\": \"28.98\",\n        \"recurring_impact_year_3_pct\": \"16.10\",\n        \"recurring_impact_year_4\": \"40.38\",\n        \"recurring_impact_year_4_pct\": \"16.83\",\n        \"recurring_impact_year_5\": \"51.78\",\n        \"recurring_impact_year_5_pct\": \"17.26\",\n        \"running_costs\": \"0.01\",\n        \"running_costs_pct\": \"0.19\",\n        \"service_costs_total\": \"0.00\",\n        \"service_costs_total_pct\": \"0.03\",\n        \"third_party_grants\": \"0.00\",\n        \"third_party_grants_pct\": \"0.03\"\n      },\n      \"sca\": {\n        \"challenge\": \"FxvVWk3iLDqiz3QJaxPLQg==\",\n        \"required\": false\n      },\n      \"trigger\": {\n        \"cadence\": \"monthly\",\n        \"type\": \"schedule\"\n      }\n    }\n  ],\n  \"pagination\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4c5a479-a9ab-4983-aac6-1cfa936a3133",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "feea9a7a-83ba-4f64-b2c7-f5ff1662824c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fa2d26d-2b09-4889-a294-72d839117bde",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb257dce-4611-425d-b591-640296ba1a96",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57b277aa-5984-4d13-b9d0-5201f06c6f66",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "status",
+                      "value": "confirmed"
+                    },
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae21e27b-9674-4065-96f1-9ba9185050aa",
+          "name": "Get Workflow",
+          "request": {
+            "name": "Get Workflow",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "workflows",
+                ":workflow_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unified_orders",
+                  "value": "false",
+                  "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) An account identifier.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflow_id",
+                  "description": "(Required) A workflow identifier.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Principal",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "LMG-Data-Privacy-Access-Justification",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ebbc41e-2f93-4943-9211-545d35dc1b45",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"action\": {\n    \"amount\": \"5.00\",\n    \"currency\": \"EUR\",\n    \"fee\": \"0.00\",\n    \"instrument\": \"IE00BYXYX521\",\n    \"side\": \"buy\",\n    \"type\": \"batch_order.create_and_confirm\"\n  },\n  \"appropriateness_consent\": {\n    \"required\": false\n  },\n  \"history\": [\n    {\n      \"status\": \"created\",\n      \"timestamp\": \"2024-04-19T07:33:57.802570+00:00\"\n    }\n  ],\n  \"id\": \"wf_41bfe60078764fca9bef7c3ed7d04c0d\",\n  \"regulatory_disclosures\": {\n    \"acquisition_costs\": \"0.00\",\n    \"acquisition_costs_pct\": \"0.00\",\n    \"custody_costs\": \"0.00\",\n    \"custody_costs_pct\": \"0.00\",\n    \"entry_costs\": \"0.00\",\n    \"entry_costs_pct\": \"0.00\",\n    \"estimated_amount\": \"5.00\",\n    \"estimated_price\": \"28.3988\",\n    \"estimated_quantity\": \"0.17606\",\n    \"exit_costs\": \"0.00\",\n    \"exit_costs_pct\": \"0.00\",\n    \"impact_final_year\": \"0.00\",\n    \"impact_final_year_pct\": \"0.00\",\n    \"impact_first_year\": \"0.00\",\n    \"impact_first_year_pct\": \"0.00\",\n    \"impact_subsequent_year\": \"0.01\",\n    \"impact_subsequent_year_pct\": \"0.19\",\n    \"kid\": \"https://kid.sandbox.lemon.markets/2023-11-17/IE00BYXYX521-5f534eec417153a5f638ad091f0a2962.pdf\",\n    \"product_costs\": \"0.01\",\n    \"product_costs_pct\": \"0.19\",\n    \"recurring_impact_total\": \"144.90\",\n    \"recurring_impact_total_pct\": \"48.30\",\n    \"recurring_impact_year_1\": \"6.18\",\n    \"recurring_impact_year_1_pct\": \"10.30\",\n    \"recurring_impact_year_2\": \"17.58\",\n    \"recurring_impact_year_2_pct\": \"14.65\",\n    \"recurring_impact_year_3\": \"28.98\",\n    \"recurring_impact_year_3_pct\": \"16.10\",\n    \"recurring_impact_year_4\": \"40.38\",\n    \"recurring_impact_year_4_pct\": \"16.83\",\n    \"recurring_impact_year_5\": \"51.78\",\n    \"recurring_impact_year_5_pct\": \"17.26\",\n    \"running_costs\": \"0.01\",\n    \"running_costs_pct\": \"0.19\",\n    \"service_costs_total\": \"0.00\",\n    \"service_costs_total_pct\": \"0.03\",\n    \"third_party_grants\": \"0.00\",\n    \"third_party_grants_pct\": \"0.03\"\n  },\n  \"sca\": {\n    \"challenge\": \"FxvVWk3iLDqiz3QJaxPLQg==\",\n    \"required\": false\n  },\n  \"trigger\": {\n    \"cadence\": \"monthly\",\n    \"type\": \"schedule\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a4c5693-0393-431b-aed8-f1b5e08157d1",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91bd5dc6-141b-43f5-88b3-77d40d1dc28e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "007e9e95-55f5-45bf-a317-424db9cb4045",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f27a2b27-e8b1-432e-be55-a98a41f66a05",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61f137d6-b05f-4e61-b8de-3ceabd20a935",
+              "name": "Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unified_orders",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) An account identifier.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) A workflow identifier.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Principal",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "LMG-Data-Privacy-Access-Justification",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.lemon.markets/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8c740af2-7674-45ef-8f29-85b6becf7df6",
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Workflows API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Use workflows to perform repetitive tasks automatically.",
+      "type": "text/plain"
+    }
+  }
+}

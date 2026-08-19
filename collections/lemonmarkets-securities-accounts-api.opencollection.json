@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Securities Accounts API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Securities Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Securities Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/securities_accounts",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Securities Accounts"
+        },
+        {
+          "info": {
+            "name": "Create Securities Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/securities_accounts",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              }
+            ]
+          },
+          "docs": "Create Securities Account"
+        },
+        {
+          "info": {
+            "name": "Get Securities Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/securities_accounts/:securities_account_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "securities_account_id",
+                "value": "sec_ac_00e49aeab85844c89de57929bcb0f76a",
+                "type": "path",
+                "description": "A securities account identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Securities Account"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

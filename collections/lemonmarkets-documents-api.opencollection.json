@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Documents API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Latest Agreements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/agreements",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "When opening an account, the user has to agree to accept certain types of contractual documents, like privacy policy or terms and conditions.\n"
+        },
+        {
+          "info": {
+            "name": "Get Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/documents/:document_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "document_id",
+                "value": "",
+                "type": "path",
+                "description": "A document identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Document"
+        },
+        {
+          "info": {
+            "name": "List Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/documents",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Documents"
+        },
+        {
+          "info": {
+            "name": "Submit Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/submit_document",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit a document for either a person or a business. This endpoint returns a presigned upload URL that can be used to upload the document file.\n\nThe request must specify either a person document or a business document based on the `type` field. The response will contain a presigned `upload_location` URL that expires after a certain time.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

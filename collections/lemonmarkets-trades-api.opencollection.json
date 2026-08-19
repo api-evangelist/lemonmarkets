@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Trades API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Trades",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Trade",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/trades/:trade_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "trade_id",
+                "value": "",
+                "type": "path",
+                "description": "A trade identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Trade"
+        },
+        {
+          "info": {
+            "name": "List Trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/trades",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "instrument",
+                "value": "bord_0fef2e8b7962404d94454d8c47caa364",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "securities_account",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Trades"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

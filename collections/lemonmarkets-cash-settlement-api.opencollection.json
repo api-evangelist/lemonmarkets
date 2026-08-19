@@ -1,0 +1,163 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Cash Settlement API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cash Settlement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Settlement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/settlement_accounts/:settlement_account_id/settlements/:settlement_id",
+            "params": [
+              {
+                "name": "settlement_account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "settlement_id",
+                "value": "",
+                "type": "path",
+                "description": "A settlement identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Settlement"
+        },
+        {
+          "info": {
+            "name": "List Settlement Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/settlement_accounts",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "List Settlement Accounts"
+        },
+        {
+          "info": {
+            "name": "List Settlement Accounts Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/settlement_accounts/:settlement_account_id/transactions",
+            "params": [
+              {
+                "name": "settlement_account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "List Settlement Accounts Transactions"
+        },
+        {
+          "info": {
+            "name": "List Settlement Items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/settlement_accounts/:settlement_account_id/settlements/:settlement_id/items",
+            "params": [
+              {
+                "name": "settlement_id",
+                "value": "",
+                "type": "path",
+                "description": "A settlement identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "settlement_account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Settlement Items"
+        },
+        {
+          "info": {
+            "name": "List Settlements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/settlement_accounts/:settlement_account_id/settlements",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "settlement_account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Settlements"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

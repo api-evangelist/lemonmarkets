@@ -1,0 +1,206 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Taxes API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Taxes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cancel Tax Exemption Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/tax_exemption_orders/:tax_exemption_order_id/cancel",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tax_exemption_order_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel Tax Exemption Order"
+        },
+        {
+          "info": {
+            "name": "List Tax Exemption Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/tax_exemption_orders",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n**NOTE:** Tax exemption usage will only be updated in a batch process.  It may take a while until tax exemption orders are considered.\n"
+              }
+            ]
+          },
+          "docs": "List Tax Exemption Orders"
+        },
+        {
+          "info": {
+            "name": "Create Tax Exemption Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/tax_exemption_orders",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Tax Exemption Order"
+        },
+        {
+          "info": {
+            "name": "Get Tax Exemption Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/tax_exemption_orders/:tax_exemption_order_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tax_exemption_order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Tax Exemption Order"
+        },
+        {
+          "info": {
+            "name": "List Tax Exemption Usages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/tax_exemption_usages",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "year",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "List Tax Exemption Usages"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,431 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Treasury Mandates API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Treasury Mandates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cancel Treasury Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_mandates/:mandate_id/cancel",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "mandate_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel a treasury mandate"
+        },
+        {
+          "info": {
+            "name": "List Treasury Mandates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_mandates",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "List Treasury Mandates"
+        },
+        {
+          "info": {
+            "name": "Create Treasury Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_mandates",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Treasury Mandate"
+        },
+        {
+          "info": {
+            "name": "List Treasury Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_transfers",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Treasury Transfers"
+        },
+        {
+          "info": {
+            "name": "Create Treasury Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_transfers",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Treasury Transfer"
+        },
+        {
+          "info": {
+            "name": "Get Treasury Fee By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/treasury_fees/:fee_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fee_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of a treasury fee."
+              }
+            ]
+          },
+          "docs": "Retrieves treasury fee details for the given fee ID belonging to the requesting partner.\n"
+        },
+        {
+          "info": {
+            "name": "Get Treasury Financials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_financials",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Treasury Financials"
+        },
+        {
+          "info": {
+            "name": "Get Treasury Mandate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_mandates/:mandate_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "mandate_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Treasury Mandate"
+        },
+        {
+          "info": {
+            "name": "Get Treasury Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/treasury_transfers/:treasury_transfer_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "treasury_transfer_id",
+                "value": "",
+                "type": "path",
+                "description": "A treasury transfer identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Treasury Transfer"
+        },
+        {
+          "info": {
+            "name": "Get Customer Fee Composition for a Treasury Fee",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/treasury_fees/:fee_id/customer_fees",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "fee_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the partner treasury fee."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is no need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated breakdown of individual customer fees that contribute to the given aggregated treasury fee.\n"
+        },
+        {
+          "info": {
+            "name": "List Treasury Fees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/treasury_fees",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "instrument",
+                "value": "",
+                "type": "query",
+                "description": "An ISIN (International Securities Identification Number) conforming to ISO 6166. This value uniquely identifies the instrument."
+              },
+              {
+                "name": "from_month",
+                "value": "",
+                "type": "query",
+                "description": "Start of the billing period (inclusive), in format YYYY-MM (e.g., 2025-01)."
+              },
+              {
+                "name": "to_month",
+                "value": "",
+                "type": "query",
+                "description": "End of the billing period (inclusive), in format YYYY-MM (e.g., 2025-06)."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is no need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of monthly aggregated treasury fees owned by the requesting partner. Optionally filter by instrument or billing month range."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

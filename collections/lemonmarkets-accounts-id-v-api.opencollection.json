@@ -1,0 +1,125 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Accounts: ID+V API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts: ID+V",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Person Identification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/persons/:person_id/identifications/:identification_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "identification_id",
+                "value": "ident_baeab6ad40434217900615f5c64b1cd7",
+                "type": "path",
+                "description": "An identifier referring to a person identification process.\n"
+              },
+              {
+                "name": "person_id",
+                "value": "pers_0453deb1c90448c99f24adaa833cfda9",
+                "type": "path",
+                "description": "A person identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get information about the identification process for a person.\n"
+        },
+        {
+          "info": {
+            "name": "Start Identity Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/identity_verification",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start Identity Verification"
+        },
+        {
+          "info": {
+            "name": "Submit Identification Payload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/persons/:person_id/identifications/:identification_id/submit",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "identification_id",
+                "value": "ident_baeab6ad40434217900615f5c64b1cd7",
+                "type": "path",
+                "description": "An identifier referring to a person identification process.\n"
+              },
+              {
+                "name": "person_id",
+                "value": "pers_0453deb1c90448c99f24adaa833cfda9",
+                "type": "path",
+                "description": "A person identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit Identification Payload"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

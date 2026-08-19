@@ -1,0 +1,234 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Workflows API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cancel Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/workflows/:workflow_id/cancel",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "unified_orders",
+                "value": "",
+                "type": "query",
+                "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "A workflow identifier.\n"
+              }
+            ]
+          },
+          "docs": "Cancel Workflow"
+        },
+        {
+          "info": {
+            "name": "Confirm Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/workflows/:workflow_id/confirm",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "unified_orders",
+                "value": "",
+                "type": "query",
+                "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "A workflow identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirm Workflow"
+        },
+        {
+          "info": {
+            "name": "List Workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/workflows",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "unified_orders",
+                "value": "",
+                "type": "query",
+                "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+              }
+            ]
+          },
+          "docs": "List Workflows"
+        },
+        {
+          "info": {
+            "name": "Create Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/workflows",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "unified_orders",
+                "value": "",
+                "type": "query",
+                "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Workflow"
+        },
+        {
+          "info": {
+            "name": "Get Workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/workflows/:workflow_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_20323d55bb264d42b0b225d293591049",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "unified_orders",
+                "value": "",
+                "type": "query",
+                "description": "Use new unified `order` API instead of the `batch_order` API.\n"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "A workflow identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Workflow"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

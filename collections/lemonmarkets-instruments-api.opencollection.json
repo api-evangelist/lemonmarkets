@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Instruments API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Instruments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Instrument",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/instruments/:isin",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "isin",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific instrument identified by its ISIN.\n<strong>Test ISINs for Trading Halts</strong>\nYou can use the following static ISINs to test different predetermined scenarios regarding Trading Halts. The test ISINs are not enabled on our side and are only available in the Sandbox environment.\n<ul> <li><code>XF0000000046</code> - <strong>Buy-side halt</strong>: Returns an instrument with an active trading halt on buy orders only <li><code>XF0000000053</code> - <strong>Sell-side "
+        },
+        {
+          "info": {
+            "name": "Get Latest Monthly Yield",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/instruments/:instrument/yield",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "instrument",
+                "value": "IE0008643037",
+                "type": "path",
+                "description": "Specify the ISIN of the instrument.\n"
+              }
+            ]
+          },
+          "docs": "Returns the latest monthly annualized yield available for the specified instrument.\n\n**Sandbox Test ISINs**\n\nYou can use the following static ISINs to test different scenarios with predetermined responses. The test ISINs do not need to be enabled on our side and are only available on this endpoint in the Sandbox environment.\n- `XF0000000012` - **Success case**: Returns predictable yield data (0.30% monthly, 3.60% annualized)\n- `XF0000000020` - **No yield data**: Returns a 404 error: \"No yield da"
+        },
+        {
+          "info": {
+            "name": "Get Prices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/instruments/:isin/prices",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "isin",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Prices"
+        },
+        {
+          "info": {
+            "name": "List Instruments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/instruments",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Instruments"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

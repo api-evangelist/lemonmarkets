@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "lemon.markets Brokerage API 🍋 Accounts: General Batch Orders API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cancel Batch Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/batch_orders/:order_id/cancel",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "order_id",
+                "value": "bord_0fef2e8b7962404d94454d8c47caa364",
+                "type": "path",
+                "description": "A batch order identifier.\n"
+              }
+            ]
+          },
+          "docs": "Cancel Batch Order"
+        },
+        {
+          "info": {
+            "name": "Confirm Batch Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/batch_orders/:order_id/confirm",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "order_id",
+                "value": "bord_0fef2e8b7962404d94454d8c47caa364",
+                "type": "path",
+                "description": "A batch order identifier.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirm Batch Order"
+        },
+        {
+          "info": {
+            "name": "List Batch Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/batch_orders",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "A pagination cursor.  When you receive a paginated response containing the property `pagination.next_cursor`, you can pass its value here to get the next page of results for your query.\nA cursor will include filter parameters, so there is not need to specify both the `cursor` and any other filter parameter.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "In order to customize the number of elements returned, you can provide a limit here.  The service will not return more elements than specified.\n"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Batch Orders"
+        },
+        {
+          "info": {
+            "name": "Create Batch Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/batch_orders",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Batch Order"
+        },
+        {
+          "info": {
+            "name": "Get Batch Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.lemon.markets/v1/accounts/:account_id/batch_orders/:order_id",
+            "headers": [
+              {
+                "name": "LMG-Data-Privacy-Access-Principal",
+                "value": ""
+              },
+              {
+                "name": "LMG-Data-Privacy-Access-Justification",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_id",
+                "value": "cusa_c2c3f89ec0524b6e818ce00c16e4897f",
+                "type": "path",
+                "description": "An account identifier.\n"
+              },
+              {
+                "name": "order_id",
+                "value": "bord_0fef2e8b7962404d94454d8c47caa364",
+                "type": "path",
+                "description": "A batch order identifier.\n"
+              }
+            ]
+          },
+          "docs": "Get Batch Order"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
