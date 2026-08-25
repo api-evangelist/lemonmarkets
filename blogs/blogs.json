@@ -1,15 +1,21 @@
 {
-  "repo": "lemon-markets",
+  "repo": "lemonmarkets",
   "feeds": [
     {
       "source": "https://lemon.markets/",
       "feed_url": "https://lemon.markets/",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
+    },
+    {
+      "source": "https://www.linkedin.com/company/lemon-markets/",
+      "feed_url": "https://www.linkedin.com/company/lemon-markets/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-08-15T12:11:08Z"
+  "fetched": "2026-08-22T20:20:02Z"
 }
