@@ -1,0 +1,107 @@
+slug: lemonmarkets
+provider: lemon.markets
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 9
+edges:
+- tag: Corporate Actions
+  spec_file: lemonmarkets-corporate-actions-api-openapi.yml
+  capability_id: BC-1380.60
+  capability_id_l1: BC-1380
+  capability_name: Corporate Actions Management
+  confidence: 0.9
+  evidence: GET /corporate_actions list_corporate_actions_general; CorporateActionCashDividendResponse;
+    IncomeDistributionResponse
+  reason: Retrieval and processing of corporate actions and income distributions at instrument and account
+    level — corporate actions management.
+- tag: 'Accounts: ID+V'
+  spec_file: lemonmarkets-accounts-id-v-api-openapi.yml
+  capability_id: BC-1300.20
+  capability_id_l1: BC-1300
+  capability_name: KYC & Customer Due Diligence Management
+  confidence: 0.85
+  evidence: POST /accounts/{account_id}/identity_verification "Start Identity Verification"; InitiateKYCRequest;
+    PersonIdentificationStatus
+  reason: Operations perform KYC identification of persons with documents and reliance data — customer
+    due diligence.
+- tag: Batch Orders
+  spec_file: lemonmarkets-batch-orders-api-openapi.yml
+  capability_id: BC-1370.30
+  capability_id_l1: BC-1370
+  capability_name: Trading Order Management
+  confidence: 0.85
+  evidence: POST /accounts/{account_id}/batch_orders create_batch_order "Create Batch Order"; OrderStatus,
+    OrderRejectionReason, Side
+  reason: Securities order capture, confirmation and cancellation on a brokerage API — trading order management.
+- tag: Events + Webhooks
+  spec_file: lemonmarkets-events-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.85
+  evidence: POST /webhooks create_webhook Create Webhook; DELETE /webhooks/{webhook_id} delete_webhook;
+    GET /events list_events Get Events
+  reason: 'Pure integration plumbing for the platform''s API consumers: lifecycle of outbound webhook
+    subscriptions and an event feed with typed event contexts. This realises webhook/event subscription
+    management in the developer-platform capability, not any brokerage business capability.'
+- tag: Orders
+  spec_file: lemonmarkets-orders-api-openapi.yml
+  capability_id: BC-1370.30
+  capability_id_l1: BC-1370
+  capability_name: Trading Order Management
+  confidence: 0.85
+  evidence: POST /accounts/{account_id}/orders create_order Create Order; POST /accounts/{account_id}/orders/{order_id}/cancel
+    Cancel Order; schemas OrderType, OrderStatus, OrderRejectionReason, Side
+  reason: Order capture, confirmation, cancellation and status tracking for securities orders — squarely
+    trading order management. Appropriateness consent and regulatory disclosure schemas confirm it is
+    a regulated securities order flow, not a generic 'order' object.
+- tag: Businesses
+  spec_file: lemonmarkets-businesses-api-openapi.yml
+  capability_id: BC-1300.20
+  capability_id_l1: BC-1300
+  capability_name: KYC & Customer Due Diligence Management
+  confidence: 0.78
+  evidence: POST /businesses/{business_id}/beneficial_owners "Add Beneficial Owner"; "Add Legal Representative";
+    "Submit Document"
+  reason: Corporate customer onboarding data collection — beneficial ownership, legal representatives,
+    registration documents — is KYB/CDD for business clients.
+- tag: 'Accounts: General'
+  spec_file: lemonmarkets-accounts-general-api-openapi.yml
+  capability_id: BC-1300.10
+  capability_id_l1: BC-1300
+  capability_name: Customer Onboarding Management
+  confidence: 0.75
+  evidence: POST /accounts create_account "Create Account"; "Get Account Checks"; OnboardingCheckType;
+    InitiateIdentityVerificationAction
+  reason: 'Brokerage account opening surface: account creation, agreement acceptance, onboarding checks
+    and identity verification — customer onboarding / account activation.'
+- tag: Cash Settlement
+  spec_file: lemonmarkets-cash-settlement-api-openapi.yml
+  capability_id: BC-1380.30
+  capability_id_l1: BC-1380
+  capability_name: Settlement Management
+  confidence: 0.72
+  evidence: GET /settlement_accounts/{settlement_account_id}/settlements "List Settlements"; SettlementItemType,
+    SettlementDirection
+  reason: Post-trade cash settlement records and settlement account transactions for brokerage trades
+    — settlement management within capital markets operations.
+- tag: Persons
+  spec_file: lemonmarkets-persons-api-openapi.yml
+  capability_id: BC-1300.40
+  capability_id_l1: BC-1300
+  capability_name: Customer Information Management
+  confidence: 0.7
+  evidence: POST /persons create_person; POST /persons/{person_id}/updates Create Person Data Update Request;
+    schemas TaxResidency, EmploymentStatus, AnnualSalary, PersonDataUpdateRegisteredAddressRequest
+  reason: Creation and controlled amendment of natural/legal person records with address, tax residency,
+    employment and income attributes — customer information/master record management for a regulated brokerage
+    customer base. Onboarding (.10) is an alternative reading, hence 0.7.
