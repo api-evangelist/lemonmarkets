@@ -131,6 +131,8 @@ apis:
   humanURL: https://developer.lemon.markets/
   baseURL: https://api.lemon.markets/v1
   tags:
+  - Business
+  tags_raw:
   - Businesses
   properties:
   - type: OpenAPI
@@ -353,6 +355,8 @@ apis:
   humanURL: https://developer.lemon.markets/
   baseURL: https://api.lemon.markets/v1
   tags:
+  - Tax
+  tags_raw:
   - Taxes
   properties:
   - type: OpenAPI
@@ -375,6 +379,8 @@ apis:
   humanURL: https://developer.lemon.markets/
   baseURL: https://api.lemon.markets/v1
   tags:
+  - Trade
+  tags_raw:
   - Trades
   properties:
   - type: OpenAPI
