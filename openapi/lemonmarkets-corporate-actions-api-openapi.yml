@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Corporate Actions API'
+  title: lemon.markets Brokerage API 🍋 Corporate Actions API
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -716,21 +716,58 @@ paths:
           description: Server Error
 components:
   schemas:
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+    CorporateActionResponseUnion:
+      title: Corporate Action
+      description: 'An object representing a corporate action that affected a customer account. The response is polymorphic, discriminated by the `type` property.
 
         '
-      example:
-        next_cursor: <opaque-data>
+      oneOf:
+      - $ref: '#/components/schemas/CorporateActionCashDividendResponse'
+      - $ref: '#/components/schemas/CorporateActionIncomeDistributionResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          cash_dividend: '#/components/schemas/CorporateActionCashDividendResponse'
+          income_distribution: '#/components/schemas/CorporateActionIncomeDistributionResponse'
+    TaxResponseField:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: 'A string identifying the type of tax that was withheld for a trade:
+
+            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
+
+            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The monetary amount representing this tax.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+      type: object
+      required:
+      - type
+      - amount
+      - direction
+      title: TaxResponseField
+    CorporateActionType:
+      type: string
+      enum:
+      - cash_dividend
+      - income_distribution
+      title: CorporateActionType
+      description: 'A category representing the type of corporate action:
+
+        <ul> <li><code>cash_dividend</code>: A cash dividend paid out to shareholders. <li><code>income_distribution</code>: An income or capital distribution from a fund or ETF. </ul>
+
+        <strong>NOTE:</strong> This list can be extended in the future. Prepare your code to accept other values, too.
+
+        '
     CorporateActionCashDividendResponse:
       title: CorporateActionCashDividendResponse
       description: 'A cash dividend corporate action. Represents a dividend payment to a customer account for shares held at the ex-date.
@@ -837,6 +874,87 @@ components:
       - currency
       - shares_on_ex_date
       - taxes
+    StatusChange_CorporateActionStatus_:
+      title: StatusChange[CorporateActionStatus]
+      description: 'An object representing a status change of a corporate action.
+
+        '
+      properties:
+        status:
+          $ref: '#/components/schemas/CorporateActionStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event. It represents the point in time at which the corporate action status was updated.
+
+            '
+          example: '2026-05-10T12:00:00.000000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+    InstrumentLevelIncomeDistributionResponse:
+      title: InstrumentLevelIncomeDistributionResponse
+      description: 'An income distribution corporate action at the instrument level. Represents a distribution from a fund or ETF, including daily factors used for calculation.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this corporate action.
+
+            '
+        type:
+          const: income_distribution
+          title: Type
+          description: 'The string `"income_distribution"`, identifying this type of corporate action.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that made the distribution.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          nullable: true
+          description: 'The date the distribution is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        daily_factors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyFactorResponse'
+          title: Daily Factors
+          description: 'A list of daily factor entries used for calculating the income distribution amount per customer.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          nullable: true
+          description: 'An ISO 4217 three-letter currency code. Represents the currency for the distribution. The only currently available currency is `"EUR"`.
+
+            '
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusChange_CorporateActionStatus_'
+          title: History
+          description: 'A chronological list of status changes for this corporate action.
+
+            '
+      type: object
+      required:
+      - id
+      - type
+      - instrument
     CorporateActionIncomeDistributionResponse:
       title: CorporateActionIncomeDistributionResponse
       description: 'An income distribution corporate action. Represents a distribution from a fund or ETF to a customer account.
@@ -908,45 +1026,6 @@ components:
       - amount
       - currency
       - taxes
-    CorporateActionResponseUnion:
-      title: Corporate Action
-      description: 'An object representing a corporate action that affected a customer account. The response is polymorphic, discriminated by the `type` property.
-
-        '
-      oneOf:
-      - $ref: '#/components/schemas/CorporateActionCashDividendResponse'
-      - $ref: '#/components/schemas/CorporateActionIncomeDistributionResponse'
-      discriminator:
-        propertyName: type
-        mapping:
-          cash_dividend: '#/components/schemas/CorporateActionCashDividendResponse'
-          income_distribution: '#/components/schemas/CorporateActionIncomeDistributionResponse'
-    TaxResponseField:
-      properties:
-        type:
-          type: string
-          title: Type
-          description: 'A string identifying the type of tax that was withheld for a trade:
-
-            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
-
-            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The monetary amount representing this tax.
-
-            '
-        direction:
-          $ref: '#/components/schemas/Direction'
-      type: object
-      required:
-      - type
-      - amount
-      - direction
-      title: TaxResponseField
     Direction:
       type: string
       enum:
@@ -958,6 +1037,178 @@ components:
         <ul> <li><code>credit</code> <li><code>debit</code> </ul>
 
         '
+    CorporateActionStatus:
+      type: string
+      enum:
+      - created
+      - processed
+      title: CorporateActionStatus
+      description: 'The status of a corporate action:
+
+        <ul> <li><code>created</code>: The corporate action has been created and is pending processing. <li><code>processed</code>: The corporate action has been fully processed. </ul>
+
+        '
+    EncodedPaginatedCollectionResponse_IncomeDistributionResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/IncomeDistributionResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[IncomeDistributionResponse]
+    InstrumentLevelCorporateActionResponseUnion:
+      title: Instrument-level Corporate Action
+      description: 'An object representing a corporate action at the instrument level. Unlike the per-account corporate action, this response does not include customer-specific fields such as taxes or settlement amounts.
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/InstrumentLevelCashDividendResponse'
+      - $ref: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          cash_dividend: '#/components/schemas/InstrumentLevelCashDividendResponse'
+          income_distribution: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
+    DailyFactorResponse:
+      title: DailyFactorResponse
+      description: 'A daily factor entry for an income distribution corporate action, representing the factor applied on a given date.
+
+        '
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+          description: 'The date for which this factor applies.
+
+            '
+        factor:
+          type: string
+          title: Factor
+          description: 'The factor value for this date, represented as a decimal string.
+
+            '
+      type: object
+      required:
+      - date
+      - factor
+    EncodedPaginatedCollectionResponse_CorporateActionResponseUnion_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CorporateActionResponseUnion'
+          type: array
+          title: Data
+          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[CorporateActionResponseUnion]
+    EncodedPaginatedCollectionResponse_InstrumentLevelCorporateActionResponseUnion_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/InstrumentLevelCorporateActionResponseUnion'
+          type: array
+          title: Data
+          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[InstrumentLevelCorporateActionResponseUnion]
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    IncomeDistributionResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this income distribution.
+
+            '
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identified the instrument distributing and amount.
+
+            '
+        payable_date:
+          type: string
+          format: date
+          title: Payable Date
+          description: 'The expected payable date.  The payment cannot be expected to happen earlier than this date.  Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and taxes listed here. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount of cash received before applying taxes.
+
+            '
+        taxes:
+          items:
+            $ref: '#/components/schemas/TaxResponseField'
+          type: array
+          title: Taxes
+      type: object
+      required:
+      - id
+      - instrument
+      - payable_date
+      - direction
+      - amount
+      - currency
+      title: IncomeDistributionResponse
     InstrumentLevelCashDividendResponse:
       title: InstrumentLevelCashDividendResponse
       description: 'A cash dividend corporate action at the instrument level. Represents a dividend announcement for a given instrument, including key dates and the declared amount per share.
@@ -1042,257 +1293,6 @@ components:
       - payable_date
       - amount_per_share
       - currency
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    EncodedPaginatedCollectionResponse_InstrumentLevelCorporateActionResponseUnion_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/InstrumentLevelCorporateActionResponseUnion'
-          type: array
-          title: Data
-          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[InstrumentLevelCorporateActionResponseUnion]
-    DailyFactorResponse:
-      title: DailyFactorResponse
-      description: 'A daily factor entry for an income distribution corporate action, representing the factor applied on a given date.
-
-        '
-      properties:
-        date:
-          type: string
-          format: date
-          title: Date
-          description: 'The date for which this factor applies.
-
-            '
-        factor:
-          type: string
-          title: Factor
-          description: 'The factor value for this date, represented as a decimal string.
-
-            '
-      type: object
-      required:
-      - date
-      - factor
-    IncomeDistributionResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'The identifier referring to this income distribution.
-
-            '
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identified the instrument distributing and amount.
-
-            '
-        payable_date:
-          type: string
-          format: date
-          title: Payable Date
-          description: 'The expected payable date.  The payment cannot be expected to happen earlier than this date.  Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
-
-            '
-        currency:
-          type: string
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and taxes listed here. The only currently available currency is `"EUR"`.
-
-            '
-        direction:
-          $ref: '#/components/schemas/Direction'
-        amount:
-          type: string
-          title: Amount
-          description: 'The amount of cash received before applying taxes.
-
-            '
-        taxes:
-          items:
-            $ref: '#/components/schemas/TaxResponseField'
-          type: array
-          title: Taxes
-      type: object
-      required:
-      - id
-      - instrument
-      - payable_date
-      - direction
-      - amount
-      - currency
-      title: IncomeDistributionResponse
-    CorporateActionType:
-      type: string
-      enum:
-      - cash_dividend
-      - income_distribution
-      title: CorporateActionType
-      description: 'A category representing the type of corporate action:
-
-        <ul> <li><code>cash_dividend</code>: A cash dividend paid out to shareholders. <li><code>income_distribution</code>: An income or capital distribution from a fund or ETF. </ul>
-
-        <strong>NOTE:</strong> This list can be extended in the future. Prepare your code to accept other values, too.
-
-        '
-    EncodedPaginatedCollectionResponse_CorporateActionResponseUnion_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/CorporateActionResponseUnion'
-          type: array
-          title: Data
-          description: 'The elements of the response. Each element is a corporate action, discriminated by the `type` property.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[CorporateActionResponseUnion]
-    EncodedPaginatedCollectionResponse_IncomeDistributionResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/IncomeDistributionResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[IncomeDistributionResponse]
-    StatusChange_CorporateActionStatus_:
-      title: StatusChange[CorporateActionStatus]
-      description: 'An object representing a status change of a corporate action.
-
-        '
-      properties:
-        status:
-          $ref: '#/components/schemas/CorporateActionStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event. It represents the point in time at which the corporate action status was updated.
-
-            '
-          example: '2026-05-10T12:00:00.000000+00:00'
-      type: object
-      required:
-      - status
-      - timestamp
-    InstrumentLevelCorporateActionResponseUnion:
-      title: Instrument-level Corporate Action
-      description: 'An object representing a corporate action at the instrument level. Unlike the per-account corporate action, this response does not include customer-specific fields such as taxes or settlement amounts.
-
-        '
-      oneOf:
-      - $ref: '#/components/schemas/InstrumentLevelCashDividendResponse'
-      - $ref: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
-      discriminator:
-        propertyName: type
-        mapping:
-          cash_dividend: '#/components/schemas/InstrumentLevelCashDividendResponse'
-          income_distribution: '#/components/schemas/InstrumentLevelIncomeDistributionResponse'
-    CorporateActionStatus:
-      type: string
-      enum:
-      - created
-      - processed
-      title: CorporateActionStatus
-      description: 'The status of a corporate action:
-
-        <ul> <li><code>created</code>: The corporate action has been created and is pending processing. <li><code>processed</code>: The corporate action has been fully processed. </ul>
-
-        '
-    InstrumentLevelIncomeDistributionResponse:
-      title: InstrumentLevelIncomeDistributionResponse
-      description: 'An income distribution corporate action at the instrument level. Represents a distribution from a fund or ETF, including daily factors used for calculation.
-
-        '
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'The identifier referring to this corporate action.
-
-            '
-        type:
-          const: income_distribution
-          title: Type
-          description: 'The string `"income_distribution"`, identifying this type of corporate action.
-
-            '
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value identifies the instrument that made the distribution.
-
-            '
-        payable_date:
-          type: string
-          format: date
-          title: Payable Date
-          nullable: true
-          description: 'The date the distribution is actually paid out. Due to the number of parties involved, it is common for payment to arrive a few business days after this date.
-
-            '
-        daily_factors:
-          type: array
-          items:
-            $ref: '#/components/schemas/DailyFactorResponse'
-          title: Daily Factors
-          description: 'A list of daily factor entries used for calculating the income distribution amount per customer.
-
-            '
-        currency:
-          type: string
-          title: Currency
-          example: EUR
-          nullable: true
-          description: 'An ISO 4217 three-letter currency code. Represents the currency for the distribution. The only currently available currency is `"EUR"`.
-
-            '
-        history:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatusChange_CorporateActionStatus_'
-          title: History
-          description: 'A chronological list of status changes for this corporate action.
-
-            '
-      type: object
-      required:
-      - id
-      - type
-      - instrument
   securitySchemes:
     bearerAuth:
       type: http

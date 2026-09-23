@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Accounts: ID+V API'
+  title: 'lemon.markets Brokerage API 🍋 Accounts: ID+V API'
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -14,9 +14,7 @@ paths:
       - 'Accounts: ID+V'
       summary: Get Person Identification
       operationId: get_person_identification
-      description: 'Get information about the identification process for a person.
-
-        '
+      description: Get information about the identification process for a person.
       parameters:
       - name: identification_id
         required: true
@@ -281,76 +279,19 @@ paths:
           description: Server Error
 components:
   schemas:
-    InitiateKYCResponse:
-      title: InitiateKYCResponse
-      description: 'An object describing a pending video-identification process.
+    PersonIdentificationStatus:
+      type: string
+      enum:
+      - created
+      - failed
+      - started
+      - succeeded
+      title: PersonIdentificationStatus
+      description: 'A category representing the status on a person identification process.
+
+        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
 
         '
-      required:
-      - url
-      - video_ident_id
-      type: object
-      properties:
-        url:
-          title: Web URL
-          type: string
-          format: uri
-          description: "A web URL. Use this URL to present the user with the web version for initiating the video identification process.\nFor different reasons, it may not be possible for the user to complete the video identification process on the mobile device.  In this case, it is a good idea to offer a sharing option, e.g. so they can send the link to their own email address and complete the process on a different device.  We expect these reasons (and others) to prevent the video identification process from completing:\n<ul> <li>Older devices that lack the resources (e.g. memory) to run the all of components involved at the same\n    time.\n<li>Devices that are locked down for privacy reasons. This can both be company devices under MDM (mobile\n    device management) or advanced used utiliting parental controls to block any access to the device's\n    microphone and/or camera capabilities.\n</ul>\n"
-          example: https://example.com/video-ident?id=123-456-789
-        video_ident_id:
-          title: Process Identifier
-          type: string
-          description: 'An identifier representing the process on the side of the video identification provider.
-
-            '
-    PersonResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'The identifier representing this person.
-
-            '
-        type:
-          $ref: '#/components/schemas/PersonType'
-      type: object
-      required:
-      - id
-      - type
-      title: PersonResponse
-      description: 'An object representing a person to be verified.
-
-        '
-    InitiateKYCRequest:
-      title: InitiateKYCRequest
-      description: 'An object describing client-side configuration for the identity verification process.
-
-        '
-      required:
-      - redirect_success
-      - redirect_failure
-      type: object
-      properties:
-        redirect_success:
-          title: Redirect Success
-          maxLength: 65536
-          minLength: 1
-          type: string
-          format: uri
-          example: my-app://brokerage/success
-          description: 'The redirect target that will be opened after a successful video-identification process.
-
-            '
-        redirect_failure:
-          title: Redirect Failure
-          maxLength: 65536
-          minLength: 1
-          type: string
-          format: uri
-          example: my-app://brokerage/failure
-          description: 'The redirect target that will be opened after a failed video-identification process.
-
-            '
     PersonIdentificationMethod:
       type: string
       const: kyc_reliance
@@ -358,6 +299,17 @@ components:
       description: 'A category representing the identification method used.
 
         <ul> <li><code>kyc_reliance</code>:  Use this for KYC reliance implementations. </ul>
+
+        '
+    IdentificationDocumentType:
+      type: string
+      enum:
+      - id_card
+      - passport
+      title: IdentificationDocumentType
+      description: 'A category representing a givernment issued identification document.
+
+        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
 
         '
     IdentificationResponse:
@@ -393,15 +345,58 @@ components:
       - person
       - method
       - status
-    PersonType:
-      type: string
-      const: customer
-      title: PersonType
-      description: 'A category representing the relationship of a person to an account.
-
-        <ul> <li><code>customer</code> </ul>
+    InitiateKYCResponse:
+      title: InitiateKYCResponse
+      description: 'An object describing a pending video-identification process.
 
         '
+      required:
+      - url
+      - video_ident_id
+      type: object
+      properties:
+        url:
+          title: Web URL
+          type: string
+          format: uri
+          description: "A web URL. Use this URL to present the user with the web version for initiating the video identification process.\nFor different reasons, it may not be possible for the user to complete the video identification process on the mobile device.  In this case, it is a good idea to offer a sharing option, e.g. so they can send the link to their own email address and complete the process on a different device.  We expect these reasons (and others) to prevent the video identification process from completing:\n<ul> <li>Older devices that lack the resources (e.g. memory) to run the all of components involved at the same\n    time.\n<li>Devices that are locked down for privacy reasons. This can both be company devices under MDM (mobile\n    device management) or advanced used utiliting parental controls to block any access to the device's\n    microphone and/or camera capabilities.\n</ul>\n"
+          example: https://example.com/video-ident?id=123-456-789
+        video_ident_id:
+          title: Process Identifier
+          type: string
+          description: 'An identifier representing the process on the side of the video identification provider.
+
+            '
+    InitiateKYCRequest:
+      title: InitiateKYCRequest
+      description: 'An object describing client-side configuration for the identity verification process.
+
+        '
+      required:
+      - redirect_success
+      - redirect_failure
+      type: object
+      properties:
+        redirect_success:
+          title: Redirect Success
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/success
+          description: 'The redirect target that will be opened after a successful video-identification process.
+
+            '
+        redirect_failure:
+          title: Redirect Failure
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/failure
+          description: 'The redirect target that will be opened after a failed video-identification process.
+
+            '
     SubmitKycRelianceDataRequest:
       properties:
         reference:
@@ -445,17 +440,30 @@ components:
         message:
           title: Message
           type: string
-    PersonIdentificationStatus:
-      type: string
-      enum:
-      - created
-      - failed
-      - started
-      - succeeded
-      title: PersonIdentificationStatus
-      description: 'A category representing the status on a person identification process.
+    StatusChange_PersonIdentificationStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
 
-        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[PersonIdentificationStatus]
+    PersonType:
+      type: string
+      const: customer
+      title: PersonType
+      description: 'A category representing the relationship of a person to an account.
+
+        <ul> <li><code>customer</code> </ul>
 
         '
     IdentificationDocument:
@@ -497,32 +505,22 @@ components:
       description: 'An object representing a government issued identity document.
 
         '
-    StatusChange_PersonIdentificationStatus_:
+    PersonResponse:
       properties:
-        status:
-          $ref: '#/components/schemas/PersonIdentificationStatus'
-        timestamp:
+        id:
           type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
+          title: Identifier
+          description: 'The identifier representing this person.
 
             '
-          example: '2023-06-23T07:29:55.465000+00:00'
+        type:
+          $ref: '#/components/schemas/PersonType'
       type: object
       required:
-      - status
-      - timestamp
-      title: StatusChange[PersonIdentificationStatus]
-    IdentificationDocumentType:
-      type: string
-      enum:
-      - id_card
-      - passport
-      title: IdentificationDocumentType
-      description: 'A category representing a givernment issued identification document.
-
-        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
+      - id
+      - type
+      title: PersonResponse
+      description: 'An object representing a person to be verified.
 
         '
   securitySchemes:

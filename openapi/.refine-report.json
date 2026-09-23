@@ -1,23 +1,7 @@
 {
   "provider": "lemonmarkets",
   "sources": [
-    "lemonmarkets-accounts-general-api-openapi.yml",
-    "lemonmarkets-accounts-id-v-api-openapi.yml",
-    "lemonmarkets-batch-orders-api-openapi.yml",
-    "lemonmarkets-businesses-api-openapi.yml",
-    "lemonmarkets-cash-settlement-api-openapi.yml",
-    "lemonmarkets-corporate-actions-api-openapi.yml",
-    "lemonmarkets-documents-api-openapi.yml",
-    "lemonmarkets-events-webhooks-api-openapi.yml",
-    "lemonmarkets-instruments-api-openapi.yml",
-    "lemonmarkets-money-positions-api-openapi.yml",
-    "lemonmarkets-orders-api-openapi.yml",
-    "lemonmarkets-persons-api-openapi.yml",
-    "lemonmarkets-securities-accounts-api-openapi.yml",
-    "lemonmarkets-taxes-api-openapi.yml",
-    "lemonmarkets-trades-api-openapi.yml",
-    "lemonmarkets-treasury-mandates-api-openapi.yml",
-    "lemonmarkets-workflows-api-openapi.yml"
+    "_original/lemonmarkets-brokerage-openapi.json"
   ],
   "outputs": [
     "lemonmarkets-accounts-general-api-openapi.yml",
@@ -41,6 +25,28 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "lemonmarkets-brokerage-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "lemonmarkets-accounts-general-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-accounts-id-v-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-batch-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-businesses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-cash-settlement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-corporate-actions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-documents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-events-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-instruments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-money-positions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-persons-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-securities-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-taxes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-trades-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-treasury-mandates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lemonmarkets-workflows-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

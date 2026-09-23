@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Persons API'
+  title: lemon.markets Brokerage API 🍋 Persons API
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -604,6 +604,131 @@ paths:
           description: Server Error
 components:
   schemas:
+    StatusChange_PersonDataUpdateRequestStatus_:
+      title: StatusChange[PersonDataUpdateRequestStatus]
+      description: 'An object representing a transition to a new status.
+
+        '
+      required:
+      - status
+      - timestamp
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonDataUpdateRequestStatus'
+        timestamp:
+          title: Timestamp
+          type: string
+          format: date-time
+          description: 'The timestamp at which this status change occurred.
+
+            '
+    broker__apps__api__endpoints__agreements__AgreementAcceptanceRequest:
+      title: AgreementAcceptance
+      description: 'An object representing the user''s acceptance of a legal agreement at a specific point in time.
+
+        '
+      required:
+      - agreement_id
+      - accepted_at
+      type: object
+      properties:
+        agreement_id:
+          title: Agreement Identifier
+          maxLength: 255
+          type: string
+          example: agr_9902271f791d413aad781763c61b9bb0
+          description: 'An agreement identifier. This value identifies the agreement that a customer has accepted at a certain point in time.
+
+            '
+        accepted_at:
+          title: Accepted At
+          type: string
+          format: date-time
+          example: '2023-06-29T14:39:29Z'
+          description: 'A point in time.  This value specifies the point in time at which the user accepted the agreement referenced by `agreement_id`.
+
+            '
+    PersonDataUpdateEmploymentRequest:
+      title: PersonDataUpdateEmploymentRequest
+      description: 'A request to update a person''s employment information.
+
+        '
+      required:
+      - type
+      - status
+      - annual_salary
+      - sector
+      type: object
+      properties:
+        type:
+          type: string
+          const: employment
+          title: Type
+          description: 'The type discriminator identifying this as an employment information update request.
+
+            '
+        status:
+          $ref: '#/components/schemas/EmploymentStatus'
+        annual_salary:
+          $ref: '#/components/schemas/AnnualSalary'
+        sector:
+          $ref: '#/components/schemas/IndustrySector'
+    Address:
+      title: Address
+      description: 'A residential address.
+
+        '
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      type: object
+      properties:
+        line_1:
+          title: Line 1
+          maxLength: 128
+          type: string
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          title: Line 2
+          maxLength: 128
+          type: string
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          title: Postal Code
+          maxLength: 50
+          type: string
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          title: City
+          maxLength: 150
+          type: string
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
     broker__apps__api__endpoints__persons__PersonResponse:
       properties:
         id:
@@ -674,6 +799,20 @@ components:
       - date_of_birth
       - registered_address
       title: PersonResponse
+    AnnualSalary:
+      title: AnnualSalary
+      enum:
+      - lt_50k_eur
+      - gte_50k_lt_75k_eur
+      - gte_75k_lt_100k_eur
+      - gte_100k_lt_150k_eur
+      - gte_150k_eur
+      type: string
+      description: 'A category to represent a customer''s annual income:
+
+        <ul> <li><code>lt_50k_eur</code>: Less than 50,000 EUR. <li><code>gte_50k_lt_75k_eur</code>: 50,000 EUR or more, but less than 75,000 EUR. <li><code>gte_75k_lt_100k_eur</code>: 75,000 EUR or more, but less than 100,000 EUR. <li><code>gte_100k_lt_150k_eur</code>: 100,000 EUR or more, but less than 150,000 EUR. <li><code>gte_150k_eur</code>: 150,000 EUR or more. </ul>
+
+        '
     PersonDataUpdateRequest:
       title: PersonDataUpdateRequest
       description: 'A request to update a single person data field. The payload contains the type of data being updated and the new value(s).
@@ -693,370 +832,6 @@ components:
           registered_address: '#/components/schemas/PersonDataUpdateRegisteredAddressRequest'
           employment: '#/components/schemas/PersonDataUpdateEmploymentRequest'
           tax_residencies: '#/components/schemas/PersonDataUpdateTaxResidenciesRequest'
-    PersonDataUpdateRequestStatus:
-      type: string
-      enum:
-      - created
-      - processing
-      - success
-      - failure
-      title: PersonDataUpdateRequestStatus
-      description: 'A category representing the status of a person data update request.
-
-        <ul> <li><code>created</code> - The update request has been created <li><code>processing</code> - The update request is being processed <li><code>success</code> - The update request has been successfully completed <li><code>failure</code> - The update request has failed </ul>
-
-        '
-    IndustrySector:
-      title: IndustrySector
-      enum:
-      - agriculture
-      - commodities
-      - construction
-      - education
-      - financial_services
-      - gambling
-      - healthcare
-      - it
-      - jewellery_trading
-      - manufacturing
-      - precious_metals_trading
-      - professional_services
-      - public_sector
-      - real_estate
-      - retail
-      - service_industry
-      - sport
-      - tourism
-      - transport
-      - used_vehicles_trading
-      - weapons_trading
-      - other
-      type: string
-      description: 'A category representing the industry sector related to a user''s employment status.  If the user''s employment status is not directly linked to a sector, select `other`.
-
-        <ul> <li><code>agriculture</code></li> <li><code>commodities</code></li> <li><code>construction</code></li> <li><code>education</code></li> <li><code>financial_services</code></li> <li><code>gambling</code></li> <li><code>healthcare</code></li> <li><code>it</code></li> <li><code>jewellery_trading</code></li> <li><code>manufacturing</code></li> <li><code>precious_metals_trading</code></li> <li><code>professional_services</code></li> <li><code>public_sector</code></li> <li><code>real_estate</code></li> <li><code>retail</code></li> <li><code>service_industry</code></li> <li><code>sport</code></li> <li><code>tourism</code></li> <li><code>transport</code></li> <li><code>used_vehicles_trading</code></li> <li><code>weapons_trading</code></li> <li><code>other</code></li> </ul>
-
-        '
-    PlaceOfBirthRequest:
-      title: PlaceOfBirthRequest
-      description: 'An object representing a place of birth.
-
-        '
-      required:
-      - city
-      - country
-      type: object
-      properties:
-        city:
-          title: City
-          maxLength: 255
-          type: string
-          description: 'The city/municipality of the place of birth.
-
-            '
-          example: Berlin
-        country:
-          title: Country
-          maxLength: 2
-          minLength: 2
-          type: string
-          example: DE
-          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
-
-            '
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    AnnualSalary:
-      title: AnnualSalary
-      enum:
-      - lt_50k_eur
-      - gte_50k_lt_75k_eur
-      - gte_75k_lt_100k_eur
-      - gte_100k_lt_150k_eur
-      - gte_150k_eur
-      type: string
-      description: 'A category to represent a customer''s annual income:
-
-        <ul> <li><code>lt_50k_eur</code>: Less than 50,000 EUR. <li><code>gte_50k_lt_75k_eur</code>: 50,000 EUR or more, but less than 75,000 EUR. <li><code>gte_75k_lt_100k_eur</code>: 75,000 EUR or more, but less than 100,000 EUR. <li><code>gte_100k_lt_150k_eur</code>: 100,000 EUR or more, but less than 150,000 EUR. <li><code>gte_150k_eur</code>: 150,000 EUR or more. </ul>
-
-        '
-    AddressRequest:
-      properties:
-        line_1:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Line 1
-          example: Heidestraße 17
-          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
-
-            '
-        line_2:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Line 2
-          example: null
-          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
-
-            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
-
-            '
-        postal_code:
-          type: string
-          maxLength: 50
-          minLength: 1
-          title: Postal Code
-          example: '51147'
-          description: 'The postal code for the address.
-
-            '
-        city:
-          type: string
-          maxLength: 150
-          minLength: 1
-          title: City
-          example: Köln
-          description: 'The city/municipality of the address.
-
-            '
-        country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country
-          example: DE
-          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
-
-            '
-      type: object
-      required:
-      - line_1
-      - postal_code
-      - city
-      - country
-      title: AddressRequest
-    EmploymentStatus:
-      title: EmploymentStatus
-      enum:
-      - apprenticeship
-      - company_owner
-      - employed
-      - managing_director
-      - public_official
-      - retired
-      - self_employed
-      - student
-      - unemployed
-      type: string
-      description: 'A category to represent a user''s employment status:
-
-        <ul> <li><code>apprenticeship</code> <li><code>company_owner</code> <li><code>employed</code> <li><code>managing_director</code> <li><code>public_official</code> <li><code>retired</code> <li><code>self_employed</code> <li><code>student</code> <li><code>unemployed</code> </ul>
-
-        '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    PersonDataUpdateTaxResidency:
-      title: PersonDataUpdateTaxResidency
-      description: 'A tax residency item for a person data update request.
-
-        '
-      required:
-      - country
-      - tax_identification_number
-      type: object
-      properties:
-        country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country
-          description: 'An ISO 3166-1 alpha-2 code representing the tax residency country.
-
-            '
-          example: DE
-        tax_identification_number:
-          type: string
-          minLength: 1
-          maxLength: 255
-          title: Tax Identification Number
-          description: 'The TIN (Tax Identification Number) for the person in the given country.
-
-            '
-          example: '12345'
-    EncodedPaginatedCollectionResponse_PersonDataUpdateAnnotatedResponse_:
-      title: EncodedPaginatedCollectionResponse[PersonDataUpdateAnnotatedResponse]
-      description: 'A paginated collection of person data update requests.
-
-        '
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonDataUpdateAnnotatedResponse'
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-    Address:
-      title: Address
-      description: 'A residential address.
-
-        '
-      required:
-      - line_1
-      - postal_code
-      - city
-      - country
-      type: object
-      properties:
-        line_1:
-          title: Line 1
-          maxLength: 128
-          type: string
-          example: Heidestraße 17
-          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
-
-            '
-        line_2:
-          title: Line 2
-          maxLength: 128
-          type: string
-          example: null
-          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
-
-            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
-
-            '
-        postal_code:
-          title: Postal Code
-          maxLength: 50
-          type: string
-          example: '51147'
-          description: 'The postal code for the address.
-
-            '
-        city:
-          title: City
-          maxLength: 150
-          type: string
-          example: Köln
-          description: 'The city/municipality of the address.
-
-            '
-        country:
-          title: Country
-          maxLength: 2
-          minLength: 2
-          type: string
-          example: DE
-          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
-
-            '
-    EncodedPaginatedCollectionResponse_PersonResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/broker__apps__api__endpoints__persons__PersonResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[PersonResponse]
-    PersonDataUpdateRegisteredAddressRequest:
-      title: PersonDataUpdateRegisteredAddressRequest
-      description: 'A request to update a person''s registered address.
-
-        '
-      required:
-      - type
-      - line_1
-      - postal_code
-      - city
-      - country
-      type: object
-      properties:
-        type:
-          type: string
-          const: registered_address
-          title: Type
-          description: 'The type discriminator identifying this as a registered address update request.
-
-            '
-        line_1:
-          type: string
-          maxLength: 255
-          title: Address Line 1
-          description: 'The first line of the address, typically containing the street name and number.
-
-            '
-          example: Neue Straße 1
-        line_2:
-          type: string
-          maxLength: 255
-          nullable: true
-          title: Address Line 2
-          description: 'An optional second line of the address, for additional address details.
-
-            '
-        postal_code:
-          type: string
-          maxLength: 20
-          title: Postal Code
-          description: 'The postal code or ZIP code of the address.
-
-            '
-          example: '10115'
-        city:
-          type: string
-          maxLength: 255
-          title: City
-          description: 'The city or municipality of the address.
-
-            '
-          example: Berlin
-        country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country
-          description: 'An ISO 3166-1 alpha-2 code representing the country of the address.
-
-            '
-          example: DE
     PersonDataUpdateAnnotatedResponse:
       title: PersonDataUpdateAnnotatedResponse
       description: 'An object representing a person data update request with the specific data being updated.
@@ -1176,6 +951,32 @@ components:
             '
           items:
             $ref: '#/components/schemas/StatusChange_PersonDataUpdateRequestStatus_'
+    PersonDataUpdatePhoneNumberRequest:
+      title: PersonDataUpdatePhoneNumberRequest
+      description: 'A request to update a person''s phone number.
+
+        '
+      required:
+      - type
+      - number
+      type: object
+      properties:
+        type:
+          type: string
+          const: phone_number
+          title: Type
+          description: 'The type discriminator identifying this as a phone number update request.
+
+            '
+        number:
+          type: string
+          minLength: 1
+          maxLength: 45
+          title: Phone Number
+          description: 'The new phone number for the person, including the country calling code.
+
+            '
+          example: '+49172997319'
     PersonRequest:
       properties:
         firstname:
@@ -1265,160 +1066,145 @@ components:
       - registered_address
       - accepted_agreements
       title: PersonRequest
-    PersonDataUpdateEmailRequest:
-      title: PersonDataUpdateEmailRequest
-      description: 'A request to update a person''s email address.
+    PersonDataUpdateRegisteredAddressRequest:
+      title: PersonDataUpdateRegisteredAddressRequest
+      description: 'A request to update a person''s registered address.
 
         '
       required:
       - type
-      - email
+      - line_1
+      - postal_code
+      - city
+      - country
       type: object
       properties:
         type:
           type: string
-          const: email
+          const: registered_address
           title: Type
-          description: 'The type discriminator identifying this as an email update request.
+          description: 'The type discriminator identifying this as a registered address update request.
 
             '
-        email:
+        line_1:
           type: string
-          format: email
-          title: Email
-          description: 'The new email address for the person.
-
-            '
-          example: newemail@example.com
-    BusinessPersonPlaceOfBirthRequest:
-      title: PlaceOfBirthRequest
-      description: 'An object representing a place of birth.
-
-        '
-      required:
-      - country
-      type: object
-      properties:
-        city:
-          title: City
           maxLength: 255
+          title: Address Line 1
+          description: 'The first line of the address, typically containing the street name and number.
+
+            '
+          example: Neue Straße 1
+        line_2:
           type: string
-          description: 'The city/municipality of the place of birth.
+          maxLength: 255
+          nullable: true
+          title: Address Line 2
+          description: 'An optional second line of the address, for additional address details.
+
+            '
+        postal_code:
+          type: string
+          maxLength: 20
+          title: Postal Code
+          description: 'The postal code or ZIP code of the address.
+
+            '
+          example: '10115'
+        city:
+          type: string
+          maxLength: 255
+          title: City
+          description: 'The city or municipality of the address.
 
             '
           example: Berlin
         country:
-          title: Country
+          type: string
           maxLength: 2
           minLength: 2
-          type: string
-          example: DE
-          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code representing the country of the address.
 
             '
-    PersonDataUpdatePhoneNumberRequest:
-      title: PersonDataUpdatePhoneNumberRequest
-      description: 'A request to update a person''s phone number.
+          example: DE
+    EncodedPaginatedCollectionResponse_PersonDataUpdateAnnotatedResponse_:
+      title: EncodedPaginatedCollectionResponse[PersonDataUpdateAnnotatedResponse]
+      description: 'A paginated collection of person data update requests.
 
         '
       required:
-      - type
-      - number
+      - data
+      - pagination
       type: object
       properties:
-        type:
-          type: string
-          const: phone_number
-          title: Type
-          description: 'The type discriminator identifying this as a phone number update request.
+        data:
+          title: Data
+          description: 'The elements of the response.
 
             '
-        number:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonDataUpdateAnnotatedResponse'
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+    EncodedPaginatedCollectionResponse_PersonResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__persons__PersonResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[PersonResponse]
+    PersonDataUpdateTaxResidency:
+      title: PersonDataUpdateTaxResidency
+      description: 'A tax residency item for a person data update request.
+
+        '
+      required:
+      - country
+      - tax_identification_number
+      type: object
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code representing the tax residency country.
+
+            '
+          example: DE
+        tax_identification_number:
           type: string
           minLength: 1
-          maxLength: 45
-          title: Phone Number
-          description: 'The new phone number for the person, including the country calling code.
-
-            '
-          example: '+49172997319'
-    PersonDataUpdateTaxResidenciesRequest:
-      title: PersonDataUpdateTaxResidenciesRequest
-      description: 'A request to update a person''s tax residencies (self-declared TINs). Provide the complete list of tax residencies for the person (the list replaces the current set, so include all existing and new entries, not just the new one). Each country must appear at most once.
-
-        '
-      required:
-      - type
-      - residencies
-      type: object
-      properties:
-        type:
-          type: string
-          const: tax_residencies
-          title: Type
-          description: 'The type discriminator identifying this as a tax residency update request.
-
-            '
-        residencies:
-          title: Tax Residencies
-          minItems: 1
-          type: array
-          description: 'The complete list of tax residencies and TINs for the person.
-
-            '
-          items:
-            $ref: '#/components/schemas/PersonDataUpdateTaxResidency'
-    PersonDataUpdateEmploymentRequest:
-      title: PersonDataUpdateEmploymentRequest
-      description: 'A request to update a person''s employment information.
-
-        '
-      required:
-      - type
-      - status
-      - annual_salary
-      - sector
-      type: object
-      properties:
-        type:
-          type: string
-          const: employment
-          title: Type
-          description: 'The type discriminator identifying this as an employment information update request.
-
-            '
-        status:
-          $ref: '#/components/schemas/EmploymentStatus'
-        annual_salary:
-          $ref: '#/components/schemas/AnnualSalary'
-        sector:
-          $ref: '#/components/schemas/IndustrySector'
-    broker__apps__api__endpoints__agreements__AgreementAcceptanceRequest:
-      title: AgreementAcceptance
-      description: 'An object representing the user''s acceptance of a legal agreement at a specific point in time.
-
-        '
-      required:
-      - agreement_id
-      - accepted_at
-      type: object
-      properties:
-        agreement_id:
-          title: Agreement Identifier
           maxLength: 255
-          type: string
-          example: agr_9902271f791d413aad781763c61b9bb0
-          description: 'An agreement identifier. This value identifies the agreement that a customer has accepted at a certain point in time.
+          title: Tax Identification Number
+          description: 'The TIN (Tax Identification Number) for the person in the given country.
 
             '
-        accepted_at:
-          title: Accepted At
-          type: string
-          format: date-time
-          example: '2023-06-29T14:39:29Z'
-          description: 'A point in time.  This value specifies the point in time at which the user accepted the agreement referenced by `agreement_id`.
+          example: '12345'
+    PersonDataUpdateRequestStatus:
+      type: string
+      enum:
+      - created
+      - processing
+      - success
+      - failure
+      title: PersonDataUpdateRequestStatus
+      description: 'A category representing the status of a person data update request.
 
-            '
+        <ul> <li><code>created</code> - The update request has been created <li><code>processing</code> - The update request is being processed <li><code>success</code> - The update request has been successfully completed <li><code>failure</code> - The update request has failed </ul>
+
+        '
     TaxResidency:
       title: TaxResidency
       description: 'An object representing a tax residency.
@@ -1445,25 +1231,239 @@ components:
           description: 'The TIN (Tax Identification Number) related to the user within the taxation regime within `country`.
 
             '
-    StatusChange_PersonDataUpdateRequestStatus_:
-      title: StatusChange[PersonDataUpdateRequestStatus]
-      description: 'An object representing a transition to a new status.
+    AddressRequest:
+      properties:
+        line_1:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 1
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 2
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          type: string
+          maxLength: 50
+          minLength: 1
+          title: Postal Code
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          type: string
+          maxLength: 150
+          minLength: 1
+          title: City
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+      type: object
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      title: AddressRequest
+    PlaceOfBirthRequest:
+      title: PlaceOfBirthRequest
+      description: 'An object representing a place of birth.
 
         '
       required:
-      - status
-      - timestamp
+      - city
+      - country
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/PersonDataUpdateRequestStatus'
-        timestamp:
-          title: Timestamp
+        city:
+          title: City
+          maxLength: 255
           type: string
-          format: date-time
-          description: 'The timestamp at which this status change occurred.
+          description: 'The city/municipality of the place of birth.
 
             '
+          example: Berlin
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+
+            '
+    IndustrySector:
+      title: IndustrySector
+      enum:
+      - agriculture
+      - commodities
+      - construction
+      - education
+      - financial_services
+      - gambling
+      - healthcare
+      - it
+      - jewellery_trading
+      - manufacturing
+      - precious_metals_trading
+      - professional_services
+      - public_sector
+      - real_estate
+      - retail
+      - service_industry
+      - sport
+      - tourism
+      - transport
+      - used_vehicles_trading
+      - weapons_trading
+      - other
+      type: string
+      description: 'A category representing the industry sector related to a user''s employment status.  If the user''s employment status is not directly linked to a sector, select `other`.
+
+        <ul> <li><code>agriculture</code></li> <li><code>commodities</code></li> <li><code>construction</code></li> <li><code>education</code></li> <li><code>financial_services</code></li> <li><code>gambling</code></li> <li><code>healthcare</code></li> <li><code>it</code></li> <li><code>jewellery_trading</code></li> <li><code>manufacturing</code></li> <li><code>precious_metals_trading</code></li> <li><code>professional_services</code></li> <li><code>public_sector</code></li> <li><code>real_estate</code></li> <li><code>retail</code></li> <li><code>service_industry</code></li> <li><code>sport</code></li> <li><code>tourism</code></li> <li><code>transport</code></li> <li><code>used_vehicles_trading</code></li> <li><code>weapons_trading</code></li> <li><code>other</code></li> </ul>
+
+        '
+    BusinessPersonPlaceOfBirthRequest:
+      title: PlaceOfBirthRequest
+      description: 'An object representing a place of birth.
+
+        '
+      required:
+      - country
+      type: object
+      properties:
+        city:
+          title: City
+          maxLength: 255
+          type: string
+          description: 'The city/municipality of the place of birth.
+
+            '
+          example: Berlin
+        country:
+          title: Country
+          maxLength: 2
+          minLength: 2
+          type: string
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country related to the place of birth.
+
+            '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    EmploymentStatus:
+      title: EmploymentStatus
+      enum:
+      - apprenticeship
+      - company_owner
+      - employed
+      - managing_director
+      - public_official
+      - retired
+      - self_employed
+      - student
+      - unemployed
+      type: string
+      description: 'A category to represent a user''s employment status:
+
+        <ul> <li><code>apprenticeship</code> <li><code>company_owner</code> <li><code>employed</code> <li><code>managing_director</code> <li><code>public_official</code> <li><code>retired</code> <li><code>self_employed</code> <li><code>student</code> <li><code>unemployed</code> </ul>
+
+        '
+    PersonDataUpdateEmailRequest:
+      title: PersonDataUpdateEmailRequest
+      description: 'A request to update a person''s email address.
+
+        '
+      required:
+      - type
+      - email
+      type: object
+      properties:
+        type:
+          type: string
+          const: email
+          title: Type
+          description: 'The type discriminator identifying this as an email update request.
+
+            '
+        email:
+          type: string
+          format: email
+          title: Email
+          description: 'The new email address for the person.
+
+            '
+          example: newemail@example.com
+    PersonDataUpdateTaxResidenciesRequest:
+      title: PersonDataUpdateTaxResidenciesRequest
+      description: 'A request to update a person''s tax residencies (self-declared TINs). Provide the complete list of tax residencies for the person (the list replaces the current set, so include all existing and new entries, not just the new one). Each country must appear at most once.
+
+        '
+      required:
+      - type
+      - residencies
+      type: object
+      properties:
+        type:
+          type: string
+          const: tax_residencies
+          title: Type
+          description: 'The type discriminator identifying this as a tax residency update request.
+
+            '
+        residencies:
+          title: Tax Residencies
+          minItems: 1
+          type: array
+          description: 'The complete list of tax residencies and TINs for the person.
+
+            '
+          items:
+            $ref: '#/components/schemas/PersonDataUpdateTaxResidency'
   securitySchemes:
     bearerAuth:
       type: http

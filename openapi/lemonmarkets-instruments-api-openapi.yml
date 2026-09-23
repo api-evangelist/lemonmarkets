@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Instruments API'
+  title: lemon.markets Brokerage API 🍋 Instruments API
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -14,17 +14,24 @@ paths:
       operationId: get_instrument
       description: 'Returns details for a specific instrument identified by its ISIN.
 
-        <strong>Test ISINs for Trading Halts</strong>
+        Test ISINs for Trading Halts
 
         You can use the following static ISINs to test different predetermined scenarios regarding Trading Halts. The test ISINs are not enabled on our side and are only available in the Sandbox environment.
 
-        <ul> <li><code>XF0000000046</code> - <strong>Buy-side halt</strong>: Returns an instrument with an active trading halt on buy orders only <li><code>XF0000000053</code> - <strong>Sell-side halt</strong>: Returns an instrument with an active trading halt on sell orders only <li><code>XF0000000061</code> - <strong>Both-sides halt</strong>: Returns an instrument with an active trading halt on both buy and sell orders </ul>
 
-        <strong>Note:</strong>
+        XF0000000046 - Buy-side halt: Returns an instrument with an active trading halt on buy orders only
 
-        <ul> <li>These test ISINs are only available on this endpoint. They will not appear in the <code>GET /instruments</code> listing endpoint. <li>The Sandbox behavior of <code>POST /accounts/{account_id}/orders</code> takes these predefined Trading Halts into account: it will thus return a 422 Error when attempting to create an order that would be Halted. </ul>
+        XF0000000053 - Sell-side halt: Returns an instrument with an active trading halt on sell orders only
 
-        '
+        XF0000000061 - Both-sides halt: Returns an instrument with an active trading halt on both buy and sell orders
+
+
+        Note:
+
+
+        These test ISINs are only available on this endpoint. They will not appear in the GET /instruments listing endpoint.
+
+        The Sandbox behavior of POST /accounts/{account_id}/orders takes these predefined Trading Halts into account: it will thus return a 422 Error when attempting to create an order that would be Halted.'
       tags:
       - Instruments
       parameters:
@@ -103,9 +110,7 @@ paths:
 
         - `XF0000000020` - **No yield data**: Returns a 404 error: "No yield data available for instrument XF0000000020"
 
-        - `XF0000000038` - **Non-distributing fund**: Returns a 400 error: "Profit model of instrument XF0000000038 is not distributing"
-
-        '
+        - `XF0000000038` - **Non-distributing fund**: Returns a 400 error: "Profit model of instrument XF0000000038 is not distributing"'
       operationId: get_latest_yield
       parameters:
       - required: true
@@ -364,88 +369,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    InstrumentFundProfitModel:
-      title: Fund Profit Model
-      type: string
-      enum:
-      - accumulating
-      - distributing
-      description: 'A category to represent a fund''s model for profit use:
-
-        <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
-
-        '
-    InstrumentPriceResponse:
-      title: Price Response
-      oneOf:
-      - $ref: '#/components/schemas/QuoteResponseWithType'
-      - $ref: '#/components/schemas/NavResponse'
-      discriminator:
-        propertyName: type
-        mapping:
-          nav: '#/components/schemas/NavResponse'
-          quote: '#/components/schemas/QuoteResponseWithType'
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
-    TradingHaltResponse:
-      title: TradingHaltResponse
-      description: 'An object representing an active trading halt for an instrument.
-
-        '
-      required:
-      - valid_from
-      type: object
-      properties:
-        valid_from:
-          title: Valid From
-          type: string
-          format: date-time
-          description: 'The date and time from which the trading halt has been active.
-
-            '
-          example: '2024-01-15T09:30:00.000000+00:00'
-        valid_to:
-          title: Valid To
-          type: string
-          format: date-time
-          description: 'The date and time until which the trading halt is active. If <code>null</code>, the halt doesn''t have yet a definite lifting date.
-
-            '
-          example: null
-        side:
-          $ref: '#/components/schemas/Side'
-          description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
-
-            '
-    PriceType:
-      type: string
-      enum:
-      - nav
-      - quote
-      title: PriceType
-      description: 'A category representing the source of a price:
-
-        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
-
-        '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
     NavResponse:
       properties:
         type:
@@ -485,154 +408,6 @@ components:
       - type
       - valuation_date
       title: NavResponse
-    QuoteResponseWithType:
-      properties:
-        type:
-          $ref: '#/components/schemas/PriceType'
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
-
-            '
-        ask_price:
-          type: string
-          title: Ask Price
-          description: 'The ask price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type buy.
-
-            '
-        ask_size:
-          type: string
-          title: Ask Size
-          description: 'The ask size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type buy to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
-
-            '
-        bid_price:
-          type: string
-          title: Bid Price
-          description: 'The bid price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type sell.
-
-            '
-        bid_size:
-          type: string
-          title: Bid Size
-          description: 'The bid size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type sell to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
-
-            '
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-          description: 'The timestamp of the quote. It represents the point in time at which the quote was updated.
-
-            '
-      type: object
-      required:
-      - instrument
-      - ask_price
-      - bid_price
-      - ask_size
-      - bid_size
-      - currency
-      - type
-      - updated_at
-      title: QuoteResponseWithType
-    YieldResponse:
-      title: Yield
-      description: 'Most recent yield data available for the specified instrument.
-
-        '
-      required:
-      - period_start
-      - period_end
-      - yield_pct
-      - annualized_yield_pct
-      - calculated_as_of
-      type: object
-      properties:
-        period_start:
-          title: Period Start
-          type: string
-          format: date
-          description: 'The start date of the yield period. It represents the starting date of the period for which the yield is calculated.
-
-            '
-          example: '2023-10-01'
-        period_end:
-          title: Period End
-          type: string
-          format: date
-          description: 'The end date of the yield period. It represents the final date of the period for which the yield is calculated.
-
-            '
-          example: '2023-10-31'
-        yield_pct:
-          title: Yield Percent
-          type: number
-          description: 'The yield of the instrument for the given period in percentage (`"0.14"` means 0.14%).
-
-            '
-          example: '0.14'
-        annualized_yield_pct:
-          title: Annualized Yield Percent
-          type: number
-          description: 'Annualized yield for the specified period in percentage (`"1.69"` means 1.69%). Represents a simple (non-compounded) projection of that period''s factor over a year. Present only after the period''s final distribution is processed.
-
-            '
-          example: '1.69'
-        calculated_as_of:
-          title: Calculated As Of
-          type: string
-          format: date
-          description: 'The last date of the period for which the annualized monthly yield value applies.
-
-            '
-          example: '2023-10-31'
-      example:
-        period_start: '2025-10-01'
-        period_end: '2025-10-31'
-        yield_pct: '0.14'
-        annualized_yield_pct: '1.69'
-        calculated_as_of: '2025-10-31'
-    Page_InstrumentResponse_:
-      title: Page of InstrumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/InstrumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    InstrumentType:
-      title: InstrumentType
-      enum:
-      - etf
-      - fund
-      - stock
-      type: string
-      description: 'A category specifying the type of a financial instrument:
-
-        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
-
-        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
-
-        '
     Pagination:
       title: Pagination
       type: object
@@ -696,6 +471,74 @@ components:
           description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
 
             '
+    YieldResponse:
+      title: Yield
+      description: 'Most recent yield data available for the specified instrument.
+
+        '
+      required:
+      - period_start
+      - period_end
+      - yield_pct
+      - annualized_yield_pct
+      - calculated_as_of
+      type: object
+      properties:
+        period_start:
+          title: Period Start
+          type: string
+          format: date
+          description: 'The start date of the yield period. It represents the starting date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-01'
+        period_end:
+          title: Period End
+          type: string
+          format: date
+          description: 'The end date of the yield period. It represents the final date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-31'
+        yield_pct:
+          title: Yield Percent
+          type: number
+          description: 'The yield of the instrument for the given period in percentage (`"0.14"` means 0.14%).
+
+            '
+          example: '0.14'
+        annualized_yield_pct:
+          title: Annualized Yield Percent
+          type: number
+          description: 'Annualized yield for the specified period in percentage (`"1.69"` means 1.69%). Represents a simple (non-compounded) projection of that period''s factor over a year. Present only after the period''s final distribution is processed.
+
+            '
+          example: '1.69'
+        calculated_as_of:
+          title: Calculated As Of
+          type: string
+          format: date
+          description: 'The last date of the period for which the annualized monthly yield value applies.
+
+            '
+          example: '2023-10-31'
+      example:
+        period_start: '2025-10-01'
+        period_end: '2025-10-31'
+        yield_pct: '0.14'
+        annualized_yield_pct: '1.69'
+        calculated_as_of: '2025-10-31'
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
     InstrumentRegulatoryInformationResponse:
       title: InstrumentRegulatoryInformationResponse
       description: 'An object representing regulatory information regarding the instrument.
@@ -710,6 +553,168 @@ components:
           description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
 
             '
+    TradingHaltResponse:
+      title: TradingHaltResponse
+      description: 'An object representing an active trading halt for an instrument.
+
+        '
+      required:
+      - valid_from
+      type: object
+      properties:
+        valid_from:
+          title: Valid From
+          type: string
+          format: date-time
+          description: 'The date and time from which the trading halt has been active.
+
+            '
+          example: '2024-01-15T09:30:00.000000+00:00'
+        valid_to:
+          title: Valid To
+          type: string
+          format: date-time
+          description: 'The date and time until which the trading halt is active. If <code>null</code>, the halt doesn''t have yet a definite lifting date.
+
+            '
+          example: null
+        side:
+          $ref: '#/components/schemas/Side'
+          description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
+
+            '
+    Page_InstrumentResponse_:
+      title: Page of InstrumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
+
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
+
+        '
+    QuoteResponseWithType:
+      properties:
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        ask_price:
+          type: string
+          title: Ask Price
+          description: 'The ask price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type buy.
+
+            '
+        ask_size:
+          type: string
+          title: Ask Size
+          description: 'The ask size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type buy to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        bid_price:
+          type: string
+          title: Bid Price
+          description: 'The bid price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type sell.
+
+            '
+        bid_size:
+          type: string
+          title: Bid Size
+          description: 'The bid size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type sell to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+
+            '
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: 'The timestamp of the quote. It represents the point in time at which the quote was updated.
+
+            '
+      type: object
+      required:
+      - instrument
+      - ask_price
+      - bid_price
+      - ask_size
+      - bid_size
+      - currency
+      - type
+      - updated_at
+      title: QuoteResponseWithType
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    InstrumentType:
+      title: InstrumentType
+      enum:
+      - etf
+      - fund
+      - stock
+      type: string
+      description: 'A category specifying the type of a financial instrument:
+
+        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+
+        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+
+        '
+    InstrumentPriceResponse:
+      title: Price Response
+      oneOf:
+      - $ref: '#/components/schemas/QuoteResponseWithType'
+      - $ref: '#/components/schemas/NavResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          nav: '#/components/schemas/NavResponse'
+          quote: '#/components/schemas/QuoteResponseWithType'
+    InstrumentFundProfitModel:
+      title: Fund Profit Model
+      type: string
+      enum:
+      - accumulating
+      - distributing
+      description: 'A category to represent a fund''s model for profit use:
+
+        <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
+
+        '
   securitySchemes:
     bearerAuth:
       type: http

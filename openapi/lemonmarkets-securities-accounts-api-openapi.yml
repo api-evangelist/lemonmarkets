@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Securities Accounts API'
+  title: lemon.markets Brokerage API 🍋 Securities Accounts API
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -286,6 +286,62 @@ components:
       - rejected
       - closed
       title: SecuritiesAccountStatus
+    EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
+    CustomerAccountStatus:
+      title: CustomerAccountStatus
+      enum:
+      - closed
+      - created
+      - opened
+      - rejected
+      type: string
+      description: 'A category representing the status of a user''s account.
+
+        <ul> <li><code>closed</code> <li><code>created</code> <li><code>opened</code> <li><code>rejected</code> </ul>
+
+        <strong>NOTE:</strong> This list is not final yet, there will be more values added later.
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
     StatusChange_CustomerAccountStatus_:
       title: StatusChange[CustomerAccountStatus]
       description: 'An object representing a change in the user account.
@@ -306,47 +362,6 @@ components:
 
             '
           example: '2023-06-23T07:29:55.465000+00:00'
-    EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    CustomerAccountStatus:
-      title: CustomerAccountStatus
-      enum:
-      - closed
-      - created
-      - opened
-      - rejected
-      type: string
-      description: 'A category representing the status of a user''s account.
-
-        <ul> <li><code>closed</code> <li><code>created</code> <li><code>opened</code> <li><code>rejected</code> </ul>
-
-        <strong>NOTE:</strong> This list is not final yet, there will be more values added later.
-
-        '
     broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
       properties:
         id:
@@ -376,21 +391,6 @@ components:
       - created_at
       - history
       title: SecuritiesAccountResponse
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
   securitySchemes:
     bearerAuth:
       type: http

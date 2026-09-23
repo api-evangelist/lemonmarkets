@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: 'lemon.markets Brokerage API 🍋 Accounts: General Documents API'
+  title: lemon.markets Brokerage API 🍋 Documents API
   version: 0.1.0
 servers:
 - url: https://sandbox.api.lemon.markets/v1
@@ -13,9 +13,7 @@ paths:
       tags:
       - Documents
       summary: Get Latest Agreements
-      description: 'When opening an account, the user has to agree to accept certain types of contractual documents, like privacy policy or terms and conditions.
-
-        '
+      description: When opening an account, the user has to agree to accept certain types of contractual documents, like privacy policy or terms and conditions.
       operationId: get_agreements
       parameters:
       - name: cursor
@@ -307,9 +305,7 @@ paths:
       description: 'Submit a document for either a person or a business. This endpoint returns a presigned upload URL that can be used to upload the document file.
 
 
-        The request must specify either a person document or a business document based on the `type` field. The response will contain a presigned `upload_location` URL that expires after a certain time.
-
-        '
+        The request must specify either a person document or a business document based on the `type` field. The response will contain a presigned `upload_location` URL that expires after a certain time.'
       requestBody:
         required: true
         content:
@@ -399,52 +395,52 @@ paths:
           description: Server Error
 components:
   schemas:
-    PersonDocumentUploadType:
-      type: string
-      enum:
-      - person.identification_bundle
-      title: PersonDocumentUploadType
-      description: 'A category describing a person document:
-
-        <ul> <li><code>person.identification_bundle</code> - A bundle of identification documents for a person </ul>
-
-        '
-    DocumentType:
-      title: Document Type
-      enum:
-      - account_statement
-      - cash.statement
-      - contractual
-      - general
-      - income_distribution.receipt
-      - order.cost
-      - report.ex_post
-      - tax_information
-      - tax.receipt
-      - tax.statement
-      - trade.receipt
-      type: string
-      description: 'A category representing the type of document:
-
-        <ul> <li><code>account_statement</code>: An account statements, e.g. quarterly statements for both the reference account and the securities account. <li><code>cash.statement</code>: A statement detailing cash movements and balances for a specific period, e.g. the quarterly cash statement. <li><code>contractual</code>: A contractual document, e.g. private policy or terms and conditions. <li><code>general</code>: A document with general information, e.g. basic information on securities trading. <li><code>income_distribution.receipt</code>: A document presenting detailed information about an income distribution. <li><code>report.ex_post</code>: The annual cost report. <li><code>order.cost</code>: A cost information document for an order. <li><code>tax_information</code>: deprecated <li><code>tax.receipt</code>: Tax related information about a specific payment, e.g. for capital gains tax on unrealized gains (German Vorabpauschale) or refunds due to tax optimization. <li><code>tax.statement</code>: Tax reporting information, e.g. the annual tax reporting. <li><code>trade.receipt</code>: A trade receipt: It presents final information about prices, cost and quantities. </ul>
-
-        <strong>Note:</strong> This list is not final, there will be more types added over time.
-
-        '
-    BusinessDocumentUploadRequestV2:
+    Pagination:
+      title: Pagination
+      type: object
       properties:
-        business:
+        next_cursor:
+          title: Cursor for Next Page
           type: string
-          title: Business Identifier
-          description: The identifier of the business for which the document is being submitted
-          example: le_8e2a16591a664df89551047d85436562
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    PersonDocumentUploadRequest:
+      properties:
+        person:
+          type: string
+          title: Person Identifier
+          description: The identifier of the person for whom the document is being submitted
+          example: pers_0453deb1c90448c99f24adaa833cfda9
         type:
-          $ref: '#/components/schemas/BusinessDocumentUploadType'
+          $ref: '#/components/schemas/PersonDocumentUploadType'
       type: object
       required:
-      - business
+      - person
       - type
-      title: BusinessDocumentUploadRequestV2
+      title: PersonDocumentUploadRequest
+    EncodedPaginatedCollectionResponse_AgreementResponse_:
+      title: Page of AgreementResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          type: array
+          description: 'The elements of the response.
+
+            '
+          items:
+            $ref: '#/components/schemas/AgreementResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     DocumentResponse:
       title: DocumentResponse
       description: 'An object representing a document to be delivered/displayed to the user.
@@ -503,83 +499,18 @@ components:
           $ref: '#/components/schemas/DocumentType'
         content_type:
           $ref: '#/components/schemas/DocumentContentType'
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    PersonDocumentUploadResponse:
-      properties:
-        person:
-          type: string
-          title: Person Identifier
-          description: The identifier of the person for whom the document was submitted
-          example: pers_0453deb1c90448c99f24adaa833cfda9
-        type:
-          $ref: '#/components/schemas/PersonDocumentUploadType'
-        upload_location:
-          type: string
-          title: Upload Location
-          description: 'A presigned URL to upload the person document.
-
-            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/zip`.
-
-            '
-        expires_at:
-          type: string
-          format: date-time
-          title: Expires At
-          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
-
-            '
-      type: object
-      required:
-      - person
-      - type
-      - upload_location
-      - expires_at
-      title: PersonDocumentUploadResponse
-    BusinessDocumentUploadType:
-      type: string
+    DocumentContentType:
+      title: DocumentContentType
       enum:
-      - business.articles_of_association
-      - business.commercial_register_extract
-      - business.shareholder_list
-      title: BusinessDocumentUploadType
-      description: 'A category describing a business document:
+      - application/pdf
+      type: string
+      description: 'A category representing the content type of the document displayed. At the moment, there will only be one content type for documents:
 
-        <ul> <li><code>business.articles_of_association</code> - Articles of association for a business <li><code>business.commercial_register_extract</code> - Commercial register extract <li><code>business.shareholder_list</code> - List of shareholders </ul>
+        <ul> <li><code>application/pdf</code> </ul>
+
+        A potential use-case for this attribute is an icon used as a file-type indicator in a list of documents.
 
         '
-    AgreementType:
-      title: AgreementType
-      enum:
-      - pricing_table
-      - privacy_policy
-      - terms_and_conditions
-      type: string
-      description: "This property describes the underlying type of a document.\n<ul> <li><code>pricing_table</code>: The pricing table for the lemon.markets brokerage account. <li><code>privacy_policy</code>: The privacy policy regarding the data processing in the context of a\n    lemon.markets brokerage account.\n<li><code>terms_and_conditions</code>: The general terms and conditions for the lemon.markets brokerage account. </ul>\nIn a list, you can use this value to select a different icon for eahc category or make sure, you always present those documents in a fixed order irrespective of the actual translation of the document title.\n"
-    EncodedPaginatedCollectionResponse_AgreementResponse_:
-      title: Page of AgreementResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          type: array
-          description: 'The elements of the response.
-
-            '
-          items:
-            $ref: '#/components/schemas/AgreementResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     AgreementResponse:
       title: AgreementResponse
       required:
@@ -617,62 +548,14 @@ components:
           description: 'The localized name of the document. Use this value to reference to that document in the user interface.
 
             '
-    PersonDocumentUploadRequest:
-      properties:
-        person:
-          type: string
-          title: Person Identifier
-          description: The identifier of the person for whom the document is being submitted
-          example: pers_0453deb1c90448c99f24adaa833cfda9
-        type:
-          $ref: '#/components/schemas/PersonDocumentUploadType'
-      type: object
-      required:
-      - person
-      - type
-      title: PersonDocumentUploadRequest
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    Page_DocumentResponse_:
-      title: Page of DocumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    DocumentContentType:
-      title: DocumentContentType
-      enum:
-      - application/pdf
+    PersonDocumentUploadType:
       type: string
-      description: 'A category representing the content type of the document displayed. At the moment, there will only be one content type for documents:
+      enum:
+      - person.identification_bundle
+      title: PersonDocumentUploadType
+      description: 'A category describing a person document:
 
-        <ul> <li><code>application/pdf</code> </ul>
-
-        A potential use-case for this attribute is an icon used as a file-type indicator in a list of documents.
+        <ul> <li><code>person.identification_bundle</code> - A bundle of identification documents for a person </ul>
 
         '
     BusinessDocumentUploadResponseV2:
@@ -706,6 +589,119 @@ components:
       - upload_location
       - expires_at
       title: BusinessDocumentUploadResponseV2
+    BusinessDocumentUploadRequestV2:
+      properties:
+        business:
+          type: string
+          title: Business Identifier
+          description: The identifier of the business for which the document is being submitted
+          example: le_8e2a16591a664df89551047d85436562
+        type:
+          $ref: '#/components/schemas/BusinessDocumentUploadType'
+      type: object
+      required:
+      - business
+      - type
+      title: BusinessDocumentUploadRequestV2
+    Page_DocumentResponse_:
+      title: Page of DocumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    DocumentType:
+      title: Document Type
+      enum:
+      - account_statement
+      - cash.statement
+      - contractual
+      - general
+      - income_distribution.receipt
+      - order.cost
+      - report.ex_post
+      - tax_information
+      - tax.receipt
+      - tax.statement
+      - trade.receipt
+      type: string
+      description: 'A category representing the type of document:
+
+        <ul> <li><code>account_statement</code>: An account statements, e.g. quarterly statements for both the reference account and the securities account. <li><code>cash.statement</code>: A statement detailing cash movements and balances for a specific period, e.g. the quarterly cash statement. <li><code>contractual</code>: A contractual document, e.g. private policy or terms and conditions. <li><code>general</code>: A document with general information, e.g. basic information on securities trading. <li><code>income_distribution.receipt</code>: A document presenting detailed information about an income distribution. <li><code>report.ex_post</code>: The annual cost report. <li><code>order.cost</code>: A cost information document for an order. <li><code>tax_information</code>: deprecated <li><code>tax.receipt</code>: Tax related information about a specific payment, e.g. for capital gains tax on unrealized gains (German Vorabpauschale) or refunds due to tax optimization. <li><code>tax.statement</code>: Tax reporting information, e.g. the annual tax reporting. <li><code>trade.receipt</code>: A trade receipt: It presents final information about prices, cost and quantities. </ul>
+
+        <strong>Note:</strong> This list is not final, there will be more types added over time.
+
+        '
+    BusinessDocumentUploadType:
+      type: string
+      enum:
+      - business.articles_of_association
+      - business.commercial_register_extract
+      - business.shareholder_list
+      title: BusinessDocumentUploadType
+      description: 'A category describing a business document:
+
+        <ul> <li><code>business.articles_of_association</code> - Articles of association for a business <li><code>business.commercial_register_extract</code> - Commercial register extract <li><code>business.shareholder_list</code> - List of shareholders </ul>
+
+        '
+    PersonDocumentUploadResponse:
+      properties:
+        person:
+          type: string
+          title: Person Identifier
+          description: The identifier of the person for whom the document was submitted
+          example: pers_0453deb1c90448c99f24adaa833cfda9
+        type:
+          $ref: '#/components/schemas/PersonDocumentUploadType'
+        upload_location:
+          type: string
+          title: Upload Location
+          description: 'A presigned URL to upload the person document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/zip`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - person
+      - type
+      - upload_location
+      - expires_at
+      title: PersonDocumentUploadResponse
+    AgreementType:
+      title: AgreementType
+      enum:
+      - pricing_table
+      - privacy_policy
+      - terms_and_conditions
+      type: string
+      description: "This property describes the underlying type of a document.\n<ul> <li><code>pricing_table</code>: The pricing table for the lemon.markets brokerage account. <li><code>privacy_policy</code>: The privacy policy regarding the data processing in the context of a\n    lemon.markets brokerage account.\n<li><code>terms_and_conditions</code>: The general terms and conditions for the lemon.markets brokerage account. </ul>\nIn a list, you can use this value to select a different icon for eahc category or make sure, you always present those documents in a fixed order irrespective of the actual translation of the document title.\n"
   securitySchemes:
     bearerAuth:
       type: http
