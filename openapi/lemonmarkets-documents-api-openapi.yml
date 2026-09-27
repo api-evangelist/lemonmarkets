@@ -395,35 +395,66 @@ paths:
           description: Server Error
 components:
   schemas:
-    Pagination:
-      title: Pagination
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
       type: object
       properties:
-        next_cursor:
-          title: Cursor for Next Page
+        message:
+          title: Message
           type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+    AgreementResponse:
+      title: AgreementResponse
+      required:
+      - id
+      - type
+      - url
+      - language
+      - name
+      type: object
+      properties:
+        id:
+          title: Agreement Identifier
+          type: string
+          description: 'The identifier for this document.  This will be later used as a value for the property `agreements[].agreement_id` for account creation.
 
             '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    PersonDocumentUploadRequest:
-      properties:
-        person:
-          type: string
-          title: Person Identifier
-          description: The identifier of the person for whom the document is being submitted
-          example: pers_0453deb1c90448c99f24adaa833cfda9
         type:
-          $ref: '#/components/schemas/PersonDocumentUploadType'
+          $ref: '#/components/schemas/AgreementType'
+        url:
+          title: Download URL
+          type: string
+          format: url
+          description: 'A reference to the actual document. You can use this URL to present the document to the user. It can be accessed without special headers like `Authorization` or the `LMG-Data-Privacy-*` ones, so you have full flexibility for presentation and you can choose among:
+
+            <ol><!-- redocly preview doesn''t support markdown lists --> <li>Showing the document using an In-App Browser. <li>Showing the document using an external Browser App. <li>Provide the user with your own options to download or forward the document. </ol>
+
+            '
+        language:
+          title: Language
+          type: string
+          description: "The (natural) language for the document.  This will can either be a pure language code like `\"de\"` or `\"pl\"` or a regional language code like `\"en_GB\"` or `\"de_CH\"`.\n<ul> <li><strong>Pure language code</strong> in this case is an ISO 639-1 alpha-2 code. <li><strong>Regional language code</strong> in this case is the concatenation of an ISO 639-1 alpha-2 code for a language\n    joined using the underscore character (<code>_</code>) with an ISO 3166-1 alpha-2 code for a country.\n</ul>\nWhen determining which one to prefer for display, we recommend to implement one of following strategies:\n<ol> <li>If you have a list of preferred languages for the user, such as iOS's\n    <a href=\"https://developer.apple.com/documentation/foundation/locale/2293155-preferredlanguages\"><code>Locale.preferredLanguages</code></a>,\n    iterate that list until you find the first language that has a document provided.\n<li>If you don't have a list of preferred languages, try to detect the regional language preference from\n    the environment (e.g. <code>\"de_AT\"</code>).  If there is a document for that one, present it to the\n     user. If not, try presenting one for the language-part only (in case of <code>\"de_AT\"</code>, that\n     would be <code>\"de\"</code>).\n</ol>\nIn either case, if there is no match with these lists, we recommend you pick a value that will match your application's default. A German version (<code>\"de\"</code>) will always be provided.\n"
+        name:
+          title: Name
+          type: string
+          description: 'The localized name of the document. Use this value to reference to that document in the user interface.
+
+            '
+    BusinessDocumentUploadRequestV2:
+      properties:
+        business:
+          type: string
+          title: Business Identifier
+          description: The identifier of the business for which the document is being submitted
+          example: le_8e2a16591a664df89551047d85436562
+        type:
+          $ref: '#/components/schemas/BusinessDocumentUploadType'
       type: object
       required:
-      - person
+      - business
       - type
-      title: PersonDocumentUploadRequest
+      title: BusinessDocumentUploadRequestV2
     EncodedPaginatedCollectionResponse_AgreementResponse_:
       title: Page of AgreementResponse
       required:
@@ -441,6 +472,29 @@ components:
             $ref: '#/components/schemas/AgreementResponse'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    AgreementType:
+      title: AgreementType
+      enum:
+      - pricing_table
+      - privacy_policy
+      - terms_and_conditions
+      type: string
+      description: "This property describes the underlying type of a document.\n<ul> <li><code>pricing_table</code>: The pricing table for the lemon.markets brokerage account. <li><code>privacy_policy</code>: The privacy policy regarding the data processing in the context of a\n    lemon.markets brokerage account.\n<li><code>terms_and_conditions</code>: The general terms and conditions for the lemon.markets brokerage account. </ul>\nIn a list, you can use this value to select a different icon for eahc category or make sure, you always present those documents in a fixed order irrespective of the actual translation of the document title.\n"
     DocumentResponse:
       title: DocumentResponse
       description: 'An object representing a document to be delivered/displayed to the user.
@@ -499,55 +553,6 @@ components:
           $ref: '#/components/schemas/DocumentType'
         content_type:
           $ref: '#/components/schemas/DocumentContentType'
-    DocumentContentType:
-      title: DocumentContentType
-      enum:
-      - application/pdf
-      type: string
-      description: 'A category representing the content type of the document displayed. At the moment, there will only be one content type for documents:
-
-        <ul> <li><code>application/pdf</code> </ul>
-
-        A potential use-case for this attribute is an icon used as a file-type indicator in a list of documents.
-
-        '
-    AgreementResponse:
-      title: AgreementResponse
-      required:
-      - id
-      - type
-      - url
-      - language
-      - name
-      type: object
-      properties:
-        id:
-          title: Agreement Identifier
-          type: string
-          description: 'The identifier for this document.  This will be later used as a value for the property `agreements[].agreement_id` for account creation.
-
-            '
-        type:
-          $ref: '#/components/schemas/AgreementType'
-        url:
-          title: Download URL
-          type: string
-          format: url
-          description: 'A reference to the actual document. You can use this URL to present the document to the user. It can be accessed without special headers like `Authorization` or the `LMG-Data-Privacy-*` ones, so you have full flexibility for presentation and you can choose among:
-
-            <ol><!-- redocly preview doesn''t support markdown lists --> <li>Showing the document using an In-App Browser. <li>Showing the document using an external Browser App. <li>Provide the user with your own options to download or forward the document. </ol>
-
-            '
-        language:
-          title: Language
-          type: string
-          description: "The (natural) language for the document.  This will can either be a pure language code like `\"de\"` or `\"pl\"` or a regional language code like `\"en_GB\"` or `\"de_CH\"`.\n<ul> <li><strong>Pure language code</strong> in this case is an ISO 639-1 alpha-2 code. <li><strong>Regional language code</strong> in this case is the concatenation of an ISO 639-1 alpha-2 code for a language\n    joined using the underscore character (<code>_</code>) with an ISO 3166-1 alpha-2 code for a country.\n</ul>\nWhen determining which one to prefer for display, we recommend to implement one of following strategies:\n<ol> <li>If you have a list of preferred languages for the user, such as iOS's\n    <a href=\"https://developer.apple.com/documentation/foundation/locale/2293155-preferredlanguages\"><code>Locale.preferredLanguages</code></a>,\n    iterate that list until you find the first language that has a document provided.\n<li>If you don't have a list of preferred languages, try to detect the regional language preference from\n    the environment (e.g. <code>\"de_AT\"</code>).  If there is a document for that one, present it to the\n     user. If not, try presenting one for the language-part only (in case of <code>\"de_AT\"</code>, that\n     would be <code>\"de\"</code>).\n</ol>\nIn either case, if there is no match with these lists, we recommend you pick a value that will match your application's default. A German version (<code>\"de\"</code>) will always be provided.\n"
-        name:
-          title: Name
-          type: string
-          description: 'The localized name of the document. Use this value to reference to that document in the user interface.
-
-            '
     PersonDocumentUploadType:
       type: string
       enum:
@@ -558,77 +563,6 @@ components:
         <ul> <li><code>person.identification_bundle</code> - A bundle of identification documents for a person </ul>
 
         '
-    BusinessDocumentUploadResponseV2:
-      properties:
-        business:
-          type: string
-          title: Business Identifier
-          description: The identifier of the business for which the document was submitted
-          example: le_8e2a16591a664df89551047d85436562
-        type:
-          $ref: '#/components/schemas/BusinessDocumentUploadType'
-        upload_location:
-          type: string
-          title: Upload Location
-          description: 'A presigned URL to upload the business document.
-
-            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
-
-            '
-        expires_at:
-          type: string
-          format: date-time
-          title: Expires At
-          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
-
-            '
-      type: object
-      required:
-      - business
-      - type
-      - upload_location
-      - expires_at
-      title: BusinessDocumentUploadResponseV2
-    BusinessDocumentUploadRequestV2:
-      properties:
-        business:
-          type: string
-          title: Business Identifier
-          description: The identifier of the business for which the document is being submitted
-          example: le_8e2a16591a664df89551047d85436562
-        type:
-          $ref: '#/components/schemas/BusinessDocumentUploadType'
-      type: object
-      required:
-      - business
-      - type
-      title: BusinessDocumentUploadRequestV2
-    Page_DocumentResponse_:
-      title: Page of DocumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
     DocumentType:
       title: Document Type
       enum:
@@ -649,18 +583,6 @@ components:
         <ul> <li><code>account_statement</code>: An account statements, e.g. quarterly statements for both the reference account and the securities account. <li><code>cash.statement</code>: A statement detailing cash movements and balances for a specific period, e.g. the quarterly cash statement. <li><code>contractual</code>: A contractual document, e.g. private policy or terms and conditions. <li><code>general</code>: A document with general information, e.g. basic information on securities trading. <li><code>income_distribution.receipt</code>: A document presenting detailed information about an income distribution. <li><code>report.ex_post</code>: The annual cost report. <li><code>order.cost</code>: A cost information document for an order. <li><code>tax_information</code>: deprecated <li><code>tax.receipt</code>: Tax related information about a specific payment, e.g. for capital gains tax on unrealized gains (German Vorabpauschale) or refunds due to tax optimization. <li><code>tax.statement</code>: Tax reporting information, e.g. the annual tax reporting. <li><code>trade.receipt</code>: A trade receipt: It presents final information about prices, cost and quantities. </ul>
 
         <strong>Note:</strong> This list is not final, there will be more types added over time.
-
-        '
-    BusinessDocumentUploadType:
-      type: string
-      enum:
-      - business.articles_of_association
-      - business.commercial_register_extract
-      - business.shareholder_list
-      title: BusinessDocumentUploadType
-      description: 'A category describing a business document:
-
-        <ul> <li><code>business.articles_of_association</code> - Articles of association for a business <li><code>business.commercial_register_extract</code> - Commercial register extract <li><code>business.shareholder_list</code> - List of shareholders </ul>
 
         '
     PersonDocumentUploadResponse:
@@ -694,14 +616,92 @@ components:
       - upload_location
       - expires_at
       title: PersonDocumentUploadResponse
-    AgreementType:
-      title: AgreementType
-      enum:
-      - pricing_table
-      - privacy_policy
-      - terms_and_conditions
+    Page_DocumentResponse_:
+      title: Page of DocumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    BusinessDocumentUploadType:
       type: string
-      description: "This property describes the underlying type of a document.\n<ul> <li><code>pricing_table</code>: The pricing table for the lemon.markets brokerage account. <li><code>privacy_policy</code>: The privacy policy regarding the data processing in the context of a\n    lemon.markets brokerage account.\n<li><code>terms_and_conditions</code>: The general terms and conditions for the lemon.markets brokerage account. </ul>\nIn a list, you can use this value to select a different icon for eahc category or make sure, you always present those documents in a fixed order irrespective of the actual translation of the document title.\n"
+      enum:
+      - business.articles_of_association
+      - business.commercial_register_extract
+      - business.shareholder_list
+      title: BusinessDocumentUploadType
+      description: 'A category describing a business document:
+
+        <ul> <li><code>business.articles_of_association</code> - Articles of association for a business <li><code>business.commercial_register_extract</code> - Commercial register extract <li><code>business.shareholder_list</code> - List of shareholders </ul>
+
+        '
+    DocumentContentType:
+      title: DocumentContentType
+      enum:
+      - application/pdf
+      type: string
+      description: 'A category representing the content type of the document displayed. At the moment, there will only be one content type for documents:
+
+        <ul> <li><code>application/pdf</code> </ul>
+
+        A potential use-case for this attribute is an icon used as a file-type indicator in a list of documents.
+
+        '
+    BusinessDocumentUploadResponseV2:
+      properties:
+        business:
+          type: string
+          title: Business Identifier
+          description: The identifier of the business for which the document was submitted
+          example: le_8e2a16591a664df89551047d85436562
+        type:
+          $ref: '#/components/schemas/BusinessDocumentUploadType'
+        upload_location:
+          type: string
+          title: Upload Location
+          description: 'A presigned URL to upload the business document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link. Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - business
+      - type
+      - upload_location
+      - expires_at
+      title: BusinessDocumentUploadResponseV2
+    PersonDocumentUploadRequest:
+      properties:
+        person:
+          type: string
+          title: Person Identifier
+          description: The identifier of the person for whom the document is being submitted
+          example: pers_0453deb1c90448c99f24adaa833cfda9
+        type:
+          $ref: '#/components/schemas/PersonDocumentUploadType'
+      type: object
+      required:
+      - person
+      - type
+      title: PersonDocumentUploadRequest
   securitySchemes:
     bearerAuth:
       type: http

@@ -460,235 +460,6 @@ paths:
           description: Server Error
 components:
   schemas:
-    EncodedPaginatedCollectionResponse_SettlementItemResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementItemResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[SettlementItemResponse]
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    SettlementAccountTransactionResponse2:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A string representing the unique identifier of this settlement transaction.
-
-            '
-        type:
-          type: string
-          const: settlement
-          title: Type
-          description: 'The value `"settlement"` for a settlement transaction.
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The value of the transaction, expressed using `currency`.
-
-            '
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: 'A timestamp representing the point in time when the transaction was created.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
-
-            '
-        direction:
-          $ref: '#/components/schemas/SettlementAccountTransactionDirection'
-        settlement:
-          type: string
-          title: Settlement Identifier
-          description: 'A reference to the corresponding settlement.
-
-            '
-      type: object
-      required:
-      - id
-      - amount
-      - created_at
-      - currency
-      - direction
-      - settlement
-      - type
-      title: SettlementAccountTransactionResponse
-    EncodedPaginatedCollectionResponse_SettlementResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[SettlementResponse]
-    SettlementItemResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A value identifying the settlement item.
-
-            '
-        account:
-          type: string
-          title: Account
-          description: 'The account identifier for this source (`cusa_…`).
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The amount for the settlement.
-
-            '
-        currency:
-          type: string
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount property. The only currently available currency is `"EUR"`.
-
-            '
-        direction:
-          $ref: '#/components/schemas/SettlementDirection'
-        source:
-          type: string
-          title: Source
-          description: 'The identifier of the underlying source of the item.
-
-            <ul> <li>When <code>type</code> is <code>trade</code>, this is a reference to a trade. </ul>
-
-            '
-        type:
-          $ref: '#/components/schemas/SettlementItemType'
-      type: object
-      required:
-      - id
-      - account
-      - amount
-      - currency
-      - direction
-      - source
-      - type
-      title: SettlementItemResponse
-      description: 'An object representing a settlement item.
-
-        '
-    SettlementAccountTransactionResponse:
-      oneOf:
-      - $ref: '#/components/schemas/SettlementAccountTransactionResponse1'
-      - $ref: '#/components/schemas/SettlementAccountTransactionResponse2'
-      discriminator:
-        propertyName: type
-        mapping:
-          payment: '#/components/schemas/SettlementAccountTransactionResponse1'
-          settlement: '#/components/schemas/SettlementAccountTransactionResponse2'
-    SettlementItemType:
-      type: string
-      enum:
-      - income_distribution
-      - order
-      - trade
-      title: SettlementItemType
-      description: 'A category describing the type of a settlement item.
-
-        <ul> <li><code>income_distribution</code>:  The transaction was caused by a distribution <li><code>order</code>:  The transaction was caused by an order <li><code>trade</code>:  The transaction was caused by a trade </ul>
-
-        '
-    EncodedPaginatedCollectionResponse_SettlementAccountResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementAccountResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: Page[SettlementAccountResponse]
-    SettlementResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A value identifying the settlement.
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The amount for the settlement.
-
-            '
-        currency:
-          type: string
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is "EUR".
-
-            '
-        cutoff_timestamp:
-          type: string
-          format: date-time
-          title: Cutoff Timestamp
-          description: 'The point in time at which `debit` settlements have to be delivered and the point in time for cash distribution for `credit` settlements.
-
-            '
-        direction:
-          $ref: '#/components/schemas/SettlementDirection'
-      type: object
-      required:
-      - id
-      - amount
-      - currency
-      - cutoff_timestamp
-      - direction
-      title: SettlementResponse
     SettlementAccountTransactionResponse1:
       properties:
         id:
@@ -767,17 +538,15 @@ components:
       - payment_details
       - type
       title: SettlementAccountTransactionResponse
-    SettlementDirection:
-      type: string
-      enum:
-      - credit
-      - debit
-      title: SettlementDirection
-      description: 'A category representing the direction of settlement:
-
-        <ul> <li><code>credit</code>:  The settlement results in funds being credited (net-sell day). <li><code>debit</code>: The settlement results in funds being debited (net-buy day). </ul>
-
-        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
     SettlementAccountResponse:
       properties:
         id:
@@ -826,15 +595,96 @@ components:
       - balance
       - withdrawals_in_progress
       title: SettlementAccountResponse
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
+    SettlementItemType:
+      type: string
+      enum:
+      - income_distribution
+      - order
+      - trade
+      title: SettlementItemType
+      description: 'A category describing the type of a settlement item.
+
+        <ul> <li><code>income_distribution</code>:  The transaction was caused by a distribution <li><code>order</code>:  The transaction was caused by an order <li><code>trade</code>:  The transaction was caused by a trade </ul>
+
+        '
+    SettlementAccountTransactionResponse:
+      oneOf:
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse1'
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse2'
+      discriminator:
+        propertyName: type
+        mapping:
+          payment: '#/components/schemas/SettlementAccountTransactionResponse1'
+          settlement: '#/components/schemas/SettlementAccountTransactionResponse2'
+    SettlementAccountTransactionDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementAccountTransactionDirection
+    Pagination:
+      title: Pagination
       type: object
       properties:
-        message:
-          title: Message
+        next_cursor:
+          title: Cursor for Next Page
           type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    SettlementResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifying the settlement.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount for the settlement.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is "EUR".
+
+            '
+        cutoff_timestamp:
+          type: string
+          format: date-time
+          title: Cutoff Timestamp
+          description: 'The point in time at which `debit` settlements have to be delivered and the point in time for cash distribution for `credit` settlements.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementDirection'
+      type: object
+      required:
+      - id
+      - amount
+      - currency
+      - cutoff_timestamp
+      - direction
+      title: SettlementResponse
+    SettlementDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementDirection
+      description: 'A category representing the direction of settlement:
+
+        <ul> <li><code>credit</code>:  The settlement results in funds being credited (net-sell day). <li><code>debit</code>: The settlement results in funds being debited (net-buy day). </ul>
+
+        '
     BankAccountResponse:
       title: BankAccountResponse
       description: 'An object representing a bank account.
@@ -863,6 +713,23 @@ components:
           description: 'The name of the bank managing the bank account.
 
             '
+    EncodedPaginatedCollectionResponse_SettlementAccountResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementAccountResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[SettlementAccountResponse]
     Page_SettlementAccountTransactionResponse_:
       properties:
         data:
@@ -880,12 +747,145 @@ components:
       - data
       - pagination
       title: Page[SettlementAccountTransactionResponse]
-    SettlementAccountTransactionDirection:
-      type: string
-      enum:
-      - credit
-      - debit
-      title: SettlementAccountTransactionDirection
+    EncodedPaginatedCollectionResponse_SettlementItemResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementItemResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementItemResponse]
+    SettlementItemResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifying the settlement item.
+
+            '
+        account:
+          type: string
+          title: Account
+          description: 'The account identifier for this source (`cusa_…`).
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount for the settlement.
+
+            '
+        currency:
+          type: string
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount property. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementDirection'
+        source:
+          type: string
+          title: Source
+          description: 'The identifier of the underlying source of the item.
+
+            <ul> <li>When <code>type</code> is <code>trade</code>, this is a reference to a trade. </ul>
+
+            '
+        type:
+          $ref: '#/components/schemas/SettlementItemType'
+      type: object
+      required:
+      - id
+      - account
+      - amount
+      - currency
+      - direction
+      - source
+      - type
+      title: SettlementItemResponse
+      description: 'An object representing a settlement item.
+
+        '
+    EncodedPaginatedCollectionResponse_SettlementResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementResponse]
+    SettlementAccountTransactionResponse2:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this settlement transaction.
+
+            '
+        type:
+          type: string
+          const: settlement
+          title: Type
+          description: 'The value `"settlement"` for a settlement transaction.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The value of the transaction, expressed using `currency`.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'A timestamp representing the point in time when the transaction was created.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementAccountTransactionDirection'
+        settlement:
+          type: string
+          title: Settlement Identifier
+          description: 'A reference to the corresponding settlement.
+
+            '
+      type: object
+      required:
+      - id
+      - amount
+      - created_at
+      - currency
+      - direction
+      - settlement
+      - type
+      title: SettlementAccountTransactionResponse
   securitySchemes:
     bearerAuth:
       type: http

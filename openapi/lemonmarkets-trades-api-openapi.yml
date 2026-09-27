@@ -231,47 +231,26 @@ paths:
           description: Server Error
 components:
   schemas:
-    Pagination:
-      title: Pagination
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
       type: object
       properties:
-        next_cursor:
-          title: Cursor for Next Page
+        message:
+          title: Message
           type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
 
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
-    TaxResponseField:
-      properties:
-        type:
-          type: string
-          title: Type
-          description: 'A string identifying the type of tax that was withheld for a trade:
-
-            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
-
-            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The monetary amount representing this tax.
-
-            '
-        direction:
-          $ref: '#/components/schemas/Direction'
-      type: object
-      required:
-      - type
-      - amount
-      - direction
-      title: TaxResponseField
     TradeResponse:
       properties:
         id:
@@ -371,17 +350,58 @@ components:
       - securities_account
       - executed_at
       title: TradeResponse
-    Side:
+    Direction:
       type: string
       enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
+      - debit
+      - credit
+      title: Direction
+      description: 'A category representing the direction of a payment or transaction flow:
 
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
 
         '
+    TaxResponseField:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: 'A string identifying the type of tax that was withheld for a trade:
+
+            <ul> <li><code>capital_gains</code> <li><code>church_tax</code> <li><code>solidarity_surcharge</code> </ul>
+
+            <strong>NOTE:</strong> This list can be extended in the future.  Prepare your code to accept other values, too.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The monetary amount representing this tax.
+
+            '
+        direction:
+          $ref: '#/components/schemas/Direction'
+      type: object
+      required:
+      - type
+      - amount
+      - direction
+      title: TaxResponseField
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
     Page_TradeResponse_:
       properties:
         data:
@@ -399,26 +419,6 @@ components:
       - data
       - pagination
       title: Page of TradeResponse
-    Direction:
-      type: string
-      enum:
-      - debit
-      - credit
-      title: Direction
-      description: 'A category representing the direction of a payment or transaction flow:
-
-        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
-
-        '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

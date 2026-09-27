@@ -979,46 +979,53 @@ paths:
           description: Server Error
 components:
   schemas:
-    BillingPeriod:
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
       properties:
-        start_date:
+        next_cursor:
           type: string
-          format: date
-          title: Start Date
-          description: The first date (inclusive) in the billing period for the associated fee.
-        end_date:
-          type: string
-          format: date
-          title: End Date
-          description: The last date (inclusive) in the billing period for the associated fee.
-        billing_month:
-          type: string
-          pattern: ^\d{4}-(0[1-9]|1[0-2])$
-          title: Billing Month
-          description: 'A string representing the billing month in `YYYY-MM` format (e.g., 2025-08).
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
 
             '
-      type: object
-      required:
-      - start_date
-      - end_date
-      - billing_month
-      title: BillingPeriod
-    TreasuryMandateStatus:
-      type: string
-      enum:
-      - accepted
-      - canceled
-      - canceling
-      - confirmed
-      - created
-      - rejected
-      description: 'A category representing the status of a treasury mandate:
-
-        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>rejected</code> </ul>
+      description: 'Information about accessing elements beyond the ones that were returned.
 
         '
-      title: TreasuryMandateStatus
+      example:
+        next_cursor: <opaque-data>
+    PartnerTreasuryFeesResponse:
+      properties:
+        id:
+          title: Id
+          type: string
+          description: Unique identifier for the aggregated partner treasury fee.
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) that uniquely identifies the instrument related to the fee, following ISO 6166.
+
+            '
+        total_fee_amount:
+          type: string
+          title: Total Fee Amount
+          description: Total amount of fees aggregated for the billing period.
+        currency:
+          type: string
+          title: Currency
+          description: Three-letter ISO 4217 currency code (e.g., "USD", "EUR").
+        billing_period:
+          $ref: '#/components/schemas/BillingPeriod'
+          description: Billing period information, including date range and billing month.
+      type: object
+      required:
+      - id
+      - instrument
+      - total_fee_amount
+      - currency
+      - billing_period
+      title: PartnerTreasuryFeesResponse
     TreasuryTransferResponse:
       properties:
         id:
@@ -1070,6 +1077,191 @@ components:
       - currency
       - history
       title: TreasuryTransferResponse
+    StatusChange_TreasuryTransferStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/TreasuryTransferStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the treasury transfer was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[TreasuryTransferStatus]
+    StatusChange_TreasuryMandateStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/TreasuryMandateStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the treasury mandate was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange of TreasuryMandateStatus
+    EncodedPaginatedCollectionResponse_TreasuryMandateResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TreasuryMandateResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TreasuryMandateResponse]
+    EncodedPaginatedCollectionResponse_CustomerTreasuryFeeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CustomerTreasuryFeeResponse'
+          type: array
+          title: Data
+          description: List of customer-level treasury fees contributing to a partner's aggregated fee.
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+          description: Pagination metadata used for retrieving subsequent pages.
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[CustomerTreasuryFeeResponse]
+    TreasuryMandateStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - confirmed
+      - created
+      - rejected
+      description: 'A category representing the status of a treasury mandate:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>rejected</code> </ul>
+
+        '
+      title: TreasuryMandateStatus
+    EncodedPaginatedCollectionResponse_TreasuryTransferResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TreasuryTransferResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TreasuryTransferResponse]
+    TreasuryTransferStatus:
+      type: string
+      enum:
+      - canceled
+      - created
+      - pending
+      - processed
+      - rejected
+      - settled
+      title: TreasuryTransferStatus
+      description: 'A category describing the a treasury transfer status:
+
+        <ul> <li><code>canceled</code>: The treasury transfer is canceled. <li><code>created</code>: The treasury transfer is created and waiting for confirmation. <li><code>pending</code>: The treasury transfer is pending execution and waiting to be processed. <li><code>processed</code>: The treasury transfer is processed and waiting to be settled. <li><code>rejected</code>: The treasury transfer is rejected. <li><code>settled</code>: The treasury transfer is settled. </ul>
+
+        '
+    CreateTreasuryTransferRequest:
+      properties:
+        treasury_mandate:
+          type: string
+          title: Treasury Mandate Identifier
+          description: 'A treasury mandate identifier.  This field indicates which treasury mandate will be used to perform the transaction.
+
+            '
+        type:
+          $ref: '#/components/schemas/TreasuryTransferType'
+        amount:
+          type: string
+          format: number
+          exclusiveMinimum: 0
+          title: Amount
+          description: 'The amount of money to transfer.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - treasury_mandate
+      - type
+      - amount
+      - currency
+      title: CreateTreasuryTransferRequest
+    CreateTreasuryMandateRequest:
+      description: 'An object representing a treasury mandate to be created.
+
+        '
+      properties:
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold via the mandate.
+
+            '
+        widget_styling:
+          type:
+            $ref: '#/components/schemas/WidgetStyling'
+          title: Widget Styling
+          description: 'Optional styling configuration for the treasury mandate widget. Use this to customize the appearance of the widget to match your application''s design.
+
+            '
+        redirect_success:
+          type: string
+          title: Redirect Success
+          description: 'The redirect target that will be opened after successful acceptance of a mandate.
+
+            '
+        redirect_failure:
+          type: string
+          title: Redirect Failure
+          description: 'The redirect target that will be opened after failure to accept a mandate.
+
+            '
+      type: object
+      required:
+      - instrument
+      - redirect_success
+      - redirect_failure
+      title: CreateTreasuryMandateRequest
     TreasuryMandateResponse:
       properties:
         id:
@@ -1110,22 +1302,96 @@ components:
       - redirect_failure
       - history
       title: TreasuryMandateResponse
-    CreateTreasuryTransferRequest:
+    BillingPeriod:
       properties:
-        treasury_mandate:
+        start_date:
           type: string
-          title: Treasury Mandate Identifier
-          description: 'A treasury mandate identifier.  This field indicates which treasury mandate will be used to perform the transaction.
+          format: date
+          title: Start Date
+          description: The first date (inclusive) in the billing period for the associated fee.
+        end_date:
+          type: string
+          format: date
+          title: End Date
+          description: The last date (inclusive) in the billing period for the associated fee.
+        billing_month:
+          type: string
+          pattern: ^\d{4}-(0[1-9]|1[0-2])$
+          title: Billing Month
+          description: 'A string representing the billing month in `YYYY-MM` format (e.g., 2025-08).
 
             '
-        type:
-          $ref: '#/components/schemas/TreasuryTransferType'
-        amount:
+      type: object
+      required:
+      - start_date
+      - end_date
+      - billing_month
+      title: BillingPeriod
+    CustomerTreasuryFeeResponse:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: Unique identifier for the customer account to which the fee applies.
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) uniquely identifying the instrument for which the customer incurred fees.
+
+            '
+        total_fee_amount:
+          type: string
+          title: Total Fee Amount
+          description: The total amount of treasury fees charged to the customer for the instrument.
+        currency:
+          type: string
+          title: Currency
+          description: An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is "EUR".
+      type: object
+      required:
+      - account
+      - instrument
+      - total_fee_amount
+      - currency
+      title: CustomerTreasuryFeeResponse
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    CustomerAccountTreasuryFinancialsResponse:
+      properties:
+        portfolio_balance:
           type: string
           format: number
-          exclusiveMinimum: 0
-          title: Amount
-          description: 'The amount of money to transfer.
+          title: Portfolio Balance
+          description: 'The current portfolio balance.  This is the number you want to display as the balance to your customers
+
+            '
+        available_balance:
+          type: string
+          format: number
+          title: Available Balance
+          description: 'The available portfolio balance for withdrawals
+
+            '
+        unsettled_deposits:
+          type: string
+          format: number
+          title: Unsettled Deposits
+          description: 'The value of deposits that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
+
+            '
+        unsettled_withdrawals:
+          type: string
+          format: number
+          title: Unsettled Withdrawals
+          description: 'The value of withdrawals that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
 
             '
         currency:
@@ -1134,85 +1400,17 @@ components:
           minLength: 3
           title: Currency
           example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is `"EUR"`.
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
 
             '
       type: object
       required:
-      - treasury_mandate
-      - type
-      - amount
+      - portfolio_balance
+      - available_balance
+      - unsettled_deposits
+      - unsettled_withdrawals
       - currency
-      title: CreateTreasuryTransferRequest
-    TreasuryTransferStatus:
-      type: string
-      enum:
-      - canceled
-      - created
-      - pending
-      - processed
-      - rejected
-      - settled
-      title: TreasuryTransferStatus
-      description: 'A category describing the a treasury transfer status:
-
-        <ul> <li><code>canceled</code>: The treasury transfer is canceled. <li><code>created</code>: The treasury transfer is created and waiting for confirmation. <li><code>pending</code>: The treasury transfer is pending execution and waiting to be processed. <li><code>processed</code>: The treasury transfer is processed and waiting to be settled. <li><code>rejected</code>: The treasury transfer is rejected. <li><code>settled</code>: The treasury transfer is settled. </ul>
-
-        '
-    StatusChange_TreasuryMandateStatus_:
-      properties:
-        status:
-          $ref: '#/components/schemas/TreasuryMandateStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the treasury mandate was updated.
-
-            '
-          example: '2023-06-23T07:29:55.465000+00:00'
-      type: object
-      required:
-      - status
-      - timestamp
-      title: StatusChange of TreasuryMandateStatus
-    CreateTreasuryMandateRequest:
-      description: 'An object representing a treasury mandate to be created.
-
-        '
-      properties:
-        instrument:
-          type: string
-          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold via the mandate.
-
-            '
-        widget_styling:
-          type:
-            $ref: '#/components/schemas/WidgetStyling'
-          title: Widget Styling
-          description: 'Optional styling configuration for the treasury mandate widget. Use this to customize the appearance of the widget to match your application''s design.
-
-            '
-        redirect_success:
-          type: string
-          title: Redirect Success
-          description: 'The redirect target that will be opened after successful acceptance of a mandate.
-
-            '
-        redirect_failure:
-          type: string
-          title: Redirect Failure
-          description: 'The redirect target that will be opened after failure to accept a mandate.
-
-            '
-      type: object
-      required:
-      - instrument
-      - redirect_success
-      - redirect_failure
-      title: CreateTreasuryMandateRequest
+      title: CustomerAccountTreasuryFinancialsResponse
     TreasuryMandateCreationResponse:
       description: 'An object representing a treasury mandate.
 
@@ -1271,128 +1469,6 @@ components:
       - widget_url
       - history
       title: TreasuryMandateCreationResponse
-    EncodedPaginatedCollectionResponse_CustomerTreasuryFeeResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/CustomerTreasuryFeeResponse'
-          type: array
-          title: Data
-          description: List of customer-level treasury fees contributing to a partner's aggregated fee.
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-          description: Pagination metadata used for retrieving subsequent pages.
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[CustomerTreasuryFeeResponse]
-    EncodedPaginatedCollectionResponse_PartnerTreasuryFeesResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/PartnerTreasuryFeesResponse'
-          type: array
-          title: Data
-          description: List of aggregated partner treasury fees.
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-          description: Pagination metadata used for retrieving subsequent pages.
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[PartnerTreasuryFeesResponse]
-    EncodedPaginatedCollectionResponse_TreasuryMandateResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TreasuryMandateResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[TreasuryMandateResponse]
-    StatusChange_TreasuryTransferStatus_:
-      properties:
-        status:
-          $ref: '#/components/schemas/TreasuryTransferStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the treasury transfer was updated.
-
-            '
-          example: '2023-06-23T07:29:55.465000+00:00'
-      type: object
-      required:
-      - status
-      - timestamp
-      title: StatusChange[TreasuryTransferStatus]
-    EncodedPaginatedCollectionResponse_TreasuryTransferResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TreasuryTransferResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[TreasuryTransferResponse]
-    TreasuryTransferType:
-      type: string
-      enum:
-      - deposit
-      - withdrawal
-      title: TreasuryTransferType
-      description: 'A category describing the a treasury transfer direction:
-
-        <ul> <li><code>deposit</code> <li><code>withdrawal</code> </ul>
-
-        '
-    CustomerTreasuryFeeResponse:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: Unique identifier for the customer account to which the fee applies.
-        instrument:
-          type: string
-          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) uniquely identifying the instrument for which the customer incurred fees.
-
-            '
-        total_fee_amount:
-          type: string
-          title: Total Fee Amount
-          description: The total amount of treasury fees charged to the customer for the instrument.
-        currency:
-          type: string
-          title: Currency
-          description: An ISO 4217 three-letter currency code. Its value represents the currency for the amount listed here. The only currently available currency is "EUR".
-      type: object
-      required:
-      - account
-      - instrument
-      - total_fee_amount
-      - currency
-      title: CustomerTreasuryFeeResponse
     WidgetStyling:
       description: 'Optional styling configuration for the treasury mandate widget. All fields are optional and allow customization of the widget''s appearance to match your application''s design.
 
@@ -1470,109 +1546,33 @@ components:
             '
       type: object
       title: WidgetStyling
-    PartnerTreasuryFeesResponse:
+    EncodedPaginatedCollectionResponse_PartnerTreasuryFeesResponse_:
       properties:
-        id:
-          title: Id
-          type: string
-          description: Unique identifier for the aggregated partner treasury fee.
-        instrument:
-          type: string
-          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) that uniquely identifies the instrument related to the fee, following ISO 6166.
-
-            '
-        total_fee_amount:
-          type: string
-          title: Total Fee Amount
-          description: Total amount of fees aggregated for the billing period.
-        currency:
-          type: string
-          title: Currency
-          description: Three-letter ISO 4217 currency code (e.g., "USD", "EUR").
-        billing_period:
-          $ref: '#/components/schemas/BillingPeriod'
-          description: Billing period information, including date range and billing month.
+        data:
+          items:
+            $ref: '#/components/schemas/PartnerTreasuryFeesResponse'
+          type: array
+          title: Data
+          description: List of aggregated partner treasury fees.
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+          description: Pagination metadata used for retrieving subsequent pages.
       type: object
       required:
-      - id
-      - instrument
-      - total_fee_amount
-      - currency
-      - billing_period
-      title: PartnerTreasuryFeesResponse
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[PartnerTreasuryFeesResponse]
+    TreasuryTransferType:
+      type: string
+      enum:
+      - deposit
+      - withdrawal
+      title: TreasuryTransferType
+      description: 'A category describing the a treasury transfer direction:
 
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        <ul> <li><code>deposit</code> <li><code>withdrawal</code> </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
-    CustomerAccountTreasuryFinancialsResponse:
-      properties:
-        portfolio_balance:
-          type: string
-          format: number
-          title: Portfolio Balance
-          description: 'The current portfolio balance.  This is the number you want to display as the balance to your customers
-
-            '
-        available_balance:
-          type: string
-          format: number
-          title: Available Balance
-          description: 'The available portfolio balance for withdrawals
-
-            '
-        unsettled_deposits:
-          type: string
-          format: number
-          title: Unsettled Deposits
-          description: 'The value of deposits that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
-
-            '
-        unsettled_withdrawals:
-          type: string
-          format: number
-          title: Unsettled Withdrawals
-          description: 'The value of withdrawals that are not fully processed yet.  Once fully processed, the deposits will be considered in `portfolio_balance`.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
-
-            '
-      type: object
-      required:
-      - portfolio_balance
-      - available_balance
-      - unsettled_deposits
-      - unsettled_withdrawals
-      - currency
-      title: CustomerAccountTreasuryFinancialsResponse
   securitySchemes:
     bearerAuth:
       type: http

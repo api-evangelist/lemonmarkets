@@ -431,6 +431,219 @@ paths:
           description: Server Error
 components:
   schemas:
+    AppropriatenessConsentResponse:
+      title: AppropriatenessConsentResponse
+      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
+
+        '
+      type: object
+      properties:
+        required:
+          type: boolean
+          title: Consent Required
+          description: 'Requirement indicator for the appropriateness warning.
+
+            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
+
+            '
+      required:
+      - required
+    CancelOrderRequest:
+      properties:
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
+      type: object
+      title: CancelOrderRequest
+      description: 'An object providing information about the cancellation of an order.
+
+        '
+    OrderRejectionReason:
+      type: string
+      enum:
+      - insufficient_buying_power
+      - insufficient_available_securities
+      - insufficient_order_amount
+      - rejected_by_exchange
+      - manual_rejection
+      - unknown
+      title: Order rejection reason
+      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
+
+        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
+
+        '
+      example: insufficient_buying_power
+    FeesResponse:
+      properties:
+        pct:
+          type: string
+          title: Relative Fee
+          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value.
+
+            '
+        base_amount:
+          type: string
+          title: Fixed Fee
+          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
+
+            '
+      type: object
+      title: FeesResponse
+      description: 'Order fee configuration.  This object specifies how to calculate order fees.
+
+        '
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    ConfirmOrderRequest:
+      properties:
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
+        appropriateness_consent:
+          type: boolean
+          title: Appropriateness Consent
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmOrderRequest
+    ActorResponse:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorResponse
+      description: 'An object describing the individual performing an action.
+
+        '
+    OrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - confirmed
+      - created
+      - executed
+      - rejected
+      title: OrderStatus
+      description: 'A category representing the state of an order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
+
+        '
+    EncodedPaginatedCollectionResponse_OrderResponse_:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+      - data
+      - pagination
+      title: Page of OrderResponse
+    ActorRequest:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorRequest
+      description: 'An object describing the individual performing an action.
+
+        '
+    SCAConfirmation:
+      title: Strong Customer Authentication
+      description: 'An object representing the confirmation for strong customer authentication.
+
+        '
+      properties:
+        client_credential_id:
+          type: string
+          title: Client Credential Identifier
+          description: 'The client-side identifier of the authenticator used to generate the signature.
+
+            '
+        signature:
+          type: string
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
+
+            '
+      type: object
+      required:
+      - client_credential_id
+      - signature
+    FeesRequest:
+      properties:
+        pct:
+          format: number
+          minimum: 0
+          type: string
+          title: Relative Fee
+          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value, i.e. `0.20 EUR` in case the trade is executed for `100 EUR` as the exchange.  In this example a customer would receive `99.80 EUR` for a sell order or pay `100.20 EUR` for a buy order.
+
+            **NOTE:**  For the time being, this property is mutually exclusive with fixed fees.  If you need to combine both, feel free to contact your partner manager.
+
+            '
+        base_amount:
+          format: number
+          minimum: 0
+          type: string
+          title: Fixed Fee
+          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
+
+            **NOTE:**  For the time being, this property is mutually exclusive with relative fees.  If you need to combine both, feel free to contact your partner manager.
+
+            '
+      type: object
+      title: FeesRequest
+      description: 'Order fee configuration.  Use this object to specify how to calculate order fees.
+
+        **NOTE:**  It is mandatory to specify `fees` for an order, even when charging no fees (use a fixed amount of `0` then).
+
+        '
     OrderResponse:
       properties:
         id:
@@ -519,6 +732,70 @@ components:
       - fee
       - fees
       - currency
+    StatusChangeResponse:
+      description: 'An object representing a change in an order.
+
+        '
+      properties:
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the order was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+        actor:
+          $ref: '#/components/schemas/ActorResponse'
+        reason:
+          allOf:
+          - $ref: '#/components/schemas/OrderRejectionReason'
+          nullable: true
+          description: 'The reason why this order was rejected. Only populated when the order status is `rejected`.
+
+            '
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[OrderStatus]
+    OrderType:
+      type: string
+      enum:
+      - batch
+      - market
+      title: OrderType
+      description: 'A category describing an order type:
+
+        <ul> <li><code>batch</code>: A batch order.  Batch orders are collected for all customers and executed on the market as one composite order. <li><code>market</code>: A market order.  Market orders are executed immediately at the current market price. </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
     StrongCustomerAuthenticationRequest:
       title: StrongCustomerAuthenticationRequest
       description: 'An object representing a strong customer authentication challenge.
@@ -541,180 +818,60 @@ components:
       required:
       - required
       - challenge
-    EncodedPaginatedCollectionResponse_OrderResponse_:
-      type: object
+    CreateOrderRequest:
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderResponse'
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      required:
-      - data
-      - pagination
-      title: Page of OrderResponse
-    OrderStatus:
-      type: string
-      enum:
-      - accepted
-      - canceled
-      - canceling
-      - confirmed
-      - created
-      - executed
-      - rejected
-      title: OrderStatus
-      description: 'A category representing the state of an order:
-
-        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
-
-        '
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    OrderType:
-      type: string
-      enum:
-      - batch
-      - market
-      title: OrderType
-      description: 'A category describing an order type:
-
-        <ul> <li><code>batch</code>: A batch order.  Batch orders are collected for all customers and executed on the market as one composite order. <li><code>market</code>: A market order.  Market orders are executed immediately at the current market price. </ul>
-
-        '
-    AppropriatenessConsentResponse:
-      title: AppropriatenessConsentResponse
-      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
-
-        '
-      type: object
-      properties:
-        required:
-          type: boolean
-          title: Consent Required
-          description: 'Requirement indicator for the appropriateness warning.
-
-            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
-
-            '
-      required:
-      - required
-    OrderRejectionReason:
-      type: string
-      enum:
-      - insufficient_buying_power
-      - insufficient_available_securities
-      - insufficient_order_amount
-      - rejected_by_exchange
-      - manual_rejection
-      - unknown
-      title: Order rejection reason
-      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
-
-        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
-
-        '
-      example: insufficient_buying_power
-    ActorResponse:
-      properties:
+        side:
+          $ref: '#/components/schemas/Side'
         type:
+          $ref: '#/components/schemas/OrderType'
+        instrument:
           type: string
-          const: person
-          title: Type
-          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
 
             '
-        person:
+        amount:
           type: string
-          title: Person Identifier
-          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+          exclusiveMinimum: 0
+          title: Amount
+          description: 'The amount of cash to invest with this order.
 
             '
+        quantity:
+          exclusiveMinimum: 0
+          type: string
+          title: Quantity
+          description: 'Specify the quantity of shares for the instrument to be sold.
+
+            '
+        fees:
+          $ref: '#/components/schemas/FeesRequest'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier.  Use this property to specify the securities account for order execution and settlement.  If the customer has only one securities account, this property is optional.  If the customer has more than one securities account, this property is required.
+
+            '
+        actor:
+          $ref: '#/components/schemas/ActorRequest'
       type: object
       required:
+      - side
       - type
-      - person
-      title: ActorResponse
-      description: 'An object describing the individual performing an action.
-
-        '
-    FeesRequest:
-      properties:
-        pct:
-          format: number
-          minimum: 0
-          type: string
-          title: Relative Fee
-          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value, i.e. `0.20 EUR` in case the trade is executed for `100 EUR` as the exchange.  In this example a customer would receive `99.80 EUR` for a sell order or pay `100.20 EUR` for a buy order.
-
-            **NOTE:**  For the time being, this property is mutually exclusive with fixed fees.  If you need to combine both, feel free to contact your partner manager.
-
-            '
-        base_amount:
-          format: number
-          minimum: 0
-          type: string
-          title: Fixed Fee
-          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
-
-            **NOTE:**  For the time being, this property is mutually exclusive with relative fees.  If you need to combine both, feel free to contact your partner manager.
-
-            '
-      type: object
-      title: FeesRequest
-      description: 'Order fee configuration.  Use this object to specify how to calculate order fees.
-
-        **NOTE:**  It is mandatory to specify `fees` for an order, even when charging no fees (use a fixed amount of `0` then).
-
-        '
-    FeesResponse:
-      properties:
-        pct:
-          type: string
-          title: Relative Fee
-          description: 'Specify a relative amount like `"0.20"` to charge a relative fee for this order;  in this case, 0.2% of the trade''s value.
-
-            '
-        base_amount:
-          type: string
-          title: Fixed Fee
-          description: 'Specify a fixed amount like `"2.00"` to charge a fixed fee for this order.
-
-            '
-      type: object
-      title: FeesResponse
-      description: 'Order fee configuration.  This object specifies how to calculate order fees.
-
-        '
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
+      - instrument
+      - currency
+      - fees
+      title: CreateOrderRequest
     broker__apps__api__types__RegulatoryDisclosureResponse:
       description: 'An object describing regulatory information, such as expected prices, quantities and costs as well as links to relevant documents.
 
@@ -911,163 +1068,6 @@ components:
             '
       type: object
       title: RegulatoryDisclosureResponse
-    SCAConfirmation:
-      title: Strong Customer Authentication
-      description: 'An object representing the confirmation for strong customer authentication.
-
-        '
-      properties:
-        client_credential_id:
-          type: string
-          title: Client Credential Identifier
-          description: 'The client-side identifier of the authenticator used to generate the signature.
-
-            '
-        signature:
-          type: string
-          title: Signature
-          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
-
-            '
-      type: object
-      required:
-      - client_credential_id
-      - signature
-    ActorRequest:
-      properties:
-        type:
-          type: string
-          const: person
-          title: Type
-          description: 'The actor type.  For the time being, the only valid value is `"person"`.
-
-            '
-        person:
-          type: string
-          title: Person Identifier
-          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
-
-            '
-      type: object
-      required:
-      - type
-      - person
-      title: ActorRequest
-      description: 'An object describing the individual performing an action.
-
-        '
-    ConfirmOrderRequest:
-      properties:
-        actor:
-          $ref: '#/components/schemas/ActorRequest'
-        appropriateness_consent:
-          type: boolean
-          title: Appropriateness Consent
-        sca:
-          $ref: '#/components/schemas/SCAConfirmation'
-      type: object
-      title: ConfirmOrderRequest
-    CancelOrderRequest:
-      properties:
-        actor:
-          $ref: '#/components/schemas/ActorRequest'
-      type: object
-      title: CancelOrderRequest
-      description: 'An object providing information about the cancellation of an order.
-
-        '
-    CreateOrderRequest:
-      properties:
-        side:
-          $ref: '#/components/schemas/Side'
-        type:
-          $ref: '#/components/schemas/OrderType'
-        instrument:
-          type: string
-          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
-
-            '
-        amount:
-          type: string
-          exclusiveMinimum: 0
-          title: Amount
-          description: 'The amount of cash to invest with this order.
-
-            '
-        quantity:
-          exclusiveMinimum: 0
-          type: string
-          title: Quantity
-          description: 'Specify the quantity of shares for the instrument to be sold.
-
-            '
-        fees:
-          $ref: '#/components/schemas/FeesRequest'
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
-
-            '
-        securities_account:
-          type: string
-          title: Securities Account
-          description: 'A securities account identifier.  Use this property to specify the securities account for order execution and settlement.  If the customer has only one securities account, this property is optional.  If the customer has more than one securities account, this property is required.
-
-            '
-        actor:
-          $ref: '#/components/schemas/ActorRequest'
-      type: object
-      required:
-      - side
-      - type
-      - instrument
-      - currency
-      - fees
-      title: CreateOrderRequest
-    StatusChangeResponse:
-      description: 'An object representing a change in an order.
-
-        '
-      properties:
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the order was updated.
-
-            '
-          example: '2023-06-23T07:29:55.465000+00:00'
-        actor:
-          $ref: '#/components/schemas/ActorResponse'
-        reason:
-          allOf:
-          - $ref: '#/components/schemas/OrderRejectionReason'
-          nullable: true
-          description: 'The reason why this order was rejected. Only populated when the order status is `rejected`.
-
-            '
-      type: object
-      required:
-      - status
-      - timestamp
-      title: StatusChange[OrderStatus]
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

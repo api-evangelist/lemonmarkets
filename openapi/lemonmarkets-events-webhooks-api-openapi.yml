@@ -541,6 +541,114 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    BatchOrderEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        batch_order:
+          type: string
+          title: Batch Order
+          description: 'A batch order identifier. This field represents the batch order associated with an event.
+
+            '
+      type: object
+      required:
+      - account
+      - batch_order
+      title: BatchOrderEventContext
+    CustomerWorkflowEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        workflow:
+          type: string
+          title: Workflow
+          description: 'A workflow identifier. This field represents the workflow associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - workflow
+      title: CustomerWorkflowEventContext
+    TaxExemptionOrderEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        tax_exemption_order:
+          type: string
+          title: Tax Exemption Order
+          description: 'A tax exemption order identifier. This field represents the tax exemption order associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - tax_exemption_order
+      title: TaxExemptionOrderEventContext
+    CustomerAccountCheckEventContext:
+      title: CustomerAccountCheckEventContext
+      description: 'An object describing the context of an account check event.
+
+        '
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        check:
+          type: string
+          title: Check
+          description: 'A check identifier. This field represents the check associated with an event.  It is an opaque identifier for event correlation, not meant to look-up a specific check.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - check
+    CreateWebhookRequest:
+      title: CreateWebhookRequest
+      description: 'An object representing a webhook to be registered.
+
+        '
+      required:
+      - url
+      - events
+      type: object
+      properties:
+        url:
+          title: Web URL
+          maxLength: 2083
+          minLength: 1
+          type: string
+          format: uri
+          example: https://httpbin.org/status/503
+          description: 'The URL of your webhook endpoint to be invoked when an event occurs.
+
+            '
+        events:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/EventType'
     DepositTransactionEventContext:
       properties:
         account:
@@ -568,304 +676,6 @@ components:
       - deposit
       - transaction
       title: DepositTransactionEventContext
-    TaxGeneralEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        tax:
-          type: string
-          title: Tax Payment
-          description: 'A tax payment identifier. This field represents the tax payment associated with an event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - tax
-      - transaction
-      title: TaxGeneralEventContext
-    TreasuryTransferEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        order:
-          type: string
-          title: Order
-          description: 'An order identifier. This field represents the order associated with an event.
-
-            '
-        treasury_transfer:
-          type: string
-          title: Treasury Transfer
-          description: 'An treasury transfer identifier. This field represents the treasury transfer associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - order
-      - treasury_transfer
-      title: TreasuryTransferEventContext
-    IdentificationEventContext:
-      properties:
-        person:
-          type: string
-          title: Person
-        identification:
-          type: string
-          title: Identification
-      additionalProperties: false
-      type: object
-      required:
-      - person
-      - identification
-      title: IdentificationEventContext
-    CreateWebhookRequest:
-      title: CreateWebhookRequest
-      description: 'An object representing a webhook to be registered.
-
-        '
-      required:
-      - url
-      - events
-      type: object
-      properties:
-        url:
-          title: Web URL
-          maxLength: 2083
-          minLength: 1
-          type: string
-          format: uri
-          example: https://httpbin.org/status/503
-          description: 'The URL of your webhook endpoint to be invoked when an event occurs.
-
-            '
-        events:
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/EventType'
-    SecuritiesTransferEventContext:
-      description: 'An object representing the context of an event.
-
-        '
-      type: object
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with the event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with the event.
-
-            '
-        securities_transfer:
-          type: string
-          title: Securities Transfer
-          description: 'A securities transfer identifier. You can use this field to correlate different events relating to the same securities transfer.
-
-            '
-      additionalProperties: false
-      required:
-      - account
-      - transaction
-      - securities_transfer
-      title: SecuritiesTransferEventContext
-    CustomerAccountCheckEventContext:
-      title: CustomerAccountCheckEventContext
-      description: 'An object describing the context of an account check event.
-
-        '
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        check:
-          type: string
-          title: Check
-          description: 'A check identifier. This field represents the check associated with an event.  It is an opaque identifier for event correlation, not meant to look-up a specific check.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - check
-    CustomerWorkflowDocumentEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        document:
-          type: string
-          title: Document
-          description: 'A document identifier.  This field represents the document associated with an event.
-
-            '
-        workflow:
-          type: string
-          title: Workflow
-          description: 'A workflow identifier. This field represents the workflow associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - document
-      - workflow
-      title: CustomerWorkflowDocumentEventContext
-    Page_Webhook_:
-      title: Page of Webhook
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/Webhook'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    OrderWorkflowEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-        order:
-          type: string
-          title: Order
-        workflow:
-          type: string
-          title: Workflow
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - order
-      - workflow
-      title: OrderWorkflowEventContext
-    WithdrawalTransactionEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with an event.
-
-            '
-        withdrawal:
-          type: string
-          title: Withdrawal
-          description: 'A withdrawal identifier. This field represents the withdrawal associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - withdrawal
-      - transaction
-      title: WithdrawalTransactionEventContext
-    CustomerWorkflowEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        workflow:
-          type: string
-          title: Workflow
-          description: 'A workflow identifier. This field represents the workflow associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - workflow
-      title: CustomerWorkflowEventContext
-    IncomeDistributionConfirmationDocumentEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        document:
-          type: string
-          title: Document
-          description: 'A document identifier.  This field represents the document associated with an event.
-
-            '
-        income_distribution:
-          type: string
-          title: Income Distribution
-          description: 'An income distribution identifier.  This field represents the income distribution associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - document
-      - income_distribution
-      title: IncomeDistributionConfirmationDocumentEventContext
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
     OrderEventContext:
       properties:
         account:
@@ -880,461 +690,6 @@ components:
       - account
       - order
       title: OrderEventContext
-    TaxInstrumentTransactionEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        instrument:
-          type: string
-          title: Tax Payment
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This field represents the instrument associated with an event.
-
-            '
-        tax:
-          type: string
-          title: Tax Payment
-          description: 'A tax payment identifier. This field represents the tax payment associated with an event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - instrument
-      - tax
-      - transaction
-      title: TaxInstrumentTransactionEventContext
-    PersonDataUpdateEventContext:
-      properties:
-        person:
-          type: string
-          title: Person
-          description: 'A person identifier. This field represents the person associated with a data update request event.
-
-            '
-        update:
-          type: string
-          title: Update
-          description: 'A person data update request identifier. This field represents the update request associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - person
-      - update
-      title: PersonDataUpdateEventContext
-    SecuritiesAccountEventContext:
-      properties:
-        account:
-          type: string
-          title: Customer Account
-          description: 'An account identifier. This field represents the customer account associated with an event.
-
-            '
-        securities_account:
-          type: string
-          title: Securities Account
-          description: 'A securities account identifier. This field represents the securities account associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - securities_account
-      title: SecuritiesAccountEventContext
-    OrderDocumentEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-        document:
-          type: string
-          title: Document
-        batch_order:
-          type: string
-          title: Batch Order
-        order:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Order
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - document
-      - batch_order
-      title: OrderDocumentEventContext
-    TaxExemptionOrderEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        tax_exemption_order:
-          type: string
-          title: Tax Exemption Order
-          description: 'A tax exemption order identifier. This field represents the tax exemption order associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - tax_exemption_order
-      title: TaxExemptionOrderEventContext
-    EventType:
-      title: EventType
-      enum:
-      - account.closed
-      - account.created
-      - account.opened
-      - account.rejected
-      - batch_order.accepted
-      - batch_order.canceled
-      - batch_order.canceling
-      - batch_order.confirmed
-      - batch_order.created
-      - batch_order.executed
-      - batch_order.rejected
-      - cash_account.created
-      - check.action_required
-      - check.processing
-      - check.pending
-      - check.succeeded
-      - check.failed
-      - corporate_action.created
-      - corporate_action.processed
-      - deposit.created
-      - deposit.rejected
-      - deposit.received
-      - dividend_distribution.created
-      - document.created
-      - identification.created
-      - identification.failed
-      - identification.started
-      - identification.succeeded
-      - income_distribution.created
-      - order.accepted
-      - order.canceled
-      - order.canceling
-      - order.confirmed
-      - order.created
-      - order.executed
-      - order.rejected
-      - securities_account.created
-      - securities_account.opened
-      - securities_account.rejected
-      - securities_account.closed
-      - securities_transfer.created
-      - securities_transfer.completed
-      - settlement.created
-      - sweep.canceled
-      - sweep.created
-      - sweep.processed
-      - sweep.rejected
-      - sweep.started
-      - tax.canceled
-      - tax.created
-      - tax.processed
-      - tax_exemption_order.accepted
-      - tax_exemption_order.canceled
-      - tax_exemption_order.canceling
-      - tax_exemption_order.created
-      - tax_exemption_order.rejected
-      - trade.cash_settled
-      - trade.created
-      - trade.taxes_processed
-      - treasury_mandate.accepted
-      - treasury_mandate.canceled
-      - treasury_mandate.confirmed
-      - treasury_mandate.created
-      - treasury_mandate.rejected
-      - treasury_transfer.created
-      - treasury_transfer.pending
-      - treasury_transfer.processed
-      - treasury_transfer.canceled
-      - treasury_transfer.canceling
-      - treasury_transfer.settled
-      - treasury_transfer.rejected
-      - update.created
-      - update.succeeded
-      - update.failed
-      - withdrawal.accepted
-      - withdrawal.canceled
-      - withdrawal.confirmed
-      - withdrawal.created
-      - withdrawal.processed
-      - withdrawal.rejected
-      - workflow.created
-      - workflow.confirmed
-      - workflow.canceled
-      type: string
-      description: 'A category representing a type of event.
-
-        <ul> <li> <code>account.closed</code>, <code>account.created</code>, <code>account.opened</code>, <code>account.rejected</code> <li> <code>batch_order.accepted</code>, <code>batch_order.canceled</code>, <code>batch_order.canceling</code>, <code>batch_order.confirmed</code>, <code>batch_order.created</code>, <code>batch_order.executed</code>, <code>batch_order.rejected</code> <li> <code>cash_account.created</code> <li> <code>check.action_required</code>, <code>check.processing</code>, <code>check.pending</code>, <code>check.succeeded</code>, <code>check.failed</code> <li> <code>deposit.created</code>, <code>deposit.rejected</code>, <code>deposit.received</code> <li> <code>dividend_distribution.created</code> <li> <code>document.created</code> <li> <code>identification.created</code>, <code>identification.failed</code>, <code>identification.started</code>, <code>identification.succeeded</code> <li> <code>income_distribution.created</code> <li> <code>order.accepted</code>, <code>order.canceled</code>, <code>order.canceling</code>, <code>order.confirmed</code>, <code>order.created</code>, <code>order.executed</code>, <code>order.rejected</code> <li> <code>securities_account.created</code>, <code>securities_account.opened</code>, <code>securities_account.rejected</code>, <code>securities_account.closed</code> <li> <code>securities_transfer.created</code>, <code>securities_transfer.completed</code> <li> <code>settlement.created</code> <li> <code>sweep.canceled</code>, <code>sweep.created</code>, <code>sweep.rejected</code>, <code>sweep.processed</code>, <code>sweep.started</code> <li> <code>tax.canceled</code>, <code>tax.created</code>, <code>tax.processed</code> <li> <code>tax_exemption_order.accepted</code>, <code>tax_exemption_order.canceled</code>, <code>tax_exemption_order.canceling</code>, <code>tax_exemption_order.created</code>, <code>tax_exemption_order.rejected</code> <li> <code>trade.cash_settled</code> <code>trade.created</code> <code>trade.taxes_processed</code> <li> <code>treasury_mandate.accepted</code>, <code>treasury_mandate.canceled</code>, <code>treasury_mandate.confirmed</code>, <code>treasury_mandate.created</code>, <code>treasury_mandate.rejected</code> <li> <code>treasury_transfer.canceled</code>, <code>treasury_transfer.canceling</code>, <code>treasury_transfer.created</code>, <code>treasury_transfer.pending</code>, <code>treasury_transfer.processed</code>, <code>treasury_transfer.rejected</code>, <code>treasury_transfer.settled</code> <li> <code>update.created</code>, <code>update.succeeded</code>, <code>update.failed</code> <li> <code>withdrawal.accepted</code>, <code>withdrawal.canceled</code>, <code>withdrawal.confirmed</code>, <code>withdrawal.created</code>, <code>withdrawal.processed</code>, <code>withdrawal.rejected</code> <li> <code>workflow.canceled</code>, <code>workflow.confirmed</code>, <code>workflow.created</code> </ul>
-
-        <strong>Note:</strong> This list is not final, more types of events will be added in the future.
-
-        '
-    OrderTradeDocumentEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-        document:
-          type: string
-          title: Document
-        batch_order:
-          type: string
-          title: Batch Order
-        order:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Order
-        trade:
-          type: string
-          title: Trade
-        transaction:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Transaction
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - document
-      - batch_order
-      - trade
-      title: OrderTradeDocumentEventContext
-    TradeSettledEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        order:
-          type: string
-          title: Order
-          description: 'An order identifier. This field represents the order associated with an event.
-
-            '
-        trade:
-          type: string
-          title: Trade
-          description: 'A trade identifier. This field represents the trade associated with an event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - order
-      - trade
-      - transaction
-      title: TradeSettledEventContext
-    Webhook:
-      title: Webhook
-      description: 'An object representing a registered webhook.
-
-        '
-      required:
-      - id
-      - url
-      - events
-      - signature_secret
-      type: object
-      properties:
-        id:
-          title: Webhook Identifier
-          type: string
-          example: wbh_0953534cf20f414098533680abd6b1c6
-          description: 'A string representing a webhook''s unique identifier.
-
-            '
-        url:
-          title: Web URL
-          type: string
-          format: uri
-          description: 'The URL registered to receive webhook notifications.
-
-            '
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventType'
-        signature_secret:
-          title: Signature Secret
-          type: string
-          description: 'Shared secret used to calculate the signature in the HTTP header Lemon-Markets-Signature for requests posted to the webhook URL.
-
-            '
-    CustomerWorkflowOrderTradeDocumentEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        batch_order:
-          type: string
-          title: Batch Order
-          description: 'A batch order identifier. This field represents the batch order associated with an event.
-
-            '
-        document:
-          type: string
-          title: Document
-          description: 'A document identifier.  This field represents the document associated with an event.
-
-            '
-        order:
-          type: string
-          title: Order
-          description: 'An order identifier. This field represents the order associated with an event.
-
-            '
-        trade:
-          type: string
-          title: Trade
-          description: 'A trade identifier. This field represents the trade associated with an event.
-
-            '
-        transaction:
-          type: string
-          title: Transaction
-          description: 'A transaction identifier. This field represents the transaction associated with an event.
-
-            '
-        workflow:
-          type: string
-          title: Workflow
-          description: 'A workflow identifier. This field represents the workflow associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - document
-      - batch_order
-      - trade
-      - transaction
-      - workflow
-      title: CustomerWorkflowBatchOrderTradeDocumentEventContext
-    TreasuryMandateEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        treasury_mandate:
-          type: string
-          title: Treasury Mandate
-          description: 'A treasury mandate identifier. This field represents the treasury mandate associated with an event.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - treasury_mandate
-      title: TreasuryMandateEventContext
-    BatchOrderEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        batch_order:
-          type: string
-          title: Batch Order
-          description: 'A batch order identifier. This field represents the batch order associated with an event.
-
-            '
-      type: object
-      required:
-      - account
-      - batch_order
-      title: BatchOrderEventContext
-    SettlementEventContext:
-      type: object
-      properties:
-        settlement:
-          type: string
-          title: Settlement
-          description: 'A settlement identifier. This field represents the settlement associated with an event.
-
-            '
-        settlement_account:
-          type: string
-          title: Settlement Account
-          description: 'A settlement account identifier. This field represents the settlement account associated with an event.
-
-            '
-    IncomeDistributionEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-          description: 'An account identifier. This field represents the account associated with an event.
-
-            '
-        income_distribution:
-          type: string
-          title: Income Distribution
-          description: 'An income distribution identifier.  This field represents the income distribution associated with an event.
-
-            '
-        securities_account:
-          type: string
-          title: Securities Account Identifier
-          description: 'A securities account identifier.
-
-            '
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - income_distribution
-      - securities_account
-      title: IncomeDistributionEventContext
-    Ordering:
-      title: Ordering
-      enum:
-      - asc
-      - desc
-      type: string
-      description: "A category representing a sort order:\n<ul> <li><code>asc</code>: Sort elements in descending order. For timestamp based sorting this means starting with\n    oldest element and then moving forward in time.\n<li><code>desc</code>: Sort elements in descending order. For timestamp based sorting this means starting with\n    most recent element and then going further back in time.\n</ul>\n"
     EventExternal:
       title: EventExternal
       required:
@@ -1448,46 +803,7 @@ components:
       - securities_account
       - transaction
       title: DividendDistributionEventContext
-    Page_EventExternal_:
-      title: Page[EventExternal]
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/EventExternal'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    TradeEventContext:
-      properties:
-        account:
-          type: string
-          title: Account
-        securities_account:
-          type: string
-          title: Securities Account
-        trade:
-          type: string
-          title: Trade
-        order:
-          type: string
-          title: Order
-      additionalProperties: false
-      type: object
-      required:
-      - account
-      - securities_account
-      - trade
-      - order
-      title: TradeEventContext
-    WithdrawalEventContext:
+    TradeSettledEventContext:
       properties:
         account:
           type: string
@@ -1495,27 +811,172 @@ components:
           description: 'An account identifier. This field represents the account associated with an event.
 
             '
-        withdrawal:
+        order:
           type: string
-          title: Withdrawal
-          description: 'A withdrawal identifier. This field represents the withdrawal associated with an event.
+          title: Order
+          description: 'An order identifier. This field represents the order associated with an event.
+
+            '
+        trade:
+          type: string
+          title: Trade
+          description: 'A trade identifier. This field represents the trade associated with an event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with an event.
 
             '
       additionalProperties: false
       type: object
       required:
       - account
-      - withdrawal
-      title: WithdrawalEventContext
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
+      - order
+      - trade
+      - transaction
+      title: TradeSettledEventContext
+    OrderWorkflowEventContext:
       properties:
-        message:
-          title: Message
+        account:
           type: string
+          title: Account
+        order:
+          type: string
+          title: Order
+        workflow:
+          type: string
+          title: Workflow
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - order
+      - workflow
+      title: OrderWorkflowEventContext
+    TreasuryTransferEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        order:
+          type: string
+          title: Order
+          description: 'An order identifier. This field represents the order associated with an event.
+
+            '
+        treasury_transfer:
+          type: string
+          title: Treasury Transfer
+          description: 'An treasury transfer identifier. This field represents the treasury transfer associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - order
+      - treasury_transfer
+      title: TreasuryTransferEventContext
+    CustomerWorkflowOrderTradeDocumentEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        batch_order:
+          type: string
+          title: Batch Order
+          description: 'A batch order identifier. This field represents the batch order associated with an event.
+
+            '
+        document:
+          type: string
+          title: Document
+          description: 'A document identifier.  This field represents the document associated with an event.
+
+            '
+        order:
+          type: string
+          title: Order
+          description: 'An order identifier. This field represents the order associated with an event.
+
+            '
+        trade:
+          type: string
+          title: Trade
+          description: 'A trade identifier. This field represents the trade associated with an event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with an event.
+
+            '
+        workflow:
+          type: string
+          title: Workflow
+          description: 'A workflow identifier. This field represents the workflow associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - document
+      - batch_order
+      - trade
+      - transaction
+      - workflow
+      title: CustomerWorkflowBatchOrderTradeDocumentEventContext
+    IdentificationEventContext:
+      properties:
+        person:
+          type: string
+          title: Person
+        identification:
+          type: string
+          title: Identification
+      additionalProperties: false
+      type: object
+      required:
+      - person
+      - identification
+      title: IdentificationEventContext
+    IncomeDistributionConfirmationDocumentEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        document:
+          type: string
+          title: Document
+          description: 'A document identifier.  This field represents the document associated with an event.
+
+            '
+        income_distribution:
+          type: string
+          title: Income Distribution
+          description: 'An income distribution identifier.  This field represents the income distribution associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - document
+      - income_distribution
+      title: IncomeDistributionConfirmationDocumentEventContext
     TreasuryTransferSettlementEventContext:
       properties:
         account:
@@ -1550,6 +1011,246 @@ components:
       - treasury_transfer
       - trade
       title: TreasuryTransferSettlementEventContext
+    OrderTradeDocumentEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+        document:
+          type: string
+          title: Document
+        batch_order:
+          type: string
+          title: Batch Order
+        order:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Order
+        trade:
+          type: string
+          title: Trade
+        transaction:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Transaction
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - document
+      - batch_order
+      - trade
+      title: OrderTradeDocumentEventContext
+    TaxGeneralEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        tax:
+          type: string
+          title: Tax Payment
+          description: 'A tax payment identifier. This field represents the tax payment associated with an event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - tax
+      - transaction
+      title: TaxGeneralEventContext
+    SecuritiesTransferEventContext:
+      description: 'An object representing the context of an event.
+
+        '
+      type: object
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with the event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with the event.
+
+            '
+        securities_transfer:
+          type: string
+          title: Securities Transfer
+          description: 'A securities transfer identifier. You can use this field to correlate different events relating to the same securities transfer.
+
+            '
+      additionalProperties: false
+      required:
+      - account
+      - transaction
+      - securities_transfer
+      title: SecuritiesTransferEventContext
+    TaxInstrumentTransactionEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        instrument:
+          type: string
+          title: Tax Payment
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This field represents the instrument associated with an event.
+
+            '
+        tax:
+          type: string
+          title: Tax Payment
+          description: 'A tax payment identifier. This field represents the tax payment associated with an event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - instrument
+      - tax
+      - transaction
+      title: TaxInstrumentTransactionEventContext
+    EventType:
+      title: EventType
+      enum:
+      - account.closed
+      - account.created
+      - account.opened
+      - account.rejected
+      - batch_order.accepted
+      - batch_order.canceled
+      - batch_order.canceling
+      - batch_order.confirmed
+      - batch_order.created
+      - batch_order.executed
+      - batch_order.rejected
+      - cash_account.created
+      - check.action_required
+      - check.processing
+      - check.pending
+      - check.succeeded
+      - check.failed
+      - corporate_action.created
+      - corporate_action.processed
+      - deposit.created
+      - deposit.rejected
+      - deposit.received
+      - dividend_distribution.created
+      - document.created
+      - identification.created
+      - identification.failed
+      - identification.started
+      - identification.succeeded
+      - income_distribution.created
+      - order.accepted
+      - order.canceled
+      - order.canceling
+      - order.confirmed
+      - order.created
+      - order.executed
+      - order.rejected
+      - securities_account.created
+      - securities_account.opened
+      - securities_account.rejected
+      - securities_account.closed
+      - securities_transfer.created
+      - securities_transfer.completed
+      - settlement.created
+      - sweep.canceled
+      - sweep.created
+      - sweep.processed
+      - sweep.rejected
+      - sweep.started
+      - tax.canceled
+      - tax.created
+      - tax.processed
+      - tax_exemption_order.accepted
+      - tax_exemption_order.canceled
+      - tax_exemption_order.canceling
+      - tax_exemption_order.created
+      - tax_exemption_order.rejected
+      - trade.cash_settled
+      - trade.created
+      - trade.taxes_processed
+      - treasury_mandate.accepted
+      - treasury_mandate.canceled
+      - treasury_mandate.confirmed
+      - treasury_mandate.created
+      - treasury_mandate.rejected
+      - treasury_transfer.created
+      - treasury_transfer.pending
+      - treasury_transfer.processed
+      - treasury_transfer.canceled
+      - treasury_transfer.canceling
+      - treasury_transfer.settled
+      - treasury_transfer.rejected
+      - update.created
+      - update.succeeded
+      - update.failed
+      - withdrawal.accepted
+      - withdrawal.canceled
+      - withdrawal.confirmed
+      - withdrawal.created
+      - withdrawal.processed
+      - withdrawal.rejected
+      - workflow.created
+      - workflow.confirmed
+      - workflow.canceled
+      type: string
+      description: 'A category representing a type of event.
+
+        <ul> <li> <code>account.closed</code>, <code>account.created</code>, <code>account.opened</code>, <code>account.rejected</code> <li> <code>batch_order.accepted</code>, <code>batch_order.canceled</code>, <code>batch_order.canceling</code>, <code>batch_order.confirmed</code>, <code>batch_order.created</code>, <code>batch_order.executed</code>, <code>batch_order.rejected</code> <li> <code>cash_account.created</code> <li> <code>check.action_required</code>, <code>check.processing</code>, <code>check.pending</code>, <code>check.succeeded</code>, <code>check.failed</code> <li> <code>deposit.created</code>, <code>deposit.rejected</code>, <code>deposit.received</code> <li> <code>dividend_distribution.created</code> <li> <code>document.created</code> <li> <code>identification.created</code>, <code>identification.failed</code>, <code>identification.started</code>, <code>identification.succeeded</code> <li> <code>income_distribution.created</code> <li> <code>order.accepted</code>, <code>order.canceled</code>, <code>order.canceling</code>, <code>order.confirmed</code>, <code>order.created</code>, <code>order.executed</code>, <code>order.rejected</code> <li> <code>securities_account.created</code>, <code>securities_account.opened</code>, <code>securities_account.rejected</code>, <code>securities_account.closed</code> <li> <code>securities_transfer.created</code>, <code>securities_transfer.completed</code> <li> <code>settlement.created</code> <li> <code>sweep.canceled</code>, <code>sweep.created</code>, <code>sweep.rejected</code>, <code>sweep.processed</code>, <code>sweep.started</code> <li> <code>tax.canceled</code>, <code>tax.created</code>, <code>tax.processed</code> <li> <code>tax_exemption_order.accepted</code>, <code>tax_exemption_order.canceled</code>, <code>tax_exemption_order.canceling</code>, <code>tax_exemption_order.created</code>, <code>tax_exemption_order.rejected</code> <li> <code>trade.cash_settled</code> <code>trade.created</code> <code>trade.taxes_processed</code> <li> <code>treasury_mandate.accepted</code>, <code>treasury_mandate.canceled</code>, <code>treasury_mandate.confirmed</code>, <code>treasury_mandate.created</code>, <code>treasury_mandate.rejected</code> <li> <code>treasury_transfer.canceled</code>, <code>treasury_transfer.canceling</code>, <code>treasury_transfer.created</code>, <code>treasury_transfer.pending</code>, <code>treasury_transfer.processed</code>, <code>treasury_transfer.rejected</code>, <code>treasury_transfer.settled</code> <li> <code>update.created</code>, <code>update.succeeded</code>, <code>update.failed</code> <li> <code>withdrawal.accepted</code>, <code>withdrawal.canceled</code>, <code>withdrawal.confirmed</code>, <code>withdrawal.created</code>, <code>withdrawal.processed</code>, <code>withdrawal.rejected</code> <li> <code>workflow.canceled</code>, <code>workflow.confirmed</code>, <code>workflow.created</code> </ul>
+
+        <strong>Note:</strong> This list is not final, more types of events will be added in the future.
+
+        '
+    OrderDocumentEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+        document:
+          type: string
+          title: Document
+        batch_order:
+          type: string
+          title: Batch Order
+        order:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Order
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - document
+      - batch_order
+      title: OrderDocumentEventContext
     AccountEventContext:
       title: AccountEventContext
       description: 'An object representing the context of an event.
@@ -1565,6 +1266,53 @@ components:
           description: 'An account identifier. This field represents the account associated with an event.
 
             '
+    SecuritiesAccountEventContext:
+      properties:
+        account:
+          type: string
+          title: Customer Account
+          description: 'An account identifier. This field represents the customer account associated with an event.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account
+          description: 'A securities account identifier. This field represents the securities account associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - securities_account
+      title: SecuritiesAccountEventContext
+    CustomerWorkflowDocumentEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        document:
+          type: string
+          title: Document
+          description: 'A document identifier.  This field represents the document associated with an event.
+
+            '
+        workflow:
+          type: string
+          title: Workflow
+          description: 'A workflow identifier. This field represents the workflow associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - document
+      - workflow
+      title: CustomerWorkflowDocumentEventContext
     DocumentEventContext:
       title: DocumentEventContext
       properties:
@@ -1584,6 +1332,258 @@ components:
       required:
       - account
       - document
+    Ordering:
+      title: Ordering
+      enum:
+      - asc
+      - desc
+      type: string
+      description: "A category representing a sort order:\n<ul> <li><code>asc</code>: Sort elements in descending order. For timestamp based sorting this means starting with\n    oldest element and then moving forward in time.\n<li><code>desc</code>: Sort elements in descending order. For timestamp based sorting this means starting with\n    most recent element and then going further back in time.\n</ul>\n"
+    IncomeDistributionEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        income_distribution:
+          type: string
+          title: Income Distribution
+          description: 'An income distribution identifier.  This field represents the income distribution associated with an event.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account Identifier
+          description: 'A securities account identifier.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - income_distribution
+      - securities_account
+      title: IncomeDistributionEventContext
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    PersonDataUpdateEventContext:
+      properties:
+        person:
+          type: string
+          title: Person
+          description: 'A person identifier. This field represents the person associated with a data update request event.
+
+            '
+        update:
+          type: string
+          title: Update
+          description: 'A person data update request identifier. This field represents the update request associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - person
+      - update
+      title: PersonDataUpdateEventContext
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    WithdrawalEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        withdrawal:
+          type: string
+          title: Withdrawal
+          description: 'A withdrawal identifier. This field represents the withdrawal associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - withdrawal
+      title: WithdrawalEventContext
+    Page_Webhook_:
+      title: Page of Webhook
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Webhook:
+      title: Webhook
+      description: 'An object representing a registered webhook.
+
+        '
+      required:
+      - id
+      - url
+      - events
+      - signature_secret
+      type: object
+      properties:
+        id:
+          title: Webhook Identifier
+          type: string
+          example: wbh_0953534cf20f414098533680abd6b1c6
+          description: 'A string representing a webhook''s unique identifier.
+
+            '
+        url:
+          title: Web URL
+          type: string
+          format: uri
+          description: 'The URL registered to receive webhook notifications.
+
+            '
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventType'
+        signature_secret:
+          title: Signature Secret
+          type: string
+          description: 'Shared secret used to calculate the signature in the HTTP header Lemon-Markets-Signature for requests posted to the webhook URL.
+
+            '
+    SettlementEventContext:
+      type: object
+      properties:
+        settlement:
+          type: string
+          title: Settlement
+          description: 'A settlement identifier. This field represents the settlement associated with an event.
+
+            '
+        settlement_account:
+          type: string
+          title: Settlement Account
+          description: 'A settlement account identifier. This field represents the settlement account associated with an event.
+
+            '
+    TreasuryMandateEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        treasury_mandate:
+          type: string
+          title: Treasury Mandate
+          description: 'A treasury mandate identifier. This field represents the treasury mandate associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - treasury_mandate
+      title: TreasuryMandateEventContext
+    Page_EventExternal_:
+      title: Page[EventExternal]
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/EventExternal'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    WithdrawalTransactionEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+          description: 'An account identifier. This field represents the account associated with an event.
+
+            '
+        transaction:
+          type: string
+          title: Transaction
+          description: 'A transaction identifier. This field represents the transaction associated with an event.
+
+            '
+        withdrawal:
+          type: string
+          title: Withdrawal
+          description: 'A withdrawal identifier. This field represents the withdrawal associated with an event.
+
+            '
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - withdrawal
+      - transaction
+      title: WithdrawalTransactionEventContext
+    TradeEventContext:
+      properties:
+        account:
+          type: string
+          title: Account
+        securities_account:
+          type: string
+          title: Securities Account
+        trade:
+          type: string
+          title: Trade
+        order:
+          type: string
+          title: Order
+      additionalProperties: false
+      type: object
+      required:
+      - account
+      - securities_account
+      - trade
+      - order
+      title: TradeEventContext
   securitySchemes:
     bearerAuth:
       type: http

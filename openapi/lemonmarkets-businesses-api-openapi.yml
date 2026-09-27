@@ -764,6 +764,43 @@ paths:
           description: Server Error
 components:
   schemas:
+    BusinessDocumentUploadRequest:
+      properties:
+        document:
+          $ref: '#/components/schemas/BusinessDocumentType'
+      type: object
+      required:
+      - document
+      title: BusinessDocumentUploadRequest
+    GenericBusinessRegistrationResponse:
+      title: GenericBusinessRegistrationResponse
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Registration Identifier
+          description: The unique identifier for the business registration.
+        incorporation_country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country of Incorporation
+          description: 'An ISO 3166-1 alpha-2 code representing the business''s country of incorporation.
+
+            '
+          example: DE
+        incorporation_date:
+          type: string
+          format: date
+          title: Incorporation Date
+          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
+
+            '
+      required:
+      - id
+      - incorporation_country
+      - incorporation_date
     BusinessResponse:
       type: object
       title: BusinessResponse
@@ -841,102 +878,37 @@ components:
       - registration
       - registered_address
       - taxation_countries
-    IndustryRequest:
+    GenericBusinessRegistrationRequest:
+      title: GenericBusinessRegistrationRequest
       properties:
-        nace_rev:
-          $ref: '#/components/schemas/IndustryRequestNaceRev'
-        code:
-          $ref: '#/components/schemas/BusinessIndustryCodeEnumTwoOne'
-      type: object
-      required:
-      - nace_rev
-      - code
-      title: IndustryRequest
-    BusinessTaxResidencyRequest:
-      properties:
-        country:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Registration Identifier
+          description: 'The unique identifier of the business''s registration in the commercial register, e.g., `"HRB 123456"`.
+
+            '
+        incorporation_country:
           type: string
           maxLength: 2
           minLength: 2
-          title: Country
-          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
+          title: Country of Incorporation
+          description: 'An ISO 3166-1 alpha-2 code, representing the business''s country of incorporation.
 
             '
-        tax_number:
+          example: DE
+        incorporation_date:
           type: string
-          maxLength: 255
-          minLength: 1
-          title: Tax Number
-          description: 'The business''s tax number, eg. `123/456/78901`.
+          format: date
+          title: Date of Incorporation
+          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
 
             '
-        vat_id:
-          type: string
-          pattern: ^[A-Za-z]{2}\d{2,13}$
-          title: Value Added Tax Identifier (VAT ID)
-          description: 'The company''s identifier for VAT (value added tax).
-
-            '
-        business_identification_number:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Business Identification Number
-          description: 'Reserved for future use, pass `null` for now.
-
-            '
-      type: object
       required:
-      - country
-      - tax_number
-      title: BusinessTaxResidencyRequest
-    BusinessIndustryNaceRev:
-      type: string
-      enum:
-      - '2'
-      - '2.1'
-      title: BusinessIndustryNaceRev
-      description: 'A category representing a revision of the NACE classification codes:
-
-        <ul> <li><code>"2"</code>:  NACE Rev. 2 (2008) <li><code>"2.1"</code>:  NACE Rev. 2.1 (2025) </ul>
-
-        '
-    BeneficialOwnerRequest:
-      properties:
-        person:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Person
-          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
-
-            '
-        shares_pct:
-          exclusiveMinimum: 0
-          maximum: 100
-          type: string
-          format: number
-          title: Percentage Shares
-          description: 'The amount of shares (in percent) held by this beneficial owner.
-
-            '
-        voting_rights_pct:
-          type: string
-          format: number
-          maximum: 100
-          exclusiveMinimum: 0
-          title: Percentage Voting Rights
-          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
-
-            '
-        nature:
-          $ref: '#/components/schemas/BeneficialOwnerNature'
-      type: object
-      required:
-      - nature
-      - person
-      - shares_pct
-      title: BeneficialOwnerRequest
+      - id
+      - incorporation_country
+      - incorporation_date
     Address:
       title: Address
       description: 'A residential address.
@@ -992,6 +964,263 @@ components:
           description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
 
             '
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    AddressRequest:
+      properties:
+        line_1:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 1
+          example: Heidestraße 17
+          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
+
+            '
+        line_2:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Line 2
+          example: null
+          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
+
+            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
+
+            '
+        postal_code:
+          type: string
+          maxLength: 50
+          minLength: 1
+          title: Postal Code
+          example: '51147'
+          description: 'The postal code for the address.
+
+            '
+        city:
+          type: string
+          maxLength: 150
+          minLength: 1
+          title: City
+          example: Köln
+          description: 'The city/municipality of the address.
+
+            '
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          example: DE
+          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
+
+            '
+      type: object
+      required:
+      - line_1
+      - postal_code
+      - city
+      - country
+      title: AddressRequest
+    BusinessDocumentUploadResponse:
+      properties:
+        document:
+          $ref: '#/components/schemas/BusinessDocumentType'
+        upload_url:
+          type: string
+          title: Upload URL
+          description: 'A URL to upload the business document.
+
+            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
+
+            '
+        expires_at:
+          type: string
+          format: date-time
+          title: Expires At
+          description: 'The expiry date for the upload link.  Please only create upload links for immediate uploads.
+
+            '
+      type: object
+      required:
+      - document
+      - upload_url
+      - expires_at
+      title: BusinessDocumentUploadResponse
+    BeneficialOwnerNature:
+      type: string
+      enum:
+      - real
+      - notional
+      title: BeneficialOwnerNature
+      description: 'A category describing the nature of a UBO:
+
+        <ul> <li><code>real</code> <li><code>notional</code> </ul>
+
+        '
+    RepresentationRule:
+      type: string
+      enum:
+      - sole_representation
+      - joint_representation
+      title: RepresentationRule
+      description: 'A category describing the representation rule for a legal representative:
+
+        <ul> <li><code>sole_representation</code>:  The legal representative alone can represent the company. <li><code>joint_representation</code>:  The legal representative needs at least one more legal representative to represent the company. </ul>
+
+        '
+    BusinessTaxResidencyResponse:
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
+
+            '
+        tax_number:
+          type: string
+          title: Tax Number
+          description: 'The business''s tax number, eg. `123/456/78901`.
+
+            '
+        vat_id:
+          type: string
+          pattern: ^[A-Za-z]{2}\d{2,13}$
+          title: Value Added Tax Identifier (VAT ID)
+          description: 'The company''s identifier for VAT (value added tax).
+
+            '
+        business_identification_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Business Identification Number
+          description: 'Reserved for future use, pass `null` for now.
+
+            '
+      type: object
+      required:
+      - country
+      - tax_number
+      title: BusinessTaxResidencyResponse
+    BusinessRegistrationRequest:
+      type: object
+      title: BusinessRegistrationRequest
+      description: 'Base class for business registration requests, adapting constraints and fields based on the `incorporation_country`. For example, German businesses are validated using the `GermanBusinessRegistration` schema with additional required fields.
+
+        '
+      discriminator:
+        propertyName: incorporation_country
+        mapping:
+          DE: '#/components/schemas/GermanBusinessRegistration'
+          '*': '#/components/schemas/GenericBusinessRegistrationRequest'
+      anyOf:
+      - $ref: '#/components/schemas/GermanBusinessRegistration'
+      - $ref: '#/components/schemas/GenericBusinessRegistrationRequest'
+    LegalRepresentativeResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'An identifier for the legal representative.
+
+            '
+        person:
+          type: string
+          title: Person
+          description: 'A person identifier. This field represents the person being a legal representative.
+
+            '
+        representation_rule:
+          $ref: '#/components/schemas/RepresentationRule'
+      type: object
+      required:
+      - id
+      - person
+      - representation_rule
+      title: LegalRepresentativeResponse
+    EncodedPaginatedCollectionResponse_LegalRepresentativeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/LegalRepresentativeResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[LegalRepresentativeResponse]
+    BeneficialOwnerRequest:
+      properties:
+        person:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Person
+          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
+
+            '
+        shares_pct:
+          exclusiveMinimum: 0
+          maximum: 100
+          type: string
+          format: number
+          title: Percentage Shares
+          description: 'The amount of shares (in percent) held by this beneficial owner.
+
+            '
+        voting_rights_pct:
+          type: string
+          format: number
+          maximum: 100
+          exclusiveMinimum: 0
+          title: Percentage Voting Rights
+          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
+
+            '
+        nature:
+          $ref: '#/components/schemas/BeneficialOwnerNature'
+      type: object
+      required:
+      - nature
+      - person
+      - shares_pct
+      title: BeneficialOwnerRequest
+    BusinessRegistrationResponse:
+      type: object
+      title: BusinessRegistrationResponse
+      description: 'Business registration information as returned in API responses.
+
+        '
+      discriminator:
+        propertyName: incorporation_country
+        mapping:
+          DE: '#/components/schemas/GermanBusinessRegistration'
+          '*': '#/components/schemas/GenericBusinessRegistrationResponse'
+      anyOf:
+      - $ref: '#/components/schemas/GermanBusinessRegistration'
+      - $ref: '#/components/schemas/GenericBusinessRegistrationResponse'
     BusinessIndustryCodeEnumTwoOne:
       type: string
       enum:
@@ -1649,388 +1878,6 @@ components:
       description: 'An industry sector identifier, according to NACE rev 2.1 (2025).
 
         '
-    BusinessRequest:
-      type: object
-      title: BusinessRequest
-      description: Request object for creating a business record in the system.
-      properties:
-        name:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Name
-          description: The legal name of the business as formally registered.
-          example: Wayne Enterprises, Inc.
-        registration:
-          $ref: '#/components/schemas/BusinessRegistrationRequest'
-        industry:
-          $ref: '#/components/schemas/IndustryRequest'
-        registered_address:
-          $ref: '#/components/schemas/AddressRequest'
-        taxation_countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessTaxResidencyRequest'
-          minItems: 1
-          title: Taxation Countries
-          description: 'A **complete** list of all tax residencies. It is critical that this list is exhaustive.
-
-            '
-        fatca_relevant:
-          type: boolean
-          title: Fatca Relevant
-          description: 'A boolean value indicating if the legal entity is subject to FATCA (Foreign Account Tax Compliance Act). Provide `true` if either: (1) the legal entity is a US Person according to IRS definition, or (2) any shareholder who is a US Person holds >10% of the legal entity. Otherwise, provide `false`.
-
-            '
-        expected_annual_revenue:
-          exclusiveMinimum: 0
-          type: string
-          format: number
-          title: Expected Annual Revenue
-          description: 'An estimate of the annual revenue of the business.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          example: EUR
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for `expected_annual_revenue`. The only currently available currency is `"EUR"`.
-
-            '
-        legal_entity_identifier:
-          type: string
-          maxLength: 20
-          minLength: 20
-          title: Legal Entity Identifier
-          description: 'An ISO 17442 Legal Entity Identifier (LEI) assigned to the legal entity.
-
-            '
-        single_tier_ownership:
-          type: boolean
-          title: Single Tier Ownership
-          description: 'A boolean value indicating single tier ownership, i.e. `true` whether the business is directly owned by individuals only (`true`), or if there are companies in the ownership structure (`false`). Required only for KYC reliance partners.
-
-            '
-        nfe_type:
-          $ref: '#/components/schemas/BusinessNFETypeEnum'
-      required:
-      - name
-      - registration
-      - industry
-      - registered_address
-      - taxation_countries
-      - fatca_relevant
-      - expected_annual_revenue
-      - currency
-      - nfe_type
-    RepresentationRule:
-      type: string
-      enum:
-      - sole_representation
-      - joint_representation
-      title: RepresentationRule
-      description: 'A category describing the representation rule for a legal representative:
-
-        <ul> <li><code>sole_representation</code>:  The legal representative alone can represent the company. <li><code>joint_representation</code>:  The legal representative needs at least one more legal representative to represent the company. </ul>
-
-        '
-    BusinessTaxResidencyResponse:
-      properties:
-        country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country
-          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
-
-            '
-        tax_number:
-          type: string
-          title: Tax Number
-          description: 'The business''s tax number, eg. `123/456/78901`.
-
-            '
-        vat_id:
-          type: string
-          pattern: ^[A-Za-z]{2}\d{2,13}$
-          title: Value Added Tax Identifier (VAT ID)
-          description: 'The company''s identifier for VAT (value added tax).
-
-            '
-        business_identification_number:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Business Identification Number
-          description: 'Reserved for future use, pass `null` for now.
-
-            '
-      type: object
-      required:
-      - country
-      - tax_number
-      title: BusinessTaxResidencyResponse
-    BeneficialOwnerResponse:
-      properties:
-        id:
-          type: string
-          title: Beneficial Owner Identifier
-          description: The unique identifier for this beneficial owner.
-        person:
-          type: string
-          title: Person
-          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
-
-            '
-        shares_pct:
-          exclusiveMinimum: 0
-          type: string
-          format: number
-          title: Percentage Shares
-          description: 'The amount of shares (in percent) held by this beneficial owner.
-
-            '
-        voting_rights_pct:
-          type: string
-          format: number
-          maximum: 100
-          exclusiveMinimum: 0
-          title: Percentage Voting Rights
-          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
-
-            '
-        nature:
-          $ref: '#/components/schemas/BeneficialOwnerNature'
-      type: object
-      required:
-      - id
-      - nature
-      - person
-      - shares_pct
-      title: BeneficialOwnerResponse
-    BusinessNFETypeEnum:
-      type: string
-      enum:
-      - active
-      - passive
-      title: BusinessNFETypeEnum
-      description: 'A category describing the business model of Non-Financial Entities (NFE):
-
-        <ul> <li><code>active</code> <li><code>passive</code> </ul>
-
-        '
-    BusinessDocumentUploadRequest:
-      properties:
-        document:
-          $ref: '#/components/schemas/BusinessDocumentType'
-      type: object
-      required:
-      - document
-      title: BusinessDocumentUploadRequest
-    BusinessRegistrationResponse:
-      type: object
-      title: BusinessRegistrationResponse
-      description: 'Business registration information as returned in API responses.
-
-        '
-      discriminator:
-        propertyName: incorporation_country
-        mapping:
-          DE: '#/components/schemas/GermanBusinessRegistration'
-          '*': '#/components/schemas/GenericBusinessRegistrationResponse'
-      anyOf:
-      - $ref: '#/components/schemas/GermanBusinessRegistration'
-      - $ref: '#/components/schemas/GenericBusinessRegistrationResponse'
-    BusinessDocumentType:
-      type: string
-      enum:
-      - articles_of_association
-      - commercial_register_extract
-      - shareholder_list
-      title: BusinessDocumentType
-      description: 'A category describing the a business document:
-
-        <ul> <li><code>articles_of_association</code> <li><code>commercial_register_extract</code> <li><code>shareholder_list</code> </ul>
-
-        '
-    LegalRepresentativeRequest:
-      properties:
-        person:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Person
-          description: 'A person identifier. This field represents the person being a legal representative.
-
-            '
-        representation_rule:
-          $ref: '#/components/schemas/RepresentationRule'
-      type: object
-      required:
-      - person
-      - representation_rule
-      title: LegalRepresentativeRequest
-    EncodedPaginatedCollectionResponse_BusinessResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BusinessResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[BusinessResponse]
-    LegalRepresentativeResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'An identifier for the legal representative.
-
-            '
-        person:
-          type: string
-          title: Person
-          description: 'A person identifier. This field represents the person being a legal representative.
-
-            '
-        representation_rule:
-          $ref: '#/components/schemas/RepresentationRule'
-      type: object
-      required:
-      - id
-      - person
-      - representation_rule
-      title: LegalRepresentativeResponse
-    BusinessRegistrationRequest:
-      type: object
-      title: BusinessRegistrationRequest
-      description: 'Base class for business registration requests, adapting constraints and fields based on the `incorporation_country`. For example, German businesses are validated using the `GermanBusinessRegistration` schema with additional required fields.
-
-        '
-      discriminator:
-        propertyName: incorporation_country
-        mapping:
-          DE: '#/components/schemas/GermanBusinessRegistration'
-          '*': '#/components/schemas/GenericBusinessRegistrationRequest'
-      anyOf:
-      - $ref: '#/components/schemas/GermanBusinessRegistration'
-      - $ref: '#/components/schemas/GenericBusinessRegistrationRequest'
-    GenericBusinessRegistrationRequest:
-      title: GenericBusinessRegistrationRequest
-      properties:
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Registration Identifier
-          description: 'The unique identifier of the business''s registration in the commercial register, e.g., `"HRB 123456"`.
-
-            '
-        incorporation_country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country of Incorporation
-          description: 'An ISO 3166-1 alpha-2 code, representing the business''s country of incorporation.
-
-            '
-          example: DE
-        incorporation_date:
-          type: string
-          format: date
-          title: Date of Incorporation
-          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
-
-            '
-      required:
-      - id
-      - incorporation_country
-      - incorporation_date
-    AddressRequest:
-      properties:
-        line_1:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Line 1
-          example: Heidestraße 17
-          description: 'The first line of the address. For most German addresses, this will be the street name and house number. If there is only a street name or a house number, provide that one without the other.
-
-            '
-        line_2:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Line 2
-          example: null
-          description: 'The second line of the address. This field is optional, and it won''t be needed for most German addresses. For care-of addresses (℅) like the following, this is likely to be the actual street name and house number: <br/>
-
-            * Erika Mustermann<br/>℅ Max Müller<br/>**Mustergasse 14**<br/>12345 Musterstadt<br/>Germany
-
-            '
-        postal_code:
-          type: string
-          maxLength: 50
-          minLength: 1
-          title: Postal Code
-          example: '51147'
-          description: 'The postal code for the address.
-
-            '
-        city:
-          type: string
-          maxLength: 150
-          minLength: 1
-          title: City
-          example: Köln
-          description: 'The city/municipality of the address.
-
-            '
-        country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country
-          example: DE
-          description: 'An ISO 3166-1 alpha-2 code, representing the country of the address.
-
-            '
-      type: object
-      required:
-      - line_1
-      - postal_code
-      - city
-      - country
-      title: AddressRequest
-    BeneficialOwnerNature:
-      type: string
-      enum:
-      - real
-      - notional
-      title: BeneficialOwnerNature
-      description: 'A category describing the nature of a UBO:
-
-        <ul> <li><code>real</code> <li><code>notional</code> </ul>
-
-        '
-    IndustryRequestNaceRev:
-      type: string
-      enum:
-      - '2.1'
-      title: IndustryRequestNaceRev
-      description: 'A category representing a revision of the NACE classification codes. Only NACE Rev. 2.1 (2025) is supported for new business requests.
-
-        '
     BusinessIndustry:
       properties:
         nace_rev:
@@ -2047,88 +1894,6 @@ components:
       description: 'A specification of an industry sector.
 
         '
-    BusinessDocumentUploadResponse:
-      properties:
-        document:
-          $ref: '#/components/schemas/BusinessDocumentType'
-        upload_url:
-          type: string
-          title: Upload URL
-          description: 'A URL to upload the business document.
-
-            Use this URL to upload a document with the HTTP method `PUT` and the content type header set to `application/pdf`.
-
-            '
-        expires_at:
-          type: string
-          format: date-time
-          title: Expires At
-          description: 'The expiry date for the upload link.  Please only create upload links for immediate uploads.
-
-            '
-      type: object
-      required:
-      - document
-      - upload_url
-      - expires_at
-      title: BusinessDocumentUploadResponse
-    GenericBusinessRegistrationResponse:
-      title: GenericBusinessRegistrationResponse
-      properties:
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          title: Registration Identifier
-          description: The unique identifier for the business registration.
-        incorporation_country:
-          type: string
-          maxLength: 2
-          minLength: 2
-          title: Country of Incorporation
-          description: 'An ISO 3166-1 alpha-2 code representing the business''s country of incorporation.
-
-            '
-          example: DE
-        incorporation_date:
-          type: string
-          format: date
-          title: Incorporation Date
-          description: 'An ISO 8601 date string (only using components for year, month and day) specifying the business''s date of incorporation.
-
-            '
-      required:
-      - id
-      - incorporation_country
-      - incorporation_date
-    GermanBusinessLegalForm:
-      title: GermanBusinessLegalForm
-      type: string
-      enum:
-      - gmbh
-      - ug
-      description: 'A category representing the formal type of a German legal entity:
-
-        <ul> <li><code>gmbh</code>: GmbH <li><code>ug</code>: UG (haftungsbeschränkt) </ul>
-
-        '
-    EncodedPaginatedCollectionResponse_LegalRepresentativeResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/LegalRepresentativeResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[LegalRepresentativeResponse]
     EncodedPaginatedCollectionResponse_BeneficialOwnerResponse_:
       properties:
         data:
@@ -2146,6 +1911,23 @@ components:
       - data
       - pagination
       title: EncodedPaginatedCollectionResponse[BeneficialOwnerResponse]
+    EncodedPaginatedCollectionResponse_BusinessResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BusinessResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[BusinessResponse]
     BusinessIndustryCodeEnumTwo:
       type: string
       enum:
@@ -2768,30 +2550,6 @@ components:
       description: 'An industry sector identifier, according to NACE rev 2 (2006).
 
         '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
     GermanBusinessRegistration:
       title: GermanBusinessRegistration
       type: object
@@ -2836,6 +2594,248 @@ components:
       - incorporation_date
       - incorporation_country
       - legal_form
+    GermanBusinessLegalForm:
+      title: GermanBusinessLegalForm
+      type: string
+      enum:
+      - gmbh
+      - ug
+      description: 'A category representing the formal type of a German legal entity:
+
+        <ul> <li><code>gmbh</code>: GmbH <li><code>ug</code>: UG (haftungsbeschränkt) </ul>
+
+        '
+    BusinessTaxResidencyRequest:
+      properties:
+        country:
+          type: string
+          maxLength: 2
+          minLength: 2
+          title: Country
+          description: 'An ISO 3166-1 alpha-2 code, representing a business''s tax residency.
+
+            '
+        tax_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Tax Number
+          description: 'The business''s tax number, eg. `123/456/78901`.
+
+            '
+        vat_id:
+          type: string
+          pattern: ^[A-Za-z]{2}\d{2,13}$
+          title: Value Added Tax Identifier (VAT ID)
+          description: 'The company''s identifier for VAT (value added tax).
+
+            '
+        business_identification_number:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Business Identification Number
+          description: 'Reserved for future use, pass `null` for now.
+
+            '
+      type: object
+      required:
+      - country
+      - tax_number
+      title: BusinessTaxResidencyRequest
+    IndustryRequestNaceRev:
+      type: string
+      enum:
+      - '2.1'
+      title: IndustryRequestNaceRev
+      description: 'A category representing a revision of the NACE classification codes. Only NACE Rev. 2.1 (2025) is supported for new business requests.
+
+        '
+    BusinessNFETypeEnum:
+      type: string
+      enum:
+      - active
+      - passive
+      title: BusinessNFETypeEnum
+      description: 'A category describing the business model of Non-Financial Entities (NFE):
+
+        <ul> <li><code>active</code> <li><code>passive</code> </ul>
+
+        '
+    LegalRepresentativeRequest:
+      properties:
+        person:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Person
+          description: 'A person identifier. This field represents the person being a legal representative.
+
+            '
+        representation_rule:
+          $ref: '#/components/schemas/RepresentationRule'
+      type: object
+      required:
+      - person
+      - representation_rule
+      title: LegalRepresentativeRequest
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    BusinessRequest:
+      type: object
+      title: BusinessRequest
+      description: Request object for creating a business record in the system.
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+          description: The legal name of the business as formally registered.
+          example: Wayne Enterprises, Inc.
+        registration:
+          $ref: '#/components/schemas/BusinessRegistrationRequest'
+        industry:
+          $ref: '#/components/schemas/IndustryRequest'
+        registered_address:
+          $ref: '#/components/schemas/AddressRequest'
+        taxation_countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessTaxResidencyRequest'
+          minItems: 1
+          title: Taxation Countries
+          description: 'A **complete** list of all tax residencies. It is critical that this list is exhaustive.
+
+            '
+        fatca_relevant:
+          type: boolean
+          title: Fatca Relevant
+          description: 'A boolean value indicating if the legal entity is subject to FATCA (Foreign Account Tax Compliance Act). Provide `true` if either: (1) the legal entity is a US Person according to IRS definition, or (2) any shareholder who is a US Person holds >10% of the legal entity. Otherwise, provide `false`.
+
+            '
+        expected_annual_revenue:
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          title: Expected Annual Revenue
+          description: 'An estimate of the annual revenue of the business.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          example: EUR
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for `expected_annual_revenue`. The only currently available currency is `"EUR"`.
+
+            '
+        legal_entity_identifier:
+          type: string
+          maxLength: 20
+          minLength: 20
+          title: Legal Entity Identifier
+          description: 'An ISO 17442 Legal Entity Identifier (LEI) assigned to the legal entity.
+
+            '
+        single_tier_ownership:
+          type: boolean
+          title: Single Tier Ownership
+          description: 'A boolean value indicating single tier ownership, i.e. `true` whether the business is directly owned by individuals only (`true`), or if there are companies in the ownership structure (`false`). Required only for KYC reliance partners.
+
+            '
+        nfe_type:
+          $ref: '#/components/schemas/BusinessNFETypeEnum'
+      required:
+      - name
+      - registration
+      - industry
+      - registered_address
+      - taxation_countries
+      - fatca_relevant
+      - expected_annual_revenue
+      - currency
+      - nfe_type
+    BusinessDocumentType:
+      type: string
+      enum:
+      - articles_of_association
+      - commercial_register_extract
+      - shareholder_list
+      title: BusinessDocumentType
+      description: 'A category describing the a business document:
+
+        <ul> <li><code>articles_of_association</code> <li><code>commercial_register_extract</code> <li><code>shareholder_list</code> </ul>
+
+        '
+    BusinessIndustryNaceRev:
+      type: string
+      enum:
+      - '2'
+      - '2.1'
+      title: BusinessIndustryNaceRev
+      description: 'A category representing a revision of the NACE classification codes:
+
+        <ul> <li><code>"2"</code>:  NACE Rev. 2 (2008) <li><code>"2.1"</code>:  NACE Rev. 2.1 (2025) </ul>
+
+        '
+    IndustryRequest:
+      properties:
+        nace_rev:
+          $ref: '#/components/schemas/IndustryRequestNaceRev'
+        code:
+          $ref: '#/components/schemas/BusinessIndustryCodeEnumTwoOne'
+      type: object
+      required:
+      - nace_rev
+      - code
+      title: IndustryRequest
+    BeneficialOwnerResponse:
+      properties:
+        id:
+          type: string
+          title: Beneficial Owner Identifier
+          description: The unique identifier for this beneficial owner.
+        person:
+          type: string
+          title: Person
+          description: 'A person identifier.  This field represents the `person` associated as beneficial owner.
+
+            '
+        shares_pct:
+          exclusiveMinimum: 0
+          type: string
+          format: number
+          title: Percentage Shares
+          description: 'The amount of shares (in percent) held by this beneficial owner.
+
+            '
+        voting_rights_pct:
+          type: string
+          format: number
+          maximum: 100
+          exclusiveMinimum: 0
+          title: Percentage Voting Rights
+          description: 'The amount of voting rights (in percent) held by this beneficial owner. Required for KYC reliance partners only.
+
+            '
+        nature:
+          $ref: '#/components/schemas/BeneficialOwnerNature'
+      type: object
+      required:
+      - id
+      - nature
+      - person
+      - shares_pct
+      title: BeneficialOwnerResponse
   securitySchemes:
     bearerAuth:
       type: http

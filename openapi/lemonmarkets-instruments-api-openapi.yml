@@ -369,165 +369,32 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    NavResponse:
-      properties:
-        type:
-          $ref: '#/components/schemas/PriceType'
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
-
-            '
-        price:
-          type: string
-          title: Price
-          description: 'The net asset value (NAV) for the instrument.
-
-            '
-        valuation_date:
-          type: string
-          format: date
-          title: Valuation Date
-          description: 'The date of the NAV valuation.
-
-            '
-      type: object
+    ErrorResponse:
+      title: ErrorResponse
       required:
-      - currency
-      - instrument
-      - price
-      - type
-      - valuation_date
-      title: NavResponse
-    Pagination:
-      title: Pagination
+      - message
       type: object
       properties:
-        next_cursor:
-          title: Cursor for Next Page
+        message:
+          title: Message
           type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    InstrumentResponse:
-      title: InstrumentResponse
-      description: 'An object representing a financial instrument.
-
-        '
+    Page_InstrumentResponse_:
+      title: Page of InstrumentResponse
       required:
-      - isin
-      - title
-      - type
-      - regulatory_information
+      - data
+      - pagination
       type: object
       properties:
-        isin:
-          title: ISIN
-          type: string
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+        data:
+          title: Data
+          description: 'The elements of the response.
 
             '
-          example: LU1437015735
-        title:
-          title: Title
-          type: string
-          description: 'The title of the instrument.
-
-            '
-          example: Amundi Index MSCI Europe UCITS ETF DR
-        type:
-          $ref: '#/components/schemas/InstrumentType'
-        fund_profit_model:
-          $ref: '#/components/schemas/InstrumentFundProfitModel'
-        total_expense_ratio_pct:
-          title: Total Expense Ratio (%)
-          type: string
-          format: number
-          description: 'A number representing the total expense ratio for a fund. The value is pre-scaled, so `"0.07"` represents 0.07%.
-
-            '
-          example: '0.07'
-        regulatory_information:
-          $ref: '#/components/schemas/InstrumentRegulatoryInformationResponse'
-        active_trading_halts:
-          title: Active Trading Halts
           type: array
           items:
-            $ref: '#/components/schemas/TradingHaltResponse'
-          description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
-
-            '
-    YieldResponse:
-      title: Yield
-      description: 'Most recent yield data available for the specified instrument.
-
-        '
-      required:
-      - period_start
-      - period_end
-      - yield_pct
-      - annualized_yield_pct
-      - calculated_as_of
-      type: object
-      properties:
-        period_start:
-          title: Period Start
-          type: string
-          format: date
-          description: 'The start date of the yield period. It represents the starting date of the period for which the yield is calculated.
-
-            '
-          example: '2023-10-01'
-        period_end:
-          title: Period End
-          type: string
-          format: date
-          description: 'The end date of the yield period. It represents the final date of the period for which the yield is calculated.
-
-            '
-          example: '2023-10-31'
-        yield_pct:
-          title: Yield Percent
-          type: number
-          description: 'The yield of the instrument for the given period in percentage (`"0.14"` means 0.14%).
-
-            '
-          example: '0.14'
-        annualized_yield_pct:
-          title: Annualized Yield Percent
-          type: number
-          description: 'Annualized yield for the specified period in percentage (`"1.69"` means 1.69%). Represents a simple (non-compounded) projection of that period''s factor over a year. Present only after the period''s final distribution is processed.
-
-            '
-          example: '1.69'
-        calculated_as_of:
-          title: Calculated As Of
-          type: string
-          format: date
-          description: 'The last date of the period for which the annualized monthly yield value applies.
-
-            '
-          example: '2023-10-31'
-      example:
-        period_start: '2025-10-01'
-        period_end: '2025-10-31'
-        yield_pct: '0.14'
-        annualized_yield_pct: '1.69'
-        calculated_as_of: '2025-10-31'
+            $ref: '#/components/schemas/InstrumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Side:
       type: string
       enum:
@@ -553,6 +420,35 @@ components:
           description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
 
             '
+    InstrumentType:
+      title: InstrumentType
+      enum:
+      - etf
+      - fund
+      - stock
+      type: string
+      description: 'A category specifying the type of a financial instrument:
+
+        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+
+        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+
+        '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
     TradingHaltResponse:
       title: TradingHaltResponse
       description: 'An object representing an active trading halt for an instrument.
@@ -583,34 +479,6 @@ components:
           description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
 
             '
-    Page_InstrumentResponse_:
-      title: Page of InstrumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/InstrumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    PriceType:
-      type: string
-      enum:
-      - nav
-      - quote
-      title: PriceType
-      description: 'A category representing the source of a price:
-
-        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
-
-        '
     QuoteResponseWithType:
       properties:
         type:
@@ -671,29 +539,45 @@ components:
       - type
       - updated_at
       title: QuoteResponseWithType
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
+    NavResponse:
       properties:
-        message:
-          title: Message
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
           type: string
-    InstrumentType:
-      title: InstrumentType
-      enum:
-      - etf
-      - fund
-      - stock
-      type: string
-      description: 'A category specifying the type of a financial instrument:
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
 
-        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
 
-        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+            '
+        price:
+          type: string
+          title: Price
+          description: 'The net asset value (NAV) for the instrument.
 
-        '
+            '
+        valuation_date:
+          type: string
+          format: date
+          title: Valuation Date
+          description: 'The date of the NAV valuation.
+
+            '
+      type: object
+      required:
+      - currency
+      - instrument
+      - price
+      - type
+      - valuation_date
+      title: NavResponse
     InstrumentPriceResponse:
       title: Price Response
       oneOf:
@@ -704,6 +588,54 @@ components:
         mapping:
           nav: '#/components/schemas/NavResponse'
           quote: '#/components/schemas/QuoteResponseWithType'
+    InstrumentResponse:
+      title: InstrumentResponse
+      description: 'An object representing a financial instrument.
+
+        '
+      required:
+      - isin
+      - title
+      - type
+      - regulatory_information
+      type: object
+      properties:
+        isin:
+          title: ISIN
+          type: string
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+
+            '
+          example: LU1437015735
+        title:
+          title: Title
+          type: string
+          description: 'The title of the instrument.
+
+            '
+          example: Amundi Index MSCI Europe UCITS ETF DR
+        type:
+          $ref: '#/components/schemas/InstrumentType'
+        fund_profit_model:
+          $ref: '#/components/schemas/InstrumentFundProfitModel'
+        total_expense_ratio_pct:
+          title: Total Expense Ratio (%)
+          type: string
+          format: number
+          description: 'A number representing the total expense ratio for a fund. The value is pre-scaled, so `"0.07"` represents 0.07%.
+
+            '
+          example: '0.07'
+        regulatory_information:
+          $ref: '#/components/schemas/InstrumentRegulatoryInformationResponse'
+        active_trading_halts:
+          title: Active Trading Halts
+          type: array
+          items:
+            $ref: '#/components/schemas/TradingHaltResponse'
+          description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
+
+            '
     InstrumentFundProfitModel:
       title: Fund Profit Model
       type: string
@@ -715,6 +647,74 @@ components:
         <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
 
         '
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
+
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
+
+        '
+    YieldResponse:
+      title: Yield
+      description: 'Most recent yield data available for the specified instrument.
+
+        '
+      required:
+      - period_start
+      - period_end
+      - yield_pct
+      - annualized_yield_pct
+      - calculated_as_of
+      type: object
+      properties:
+        period_start:
+          title: Period Start
+          type: string
+          format: date
+          description: 'The start date of the yield period. It represents the starting date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-01'
+        period_end:
+          title: Period End
+          type: string
+          format: date
+          description: 'The end date of the yield period. It represents the final date of the period for which the yield is calculated.
+
+            '
+          example: '2023-10-31'
+        yield_pct:
+          title: Yield Percent
+          type: number
+          description: 'The yield of the instrument for the given period in percentage (`"0.14"` means 0.14%).
+
+            '
+          example: '0.14'
+        annualized_yield_pct:
+          title: Annualized Yield Percent
+          type: number
+          description: 'Annualized yield for the specified period in percentage (`"1.69"` means 1.69%). Represents a simple (non-compounded) projection of that period''s factor over a year. Present only after the period''s final distribution is processed.
+
+            '
+          example: '1.69'
+        calculated_as_of:
+          title: Calculated As Of
+          type: string
+          format: date
+          description: 'The last date of the period for which the annualized monthly yield value applies.
+
+            '
+          example: '2023-10-31'
+      example:
+        period_start: '2025-10-01'
+        period_end: '2025-10-31'
+        yield_pct: '0.14'
+        annualized_yield_pct: '1.69'
+        calculated_as_of: '2025-10-31'
   securitySchemes:
     bearerAuth:
       type: http
