@@ -279,6 +279,58 @@ paths:
           description: Server Error
 components:
   schemas:
+    SubmitKycRelianceDataRequest:
+      properties:
+        reference:
+          type: string
+          minLength: 1
+          maxLength: 255
+          title: Reference
+          description: 'A reference to the ID+V process previously completed.  The string must neither be empty and nor contain only whitespace characters.
+
+            '
+        completed_at:
+          type: string
+          format: date-time
+          title: Completed At
+          description: 'The point in time at which the ID+V process referenced by `reference` has been completed.
+
+            '
+        id_document:
+          $ref: '#/components/schemas/IdentificationDocument'
+        politically_exposed_person:
+          type: boolean
+          title: Politically Exposed Person
+          description: 'Indicate whether or not the person was identified as a politically exposed person (PEP).
+
+            '
+      type: object
+      required:
+      - reference
+      - completed_at
+      - id_document
+      title: SubmitKycRelianceDataRequest
+      description: 'An object describing a previously completed ID+V process for a person in the context of KYC reliance.
+
+        '
+    PersonResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier representing this person.
+
+            '
+        type:
+          $ref: '#/components/schemas/PersonType'
+      type: object
+      required:
+      - id
+      - type
+      title: PersonResponse
+      description: 'An object representing a person to be verified.
+
+        '
     PersonType:
       type: string
       const: customer
@@ -288,36 +340,6 @@ components:
         <ul> <li><code>customer</code> </ul>
 
         '
-    InitiateKYCRequest:
-      title: InitiateKYCRequest
-      description: 'An object describing client-side configuration for the identity verification process.
-
-        '
-      required:
-      - redirect_success
-      - redirect_failure
-      type: object
-      properties:
-        redirect_success:
-          title: Redirect Success
-          maxLength: 65536
-          minLength: 1
-          type: string
-          format: uri
-          example: my-app://brokerage/success
-          description: 'The redirect target that will be opened after a successful video-identification process.
-
-            '
-        redirect_failure:
-          title: Redirect Failure
-          maxLength: 65536
-          minLength: 1
-          type: string
-          format: uri
-          example: my-app://brokerage/failure
-          description: 'The redirect target that will be opened after a failed video-identification process.
-
-            '
     ErrorResponse:
       title: ErrorResponse
       required:
@@ -327,6 +349,69 @@ components:
         message:
           title: Message
           type: string
+    PersonIdentificationStatus:
+      type: string
+      enum:
+      - created
+      - failed
+      - started
+      - succeeded
+      title: PersonIdentificationStatus
+      description: 'A category representing the status on a person identification process.
+
+        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
+
+        '
+    IdentificationResponse:
+      title: IdentificationResponse
+      description: 'An object representing a process for person identification.
+
+        '
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'The identifier referring to this person identification process.
+
+            '
+        person:
+          $ref: '#/components/schemas/PersonResponse'
+        method:
+          $ref: '#/components/schemas/PersonIdentificationMethod'
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_PersonIdentificationStatus_'
+          type: array
+          title: History
+          default: []
+          description: 'A history of the status changes for the person identification process.
+
+            '
+      type: object
+      required:
+      - id
+      - person
+      - method
+      - status
+    StatusChange_PersonIdentificationStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[PersonIdentificationStatus]
     InitiateKYCResponse:
       title: InitiateKYCResponse
       description: 'An object describing a pending video-identification process.
@@ -349,6 +434,17 @@ components:
           description: 'An identifier representing the process on the side of the video identification provider.
 
             '
+    IdentificationDocumentType:
+      type: string
+      enum:
+      - id_card
+      - passport
+      title: IdentificationDocumentType
+      description: 'A category representing a givernment issued identification document.
+
+        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
+
+        '
     IdentificationDocument:
       properties:
         type:
@@ -388,68 +484,6 @@ components:
       description: 'An object representing a government issued identity document.
 
         '
-    IdentificationDocumentType:
-      type: string
-      enum:
-      - id_card
-      - passport
-      title: IdentificationDocumentType
-      description: 'A category representing a givernment issued identification document.
-
-        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
-
-        '
-    SubmitKycRelianceDataRequest:
-      properties:
-        reference:
-          type: string
-          minLength: 1
-          maxLength: 255
-          title: Reference
-          description: 'A reference to the ID+V process previously completed.  The string must neither be empty and nor contain only whitespace characters.
-
-            '
-        completed_at:
-          type: string
-          format: date-time
-          title: Completed At
-          description: 'The point in time at which the ID+V process referenced by `reference` has been completed.
-
-            '
-        id_document:
-          $ref: '#/components/schemas/IdentificationDocument'
-        politically_exposed_person:
-          type: boolean
-          title: Politically Exposed Person
-          description: 'Indicate whether or not the person was identified as a politically exposed person (PEP).
-
-            '
-      type: object
-      required:
-      - reference
-      - completed_at
-      - id_document
-      title: SubmitKycRelianceDataRequest
-      description: 'An object describing a previously completed ID+V process for a person in the context of KYC reliance.
-
-        '
-    StatusChange_PersonIdentificationStatus_:
-      properties:
-        status:
-          $ref: '#/components/schemas/PersonIdentificationStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
-
-            '
-          example: '2023-06-23T07:29:55.465000+00:00'
-      type: object
-      required:
-      - status
-      - timestamp
-      title: StatusChange[PersonIdentificationStatus]
     PersonIdentificationMethod:
       type: string
       const: kyc_reliance
@@ -459,70 +493,36 @@ components:
         <ul> <li><code>kyc_reliance</code>:  Use this for KYC reliance implementations. </ul>
 
         '
-    PersonIdentificationStatus:
-      type: string
-      enum:
-      - created
-      - failed
-      - started
-      - succeeded
-      title: PersonIdentificationStatus
-      description: 'A category representing the status on a person identification process.
-
-        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
+    InitiateKYCRequest:
+      title: InitiateKYCRequest
+      description: 'An object describing client-side configuration for the identity verification process.
 
         '
-    PersonResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'The identifier representing this person.
-
-            '
-        type:
-          $ref: '#/components/schemas/PersonType'
-      type: object
       required:
-      - id
-      - type
-      title: PersonResponse
-      description: 'An object representing a person to be verified.
-
-        '
-    IdentificationResponse:
-      title: IdentificationResponse
-      description: 'An object representing a process for person identification.
-
-        '
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'The identifier referring to this person identification process.
-
-            '
-        person:
-          $ref: '#/components/schemas/PersonResponse'
-        method:
-          $ref: '#/components/schemas/PersonIdentificationMethod'
-        status:
-          $ref: '#/components/schemas/PersonIdentificationStatus'
-        history:
-          items:
-            $ref: '#/components/schemas/StatusChange_PersonIdentificationStatus_'
-          type: array
-          title: History
-          default: []
-          description: 'A history of the status changes for the person identification process.
-
-            '
+      - redirect_success
+      - redirect_failure
       type: object
-      required:
-      - id
-      - person
-      - method
-      - status
+      properties:
+        redirect_success:
+          title: Redirect Success
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/success
+          description: 'The redirect target that will be opened after a successful video-identification process.
+
+            '
+        redirect_failure:
+          title: Redirect Failure
+          maxLength: 65536
+          minLength: 1
+          type: string
+          format: uri
+          example: my-app://brokerage/failure
+          description: 'The redirect target that will be opened after a failed video-identification process.
+
+            '
   securitySchemes:
     bearerAuth:
       type: http

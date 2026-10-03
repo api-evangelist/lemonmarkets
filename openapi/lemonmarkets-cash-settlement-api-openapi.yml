@@ -538,6 +538,38 @@ components:
       - payment_details
       - type
       title: SettlementAccountTransactionResponse
+    EncodedPaginatedCollectionResponse_SettlementResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementResponse]
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
     ErrorResponse:
       title: ErrorResponse
       required:
@@ -547,6 +579,38 @@ components:
         message:
           title: Message
           type: string
+    SettlementAccountTransactionDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementAccountTransactionDirection
+    SettlementAccountTransactionResponse:
+      oneOf:
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse1'
+      - $ref: '#/components/schemas/SettlementAccountTransactionResponse2'
+      discriminator:
+        propertyName: type
+        mapping:
+          payment: '#/components/schemas/SettlementAccountTransactionResponse1'
+          settlement: '#/components/schemas/SettlementAccountTransactionResponse2'
+    Page_SettlementAccountTransactionResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementAccountTransactionResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page[SettlementAccountTransactionResponse]
     SettlementAccountResponse:
       properties:
         id:
@@ -595,175 +659,6 @@ components:
       - balance
       - withdrawals_in_progress
       title: SettlementAccountResponse
-    SettlementItemType:
-      type: string
-      enum:
-      - income_distribution
-      - order
-      - trade
-      title: SettlementItemType
-      description: 'A category describing the type of a settlement item.
-
-        <ul> <li><code>income_distribution</code>:  The transaction was caused by a distribution <li><code>order</code>:  The transaction was caused by an order <li><code>trade</code>:  The transaction was caused by a trade </ul>
-
-        '
-    SettlementAccountTransactionResponse:
-      oneOf:
-      - $ref: '#/components/schemas/SettlementAccountTransactionResponse1'
-      - $ref: '#/components/schemas/SettlementAccountTransactionResponse2'
-      discriminator:
-        propertyName: type
-        mapping:
-          payment: '#/components/schemas/SettlementAccountTransactionResponse1'
-          settlement: '#/components/schemas/SettlementAccountTransactionResponse2'
-    SettlementAccountTransactionDirection:
-      type: string
-      enum:
-      - credit
-      - debit
-      title: SettlementAccountTransactionDirection
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    SettlementResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A value identifying the settlement.
-
-            '
-        amount:
-          type: string
-          title: Amount
-          description: 'The amount for the settlement.
-
-            '
-        currency:
-          type: string
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is "EUR".
-
-            '
-        cutoff_timestamp:
-          type: string
-          format: date-time
-          title: Cutoff Timestamp
-          description: 'The point in time at which `debit` settlements have to be delivered and the point in time for cash distribution for `credit` settlements.
-
-            '
-        direction:
-          $ref: '#/components/schemas/SettlementDirection'
-      type: object
-      required:
-      - id
-      - amount
-      - currency
-      - cutoff_timestamp
-      - direction
-      title: SettlementResponse
-    SettlementDirection:
-      type: string
-      enum:
-      - credit
-      - debit
-      title: SettlementDirection
-      description: 'A category representing the direction of settlement:
-
-        <ul> <li><code>credit</code>:  The settlement results in funds being credited (net-sell day). <li><code>debit</code>: The settlement results in funds being debited (net-buy day). </ul>
-
-        '
-    BankAccountResponse:
-      title: BankAccountResponse
-      description: 'An object representing a bank account.
-
-        '
-      required:
-      - iban
-      - bic
-      type: object
-      properties:
-        iban:
-          title: IBAN
-          type: string
-          description: 'An IBAN (International Bank Account Number) according to ISO 13616-1:2020.
-
-            '
-        bic:
-          title: BIC
-          type: string
-          description: 'A BIC (Business Identifier Code) according to ISO 9362.
-
-            '
-        name:
-          type: string
-          title: Name
-          description: 'The name of the bank managing the bank account.
-
-            '
-    EncodedPaginatedCollectionResponse_SettlementAccountResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementAccountResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: Page[SettlementAccountResponse]
-    Page_SettlementAccountTransactionResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementAccountTransactionResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: Page[SettlementAccountTransactionResponse]
-    EncodedPaginatedCollectionResponse_SettlementItemResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/SettlementItemResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[SettlementItemResponse]
     SettlementItemResponse:
       properties:
         id:
@@ -814,11 +709,48 @@ components:
       description: 'An object representing a settlement item.
 
         '
-    EncodedPaginatedCollectionResponse_SettlementResponse_:
+    SettlementResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifying the settlement.
+
+            '
+        amount:
+          type: string
+          title: Amount
+          description: 'The amount for the settlement.
+
+            '
+        currency:
+          type: string
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for prices of the instrument listed here. The only currently available currency is "EUR".
+
+            '
+        cutoff_timestamp:
+          type: string
+          format: date-time
+          title: Cutoff Timestamp
+          description: 'The point in time at which `debit` settlements have to be delivered and the point in time for cash distribution for `credit` settlements.
+
+            '
+        direction:
+          $ref: '#/components/schemas/SettlementDirection'
+      type: object
+      required:
+      - id
+      - amount
+      - currency
+      - cutoff_timestamp
+      - direction
+      title: SettlementResponse
+    EncodedPaginatedCollectionResponse_SettlementAccountResponse_:
       properties:
         data:
           items:
-            $ref: '#/components/schemas/SettlementResponse'
+            $ref: '#/components/schemas/SettlementAccountResponse'
           type: array
           title: Data
           description: 'The elements of the response.
@@ -830,7 +762,18 @@ components:
       required:
       - data
       - pagination
-      title: EncodedPaginatedCollectionResponse[SettlementResponse]
+      title: Page[SettlementAccountResponse]
+    SettlementDirection:
+      type: string
+      enum:
+      - credit
+      - debit
+      title: SettlementDirection
+      description: 'A category representing the direction of settlement:
+
+        <ul> <li><code>credit</code>:  The settlement results in funds being credited (net-sell day). <li><code>debit</code>: The settlement results in funds being debited (net-buy day). </ul>
+
+        '
     SettlementAccountTransactionResponse2:
       properties:
         id:
@@ -886,6 +829,63 @@ components:
       - settlement
       - type
       title: SettlementAccountTransactionResponse
+    EncodedPaginatedCollectionResponse_SettlementItemResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SettlementItemResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SettlementItemResponse]
+    SettlementItemType:
+      type: string
+      enum:
+      - income_distribution
+      - order
+      - trade
+      title: SettlementItemType
+      description: 'A category describing the type of a settlement item.
+
+        <ul> <li><code>income_distribution</code>:  The transaction was caused by a distribution <li><code>order</code>:  The transaction was caused by an order <li><code>trade</code>:  The transaction was caused by a trade </ul>
+
+        '
+    BankAccountResponse:
+      title: BankAccountResponse
+      description: 'An object representing a bank account.
+
+        '
+      required:
+      - iban
+      - bic
+      type: object
+      properties:
+        iban:
+          title: IBAN
+          type: string
+          description: 'An IBAN (International Bank Account Number) according to ISO 13616-1:2020.
+
+            '
+        bic:
+          title: BIC
+          type: string
+          description: 'A BIC (Business Identifier Code) according to ISO 9362.
+
+            '
+        name:
+          type: string
+          title: Name
+          description: 'The name of the bank managing the bank account.
+
+            '
   securitySchemes:
     bearerAuth:
       type: http

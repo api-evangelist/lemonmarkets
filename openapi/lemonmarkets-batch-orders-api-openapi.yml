@@ -545,6 +545,53 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ActorResponse:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorResponse
+      description: 'An object describing the individual performing an action.
+
+        '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
     AppropriatenessCheckWarningResponse:
       title: AppropriatenessCheckWarningResponse
       description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
@@ -569,35 +616,6 @@ components:
             '
       required:
       - consent_required
-    CreateBatchOrderRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateBatchOrderRequestBuy'
-      - $ref: '#/components/schemas/CreateBatchOrderRequestSell'
-      discriminator:
-        propertyName: side
-        mapping:
-          buy: '#/components/schemas/CreateBatchOrderRequestBuy'
-          sell: '#/components/schemas/CreateBatchOrderRequestSell'
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
     SCAConfirmation:
       title: Strong Customer Authentication
       description: 'An object representing the confirmation for strong customer authentication.
@@ -620,21 +638,22 @@ components:
       required:
       - client_credential_id
       - signature
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+    OrderRejectionReason:
+      type: string
+      enum:
+      - insufficient_buying_power
+      - insufficient_available_securities
+      - insufficient_order_amount
+      - rejected_by_exchange
+      - manual_rejection
+      - unknown
+      title: Order rejection reason
+      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
 
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
+      example: insufficient_buying_power
     BatchOrderResponse:
       properties:
         id:
@@ -718,68 +737,6 @@ components:
       - status
       - history
       title: BatchOrderResponse
-    StrongCustomerAuthenticationRequest:
-      title: StrongCustomerAuthenticationRequest
-      description: 'An object representing a strong customer authentication challenge.
-
-        '
-      properties:
-        required:
-          type: boolean
-          title: Required
-          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
-
-            '
-        challenge:
-          type: string
-          title: Challenge
-          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
-
-            '
-      type: object
-      required:
-      - required
-      - challenge
-    ActorResponse:
-      properties:
-        type:
-          type: string
-          const: person
-          title: Type
-          description: 'The actor type.  For the time being, the only valid value is `"person"`.
-
-            '
-        person:
-          type: string
-          title: Person Identifier
-          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
-
-            '
-      type: object
-      required:
-      - type
-      - person
-      title: ActorResponse
-      description: 'An object describing the individual performing an action.
-
-        '
-    Page_BatchOrderResponse_:
-      title: Page of BatchOrderResponse
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BatchOrderResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
     CreateBatchOrderRequestSell:
       properties:
         side:
@@ -830,6 +787,15 @@ components:
       - fee
       - currency
       title: CreateBatchOrderRequest
+    CreateBatchOrderRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateBatchOrderRequestBuy'
+      - $ref: '#/components/schemas/CreateBatchOrderRequestSell'
+      discriminator:
+        propertyName: side
+        mapping:
+          buy: '#/components/schemas/CreateBatchOrderRequestBuy'
+          sell: '#/components/schemas/CreateBatchOrderRequestSell'
     OrderStatus:
       type: string
       enum:
@@ -846,20 +812,23 @@ components:
         <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
 
         '
-    ConfirmBatchOrderRequest:
+    Page_BatchOrderResponse_:
+      title: Page of BatchOrderResponse
       properties:
-        appropriateness_consent:
-          type: boolean
-          title: Appropriateness Consent
-          description: 'A value indicating if a user has explicitly agreed to place the order after reading the appropriateness warning.
-
-            **NOTE:** If the batch order object indicated no need to provide the appropriateness consent, you can send `null` or omit the value.
+        data:
+          items:
+            $ref: '#/components/schemas/BatchOrderResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
 
             '
-        sca:
-          $ref: '#/components/schemas/SCAConfirmation'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
       type: object
-      title: ConfirmBatchOrderRequest
+      required:
+      - data
+      - pagination
     broker__apps__api__types__RegulatoryDisclosureResponse:
       description: 'An object describing regulatory information, such as expected prices, quantities and costs as well as links to relevant documents.
 
@@ -1056,22 +1025,6 @@ components:
             '
       type: object
       title: RegulatoryDisclosureResponse
-    OrderRejectionReason:
-      type: string
-      enum:
-      - insufficient_buying_power
-      - insufficient_available_securities
-      - insufficient_order_amount
-      - rejected_by_exchange
-      - manual_rejection
-      - unknown
-      title: Order rejection reason
-      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
-
-        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
-
-        '
-      example: insufficient_buying_power
     StatusChangeResponse:
       description: 'An object representing a change in an order.
 
@@ -1101,6 +1054,53 @@ components:
       - status
       - timestamp
       title: StatusChange[OrderStatus]
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    ConfirmBatchOrderRequest:
+      properties:
+        appropriateness_consent:
+          type: boolean
+          title: Appropriateness Consent
+          description: 'A value indicating if a user has explicitly agreed to place the order after reading the appropriateness warning.
+
+            **NOTE:** If the batch order object indicated no need to provide the appropriateness consent, you can send `null` or omit the value.
+
+            '
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmBatchOrderRequest
+    StrongCustomerAuthenticationRequest:
+      title: StrongCustomerAuthenticationRequest
+      description: 'An object representing a strong customer authentication challenge.
+
+        '
+      properties:
+        required:
+          type: boolean
+          title: Required
+          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
+
+            '
+        challenge:
+          type: string
+          title: Challenge
+          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
+
+            '
+      type: object
+      required:
+      - required
+      - challenge
     CreateBatchOrderRequestBuy:
       properties:
         side:

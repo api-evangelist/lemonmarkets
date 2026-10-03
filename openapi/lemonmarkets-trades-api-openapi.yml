@@ -231,26 +231,6 @@ paths:
           description: Server Error
 components:
   schemas:
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
     TradeResponse:
       properties:
         id:
@@ -350,15 +330,56 @@ components:
       - securities_account
       - executed_at
       title: TradeResponse
-    Direction:
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    Page_TradeResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TradeResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+      title: Page of TradeResponse
+    Side:
       type: string
       enum:
-      - debit
-      - credit
-      title: Direction
-      description: 'A category representing the direction of a payment or transaction flow:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
 
-        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
 
         '
     TaxResponseField:
@@ -387,38 +408,17 @@ components:
       - amount
       - direction
       title: TaxResponseField
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+    Direction:
+      type: string
+      enum:
+      - debit
+      - credit
+      title: Direction
+      description: 'A category representing the direction of a payment or transaction flow:
 
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
-    Page_TradeResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TradeResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
-      title: Page of TradeResponse
   securitySchemes:
     bearerAuth:
       type: http

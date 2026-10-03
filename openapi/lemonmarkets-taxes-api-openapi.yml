@@ -472,6 +472,73 @@ components:
         message:
           title: Message
           type: string
+    TaxExemptionOrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - created
+      - rejected
+      title: TaxExemptionOrderStatus
+      description: 'A category describing the status of a tax exemption order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>created</code> <li><code>rejected</code> </ul>
+
+        '
+    TaxExemptionOrderResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A string representing the unique identifier of this tax exemption order.
+
+            '
+        amount_total:
+          type: string
+          title: Amount Total
+          description: 'The amount to be exempt from taxation using the value from `currency`.
+
+            '
+        type:
+          $ref: '#/components/schemas/TaxExemptionType'
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is "EUR".
+
+            '
+        valid_from:
+          type: string
+          title: Valid From
+          description: 'A string specifying the first year for this tax exemption order to be effective.
+
+            '
+          example: '2025'
+        valid_until:
+          type: string
+          title: Valid Until
+          description: 'A string specifying the last year to consider this tax exemtption.
+
+            This is either be the same value as `valid_from` (to restrict the tax exemption to one year) or `null` (valid until the next tax exemption will be submitted).
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_TaxExemptionOrderStatus_'
+          type: array
+          title: History
+      type: object
+      required:
+      - id
+      - amount_total
+      - type
+      - currency
+      - valid_from
+      - history
+      title: TaxExemptionOrderResponse
     StatusChange_TaxExemptionOrderStatus_:
       properties:
         status:
@@ -489,69 +556,6 @@ components:
       - status
       - timestamp
       title: StatusChange of TaxExemptionOrderStatus
-    EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TaxExemptionUsageResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[TaxExemptionUsageResponse]
-    TaxExemptionUsageResponse:
-      properties:
-        year:
-          type: string
-          title: Year
-          description: 'The year for the tax exemption usage.
-
-            '
-        amount_total:
-          type: string
-          title: Amount Total
-          description: 'The total amount of the corresponding tax exemption order.
-
-            '
-        amount_used:
-          type: string
-          title: Amount Used
-          description: 'The utilized amount of the corresponding tax exemption order.  Use the difference between `amount_total - amount_used` to determine the amount still available.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount_total` and `amount_used` listed here. The only currently available currency is `"EUR"`.
-
-            '
-      type: object
-      required:
-      - year
-      - amount_total
-      - amount_used
-      - currency
-      title: TaxExemptionUsageResponse
-    TaxExemptionType:
-      type: string
-      enum:
-      - individual
-      const: individual
-      title: TaxExemptionType
-      description: 'A category describing the type of a tax exemption order:
-
-        <ul> <li><code>individual</code>:  Tax exemption limits for individuals apply to this order. </ul>
-
-        '
     EncodedPaginationResponse:
       type: object
       title: EncodedPaginationResponse
@@ -629,73 +633,69 @@ components:
       - data
       - pagination
       title: EncodedPaginatedCollectionResponse[TaxExemptionOrderResponse]
-    TaxExemptionOrderStatus:
-      type: string
-      enum:
-      - accepted
-      - canceled
-      - canceling
-      - created
-      - rejected
-      title: TaxExemptionOrderStatus
-      description: 'A category describing the status of a tax exemption order:
-
-        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>created</code> <li><code>rejected</code> </ul>
-
-        '
-    TaxExemptionOrderResponse:
+    TaxExemptionUsageResponse:
       properties:
-        id:
+        year:
           type: string
-          title: Identifier
-          description: 'A string representing the unique identifier of this tax exemption order.
+          title: Year
+          description: 'The year for the tax exemption usage.
 
             '
         amount_total:
           type: string
           title: Amount Total
-          description: 'The amount to be exempt from taxation using the value from `currency`.
+          description: 'The total amount of the corresponding tax exemption order.
 
             '
-        type:
-          $ref: '#/components/schemas/TaxExemptionType'
+        amount_used:
+          type: string
+          title: Amount Used
+          description: 'The utilized amount of the corresponding tax exemption order.  Use the difference between `amount_total - amount_used` to determine the amount still available.
+
+            '
         currency:
           type: string
           maxLength: 3
           minLength: 3
           title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount` listed here. The only currently available currency is "EUR".
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount_total` and `amount_used` listed here. The only currently available currency is `"EUR"`.
 
             '
-        valid_from:
-          type: string
-          title: Valid From
-          description: 'A string specifying the first year for this tax exemption order to be effective.
-
-            '
-          example: '2025'
-        valid_until:
-          type: string
-          title: Valid Until
-          description: 'A string specifying the last year to consider this tax exemtption.
-
-            This is either be the same value as `valid_from` (to restrict the tax exemption to one year) or `null` (valid until the next tax exemption will be submitted).
-
-            '
-        history:
-          items:
-            $ref: '#/components/schemas/StatusChange_TaxExemptionOrderStatus_'
-          type: array
-          title: History
       type: object
       required:
-      - id
+      - year
       - amount_total
-      - type
+      - amount_used
       - currency
-      - valid_from
-      - history
-      title: TaxExemptionOrderResponse
+      title: TaxExemptionUsageResponse
+    EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TaxExemptionUsageResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TaxExemptionUsageResponse]
+    TaxExemptionType:
+      type: string
+      enum:
+      - individual
+      const: individual
+      title: TaxExemptionType
+      description: 'A category describing the type of a tax exemption order:
+
+        <ul> <li><code>individual</code>:  Tax exemption limits for individuals apply to this order. </ul>
+
+        '
   securitySchemes:
     bearerAuth:
       type: http

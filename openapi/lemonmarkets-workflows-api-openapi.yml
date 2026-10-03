@@ -705,6 +705,68 @@ components:
       description: 'The order type for a scheduled workflow.  Only <code>batch</code> is supported: orders created by workflows are collected across customers and executed as one composite order.  (Market orders are not available for scheduled workflows.)
 
         '
+    ConfirmCustomerWorkflowRequest:
+      properties:
+        appropriateness_consent:
+          type: boolean
+          title: Appropriateness Consent
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmCustomerWorkflowRequest
+    OrderDataResponse:
+      properties:
+        type:
+          $ref: '#/components/schemas/WorkflowOrderType'
+        side:
+          $ref: '#/components/schemas/Side'
+        instrument:
+          type: string
+          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166.  The ISIN specifies the instrument for the order.
+
+            '
+        securities_account:
+          type: string
+          title: Securities Account Identifier
+          description: 'A securities account identifier.  Use this property to specify the securities account for order execution and settlement.  If the customer has only one securities account, this property is optional.  If the customer has more than one securities account, this property is required.
+
+            '
+        amount:
+          type: string
+          format: number
+          title: Amount
+          description: 'The amount of money to invest with each order.
+
+            '
+        fee:
+          type: string
+          format: number
+          title: Fee
+          description: 'The fee that will be charged by lemon.markets on your behalf.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - type
+      - side
+      - instrument
+      - amount
+      - fee
+      - currency
+      title: OrderDataResponse
+      description: 'An object describing an order to be created as the result of a workflow action.
+
+        '
     broker__apps__api__endpoints__customer_workflows__RegulatoryDisclosureResponse:
       properties:
         kid:
@@ -861,47 +923,24 @@ components:
       - third_party_grants
       - third_party_grants_pct
       title: RegulatoryDisclosureResponse
-    AppropriatenessConsentResponse:
-      title: AppropriatenessConsentResponse
-      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
-
-        '
-      type: object
+    TriggerResponse:
       properties:
-        required:
-          type: boolean
-          title: Consent Required
-          description: 'Requirement indicator for the appropriateness warning.
-
-            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
+        type:
+          $ref: '#/components/schemas/TriggerType'
+        cadence:
+          $ref: '#/components/schemas/ScheduledCadenceType'
+        start_after:
+          type: string
+          format: date
+          title: Start After
+          description: 'Block workflow execution until the date specified here.  This date specifies the last day that the trigger should not be activated.  If you want to block a workflow for July 2025, you can pass 2025-07-31 and the trigger will not be activated before 2025-08-01.
 
             '
-      required:
-      - required
-    SCAResponse:
-      properties:
-        required:
-          type: boolean
-          title: Required
-        challenge:
-          type: string
-          title: Challenge
       type: object
       required:
-      - required
-      - challenge
-      title: SCAResponse
-    ScheduledCadenceType:
-      type: string
-      enum:
-      - monthly
-      - daily
-      title: ScheduledCadenceType
-      description: 'A category describing the cadence for scheduled workflows:
-
-        <ul> <li><code>daily</code>: Execute every Trading Day (Sandbox-only) <li><code>monthly</code>: Execute once every Month, on the first trading day </ul>
-
-        '
+      - type
+      - cadence
+      title: TriggerResponse
     TriggerRequest:
       properties:
         type:
@@ -923,6 +962,91 @@ components:
       description: 'A workflow trigger.  This structure represents the way that the workflow is started.
 
         '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    SCAResponse:
+      properties:
+        required:
+          type: boolean
+          title: Required
+        challenge:
+          type: string
+          title: Challenge
+      type: object
+      required:
+      - required
+      - challenge
+      title: SCAResponse
+    TriggerType:
+      type: string
+      const: schedule
+      title: TriggerType
+      description: 'A category representing the type of the trigger:
+
+        <ul> <li><code>schedule</code> </ul>
+
+        '
+    ActionType:
+      type: string
+      enum:
+      - order.create_and_confirm
+      - batch_order.create_and_confirm
+      title: ActionType
+      description: 'A category representing a workflow action type:
+
+        <ul> <li><code>batch_order.create_and_confirm</code>: Legacy identifier to create batch-order based workflows (deprecated since 2024-06; use `order.create_and_confirm` instead). <li><code>order.create_and_confirm</code> </ul>
+
+        '
+    ScheduledCadenceType:
+      type: string
+      enum:
+      - monthly
+      - daily
+      title: ScheduledCadenceType
+      description: 'A category describing the cadence for scheduled workflows:
+
+        <ul> <li><code>daily</code>: Execute every Trading Day (Sandbox-only) <li><code>monthly</code>: Execute once every Month, on the first trading day </ul>
+
+        '
+    Page_CustomerWorkflowResponse_:
+      title: Page of CustomerWorkflowResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerWorkflowResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     CustomerWorkflowResponse:
       properties:
         id:
@@ -953,17 +1077,37 @@ components:
       - action
       - history
       title: CustomerWorkflowResponse
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+    ActionDataResponse:
+      properties:
+        type:
+          $ref: '#/components/schemas/ActionType'
+        order:
+          $ref: '#/components/schemas/OrderDataResponse'
+      type: object
+      required:
+      - type
+      - order
+      description: 'An object representing a workflow action.
 
         '
+      title: ActionDataResponse
+    AppropriatenessConsentResponse:
+      title: AppropriatenessConsentResponse
+      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
+
+        '
+      type: object
+      properties:
+        required:
+          type: boolean
+          title: Consent Required
+          description: 'Requirement indicator for the appropriateness warning.
+
+            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
+
+            '
+      required:
+      - required
     CustomerWorkflowStatus:
       type: string
       enum:
@@ -976,59 +1120,64 @@ components:
         <ul> <li><code>canceled</code> <li><code>confirmed</code> <li><code>created</code> </ul>
 
         '
-    OrderDataResponse:
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    CreateCustomerWorkflowRequest:
       properties:
-        type:
-          $ref: '#/components/schemas/WorkflowOrderType'
-        side:
-          $ref: '#/components/schemas/Side'
-        instrument:
+        trigger:
+          $ref: '#/components/schemas/TriggerRequest'
+        action:
+          $ref: '#/components/schemas/ActionDataRequest'
+      type: object
+      required:
+      - trigger
+      - action
+      title: CreateCustomerWorkflowRequest
+    SCAConfirmation:
+      title: Strong Customer Authentication
+      description: 'An object representing the confirmation for strong customer authentication.
+
+        '
+      properties:
+        client_credential_id:
           type: string
-          pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166.  The ISIN specifies the instrument for the order.
+          title: Client Credential Identifier
+          description: 'The client-side identifier of the authenticator used to generate the signature.
 
             '
-        securities_account:
+        signature:
           type: string
-          title: Securities Account Identifier
-          description: 'A securities account identifier.  Use this property to specify the securities account for order execution and settlement.  If the customer has only one securities account, this property is optional.  If the customer has more than one securities account, this property is required.
-
-            '
-        amount:
-          type: string
-          format: number
-          title: Amount
-          description: 'The amount of money to invest with each order.
-
-            '
-        fee:
-          type: string
-          format: number
-          title: Fee
-          description: 'The fee that will be charged by lemon.markets on your behalf.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `fee`, `fees.base_amount` and `amount` listed here. The only currently available currency is `"EUR"`.
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
 
             '
       type: object
       required:
+      - client_credential_id
+      - signature
+    ActionDataRequest:
+      properties:
+        type:
+          $ref: '#/components/schemas/ActionType'
+        order:
+          $ref: '#/components/schemas/OrderDataRequest'
+      type: object
+      required:
       - type
-      - side
-      - instrument
-      - amount
-      - fee
-      - currency
-      title: OrderDataResponse
-      description: 'An object describing an order to be created as the result of a workflow action.
+      - order
+      description: 'An object representing a workflow action.
 
         '
+      title: ActionDataRequest
     OrderDataRequest:
       properties:
         type:
@@ -1084,138 +1233,6 @@ components:
 
         '
       title: OrderDataRequest
-    TriggerResponse:
-      properties:
-        type:
-          $ref: '#/components/schemas/TriggerType'
-        cadence:
-          $ref: '#/components/schemas/ScheduledCadenceType'
-        start_after:
-          type: string
-          format: date
-          title: Start After
-          description: 'Block workflow execution until the date specified here.  This date specifies the last day that the trigger should not be activated.  If you want to block a workflow for July 2025, you can pass 2025-07-31 and the trigger will not be activated before 2025-08-01.
-
-            '
-      type: object
-      required:
-      - type
-      - cadence
-      title: TriggerResponse
-    ActionType:
-      type: string
-      enum:
-      - order.create_and_confirm
-      - batch_order.create_and_confirm
-      title: ActionType
-      description: 'A category representing a workflow action type:
-
-        <ul> <li><code>batch_order.create_and_confirm</code>: Legacy identifier to create batch-order based workflows (deprecated since 2024-06; use `order.create_and_confirm` instead). <li><code>order.create_and_confirm</code> </ul>
-
-        '
-    SCAConfirmation:
-      title: Strong Customer Authentication
-      description: 'An object representing the confirmation for strong customer authentication.
-
-        '
-      properties:
-        client_credential_id:
-          type: string
-          title: Client Credential Identifier
-          description: 'The client-side identifier of the authenticator used to generate the signature.
-
-            '
-        signature:
-          type: string
-          title: Signature
-          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
-
-            '
-      type: object
-      required:
-      - client_credential_id
-      - signature
-    ConfirmCustomerWorkflowRequest:
-      properties:
-        appropriateness_consent:
-          type: boolean
-          title: Appropriateness Consent
-        sca:
-          $ref: '#/components/schemas/SCAConfirmation'
-      type: object
-      title: ConfirmCustomerWorkflowRequest
-    CreateCustomerWorkflowRequest:
-      properties:
-        trigger:
-          $ref: '#/components/schemas/TriggerRequest'
-        action:
-          $ref: '#/components/schemas/ActionDataRequest'
-      type: object
-      required:
-      - trigger
-      - action
-      title: CreateCustomerWorkflowRequest
-    ActionDataRequest:
-      properties:
-        type:
-          $ref: '#/components/schemas/ActionType'
-        order:
-          $ref: '#/components/schemas/OrderDataRequest'
-      type: object
-      required:
-      - type
-      - order
-      description: 'An object representing a workflow action.
-
-        '
-      title: ActionDataRequest
-    TriggerType:
-      type: string
-      const: schedule
-      title: TriggerType
-      description: 'A category representing the type of the trigger:
-
-        <ul> <li><code>schedule</code> </ul>
-
-        '
-    ActionDataResponse:
-      properties:
-        type:
-          $ref: '#/components/schemas/ActionType'
-        order:
-          $ref: '#/components/schemas/OrderDataResponse'
-      type: object
-      required:
-      - type
-      - order
-      description: 'An object representing a workflow action.
-
-        '
-      title: ActionDataResponse
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
     StatusChange_CustomerWorkflowStatus_:
       properties:
         status:
@@ -1233,23 +1250,6 @@ components:
       - status
       - timestamp
       title: StatusChange[CustomerWorkflowStatus]
-    Page_CustomerWorkflowResponse_:
-      title: Page of CustomerWorkflowResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerWorkflowResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
   securitySchemes:
     bearerAuth:
       type: http

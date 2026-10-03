@@ -369,116 +369,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    Page_InstrumentResponse_:
-      title: Page of InstrumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/InstrumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
-    InstrumentRegulatoryInformationResponse:
-      title: InstrumentRegulatoryInformationResponse
-      description: 'An object representing regulatory information regarding the instrument.
-
-        '
-      type: object
-      properties:
-        kid:
-          title: KID
-          type: string
-          format: uri
-          description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
-
-            '
-    InstrumentType:
-      title: InstrumentType
-      enum:
-      - etf
-      - fund
-      - stock
-      type: string
-      description: 'A category specifying the type of a financial instrument:
-
-        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
-
-        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
-
-        '
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    TradingHaltResponse:
-      title: TradingHaltResponse
-      description: 'An object representing an active trading halt for an instrument.
-
-        '
-      required:
-      - valid_from
-      type: object
-      properties:
-        valid_from:
-          title: Valid From
-          type: string
-          format: date-time
-          description: 'The date and time from which the trading halt has been active.
-
-            '
-          example: '2024-01-15T09:30:00.000000+00:00'
-        valid_to:
-          title: Valid To
-          type: string
-          format: date-time
-          description: 'The date and time until which the trading halt is active. If <code>null</code>, the halt doesn''t have yet a definite lifting date.
-
-            '
-          example: null
-        side:
-          $ref: '#/components/schemas/Side'
-          description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
-
-            '
     QuoteResponseWithType:
       properties:
         type:
@@ -539,103 +429,55 @@ components:
       - type
       - updated_at
       title: QuoteResponseWithType
-    NavResponse:
-      properties:
-        type:
-          $ref: '#/components/schemas/PriceType'
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
-
-            '
-        price:
-          type: string
-          title: Price
-          description: 'The net asset value (NAV) for the instrument.
-
-            '
-        valuation_date:
-          type: string
-          format: date
-          title: Valuation Date
-          description: 'The date of the NAV valuation.
-
-            '
-      type: object
-      required:
-      - currency
-      - instrument
-      - price
-      - type
-      - valuation_date
-      title: NavResponse
-    InstrumentPriceResponse:
-      title: Price Response
-      oneOf:
-      - $ref: '#/components/schemas/QuoteResponseWithType'
-      - $ref: '#/components/schemas/NavResponse'
-      discriminator:
-        propertyName: type
-        mapping:
-          nav: '#/components/schemas/NavResponse'
-          quote: '#/components/schemas/QuoteResponseWithType'
-    InstrumentResponse:
-      title: InstrumentResponse
-      description: 'An object representing a financial instrument.
+    InstrumentRegulatoryInformationResponse:
+      title: InstrumentRegulatoryInformationResponse
+      description: 'An object representing regulatory information regarding the instrument.
 
         '
-      required:
-      - isin
-      - title
-      - type
-      - regulatory_information
       type: object
       properties:
-        isin:
-          title: ISIN
+        kid:
+          title: KID
           type: string
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+          format: uri
+          description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
 
             '
-          example: LU1437015735
-        title:
-          title: Title
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
           type: string
-          description: 'The title of the instrument.
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
 
             '
-          example: Amundi Index MSCI Europe UCITS ETF DR
-        type:
-          $ref: '#/components/schemas/InstrumentType'
-        fund_profit_model:
-          $ref: '#/components/schemas/InstrumentFundProfitModel'
-        total_expense_ratio_pct:
-          title: Total Expense Ratio (%)
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
           type: string
-          format: number
-          description: 'A number representing the total expense ratio for a fund. The value is pre-scaled, so `"0.07"` represents 0.07%.
-
-            '
-          example: '0.07'
-        regulatory_information:
-          $ref: '#/components/schemas/InstrumentRegulatoryInformationResponse'
-        active_trading_halts:
-          title: Active Trading Halts
-          type: array
-          items:
-            $ref: '#/components/schemas/TradingHaltResponse'
-          description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
-
-            '
     InstrumentFundProfitModel:
       title: Fund Profit Model
       type: string
@@ -645,17 +487,6 @@ components:
       description: 'A category to represent a fund''s model for profit use:
 
         <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
-
-        '
-    PriceType:
-      type: string
-      enum:
-      - nav
-      - quote
-      title: PriceType
-      description: 'A category representing the source of a price:
-
-        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
 
         '
     YieldResponse:
@@ -715,6 +546,175 @@ components:
         yield_pct: '0.14'
         annualized_yield_pct: '1.69'
         calculated_as_of: '2025-10-31'
+    TradingHaltResponse:
+      title: TradingHaltResponse
+      description: 'An object representing an active trading halt for an instrument.
+
+        '
+      required:
+      - valid_from
+      type: object
+      properties:
+        valid_from:
+          title: Valid From
+          type: string
+          format: date-time
+          description: 'The date and time from which the trading halt has been active.
+
+            '
+          example: '2024-01-15T09:30:00.000000+00:00'
+        valid_to:
+          title: Valid To
+          type: string
+          format: date-time
+          description: 'The date and time until which the trading halt is active. If <code>null</code>, the halt doesn''t have yet a definite lifting date.
+
+            '
+          example: null
+        side:
+          $ref: '#/components/schemas/Side'
+          description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
+
+            '
+    Page_InstrumentResponse_:
+      title: Page of InstrumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
+
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
+
+        '
+    NavResponse:
+      properties:
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+
+            '
+        price:
+          type: string
+          title: Price
+          description: 'The net asset value (NAV) for the instrument.
+
+            '
+        valuation_date:
+          type: string
+          format: date
+          title: Valuation Date
+          description: 'The date of the NAV valuation.
+
+            '
+      type: object
+      required:
+      - currency
+      - instrument
+      - price
+      - type
+      - valuation_date
+      title: NavResponse
+    InstrumentType:
+      title: InstrumentType
+      enum:
+      - etf
+      - fund
+      - stock
+      type: string
+      description: 'A category specifying the type of a financial instrument:
+
+        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+
+        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+
+        '
+    InstrumentResponse:
+      title: InstrumentResponse
+      description: 'An object representing a financial instrument.
+
+        '
+      required:
+      - isin
+      - title
+      - type
+      - regulatory_information
+      type: object
+      properties:
+        isin:
+          title: ISIN
+          type: string
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument of this position.
+
+            '
+          example: LU1437015735
+        title:
+          title: Title
+          type: string
+          description: 'The title of the instrument.
+
+            '
+          example: Amundi Index MSCI Europe UCITS ETF DR
+        type:
+          $ref: '#/components/schemas/InstrumentType'
+        fund_profit_model:
+          $ref: '#/components/schemas/InstrumentFundProfitModel'
+        total_expense_ratio_pct:
+          title: Total Expense Ratio (%)
+          type: string
+          format: number
+          description: 'A number representing the total expense ratio for a fund. The value is pre-scaled, so `"0.07"` represents 0.07%.
+
+            '
+          example: '0.07'
+        regulatory_information:
+          $ref: '#/components/schemas/InstrumentRegulatoryInformationResponse'
+        active_trading_halts:
+          title: Active Trading Halts
+          type: array
+          items:
+            $ref: '#/components/schemas/TradingHaltResponse'
+          description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
+
+            '
+    InstrumentPriceResponse:
+      title: Price Response
+      oneOf:
+      - $ref: '#/components/schemas/QuoteResponseWithType'
+      - $ref: '#/components/schemas/NavResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          nav: '#/components/schemas/NavResponse'
+          quote: '#/components/schemas/QuoteResponseWithType'
   securitySchemes:
     bearerAuth:
       type: http

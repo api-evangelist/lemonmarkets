@@ -278,6 +278,43 @@ paths:
           description: Server Error
 components:
   schemas:
+    SecuritiesAccountStatus:
+      type: string
+      enum:
+      - created
+      - opened
+      - rejected
+      - closed
+      title: SecuritiesAccountStatus
+    broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifiying a securities account.  Use this as a technical identifier for the securities account.
+
+            '
+        account_number:
+          type: string
+          title: Account Number
+          description: 'A string representing the account number for the securities account.  Use this is a user-visible identifier for the securities account.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
+          type: array
+          title: History
+          description: 'A history of the status changes for the security account.
+
+            '
+      type: object
+      required:
+      - id
+      - account_number
+      - created_at
+      - history
+      title: SecuritiesAccountResponse
     ErrorResponse:
       title: ErrorResponse
       required:
@@ -287,6 +324,38 @@ components:
         message:
           title: Message
           type: string
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
     StatusChange_CustomerAccountStatus_:
       title: StatusChange[CustomerAccountStatus]
       description: 'An object representing a change in the user account.
@@ -322,75 +391,6 @@ components:
         <strong>NOTE:</strong> This list is not final yet, there will be more values added later.
 
         '
-    SecuritiesAccountStatus:
-      type: string
-      enum:
-      - created
-      - opened
-      - rejected
-      - closed
-      title: SecuritiesAccountStatus
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
-      properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    EncodedPaginatedCollectionResponse_SecuritiesAccountResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
-    broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A value identifiying a securities account.  Use this as a technical identifier for the securities account.
-
-            '
-        account_number:
-          type: string
-          title: Account Number
-          description: 'A string representing the account number for the securities account.  Use this is a user-visible identifier for the securities account.
-
-            '
-        history:
-          items:
-            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
-          type: array
-          title: History
-          description: 'A history of the status changes for the security account.
-
-            '
-      type: object
-      required:
-      - id
-      - account_number
-      - created_at
-      - history
-      title: SecuritiesAccountResponse
   securitySchemes:
     bearerAuth:
       type: http
