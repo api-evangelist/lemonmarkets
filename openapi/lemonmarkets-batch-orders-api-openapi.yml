@@ -545,290 +545,17 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ActorResponse:
-      properties:
-        type:
-          type: string
-          const: person
-          title: Type
-          description: 'The actor type.  For the time being, the only valid value is `"person"`.
-
-            '
-        person:
-          type: string
-          title: Person Identifier
-          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
-
-            '
-      type: object
-      required:
-      - type
-      - person
-      title: ActorResponse
-      description: 'An object describing the individual performing an action.
-
-        '
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    AppropriatenessCheckWarningResponse:
-      title: AppropriatenessCheckWarningResponse
-      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
-
-        '
-      type: object
-      properties:
-        consent_required:
-          type: boolean
-          title: Consent Required
-          description: 'Requirement indicator for the appropriateness warning.
-
-            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
-
-            '
-        consent_confirmed_at:
-          type: string
-          format: date-time
-          title: Consent Confirmed At
-          description: 'A timestamp representing the point in time at which the user has confirmed the appropriateness warning.  If the user hasn''t done this yet, the value will be `null`.
-
-            '
-      required:
-      - consent_required
-    SCAConfirmation:
-      title: Strong Customer Authentication
-      description: 'An object representing the confirmation for strong customer authentication.
-
-        '
-      properties:
-        client_credential_id:
-          type: string
-          title: Client Credential Identifier
-          description: 'The client-side identifier of the authenticator used to generate the signature.
-
-            '
-        signature:
-          type: string
-          title: Signature
-          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
-
-            '
-      type: object
-      required:
-      - client_credential_id
-      - signature
-    OrderRejectionReason:
+    Side:
       type: string
       enum:
-      - insufficient_buying_power
-      - insufficient_available_securities
-      - insufficient_order_amount
-      - rejected_by_exchange
-      - manual_rejection
-      - unknown
-      title: Order rejection reason
-      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
 
-        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
 
         '
-      example: insufficient_buying_power
-    BatchOrderResponse:
-      properties:
-        id:
-          type: string
-          title: Batch Order Identifier
-          example: bord_353dc0fa58ba4ab7b8bd66430d04dd53
-          description: 'The unique identifier for this batch order.
-
-            '
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: 'The timestamp of the batch order.  It represents the point in time at which the batch order was created.
-
-            '
-        side:
-          $ref: '#/components/schemas/Side'
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
-
-            '
-        amount:
-          type: string
-          format: number
-          title: Amount
-          description: 'The amount of cash for a buy order, `null` for a sell order.
-
-            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
-
-            '
-        quantity:
-          type: string
-          format: number
-          exclusiveMinimum: 0
-          title: Quantity
-          description: 'The quantity of shares for a sell order, `null` for a buy order.
-
-            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
-
-            '
-        fee:
-          type: string
-          format: number
-          title: Fee
-          description: 'The fee that will be charged by lemon.markets on your behalf.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
-
-            '
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-        history:
-          items:
-            $ref: '#/components/schemas/StatusChangeResponse'
-          type: array
-          title: History
-        regulatory_disclosures:
-          $ref: '#/components/schemas/broker__apps__api__types__RegulatoryDisclosureResponse'
-        appropriateness_check:
-          $ref: '#/components/schemas/AppropriatenessCheckWarningResponse'
-        sca:
-          $ref: '#/components/schemas/StrongCustomerAuthenticationRequest'
-      type: object
-      required:
-      - id
-      - created_at
-      - side
-      - instrument
-      - fee
-      - currency
-      - status
-      - history
-      title: BatchOrderResponse
-    CreateBatchOrderRequestSell:
-      properties:
-        side:
-          $ref: '#/components/schemas/Side'
-        instrument:
-          type: string
-          maxLength: 255
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
-
-            '
-        quantity:
-          type: string
-          format: number
-          exclusiveMinimum: 0
-          title: Quantity
-          description: 'Specify the quantity of shares for the instrument to be sold.
-
-            '
-        fee:
-          type: string
-          format: number
-          minimum: 0
-          title: Fee
-          description: 'The fee that will be charged by lemon.markets on your behalf.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          example: EUR
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the fee listed here. The only currently available currency is `"EUR"`.
-
-            '
-      example:
-        side: sell
-        instrument: IE00B441G979
-        quantity: '1.23456'
-        currency: EUR
-        fee: '0.50'
-      type: object
-      required:
-      - side
-      - instrument
-      - quantity
-      - fee
-      - currency
-      title: CreateBatchOrderRequest
-    CreateBatchOrderRequest:
-      oneOf:
-      - $ref: '#/components/schemas/CreateBatchOrderRequestBuy'
-      - $ref: '#/components/schemas/CreateBatchOrderRequestSell'
-      discriminator:
-        propertyName: side
-        mapping:
-          buy: '#/components/schemas/CreateBatchOrderRequestBuy'
-          sell: '#/components/schemas/CreateBatchOrderRequestSell'
-    OrderStatus:
-      type: string
-      enum:
-      - accepted
-      - canceled
-      - canceling
-      - confirmed
-      - created
-      - executed
-      - rejected
-      title: OrderStatus
-      description: 'A category representing the state of an order:
-
-        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
-
-        '
-    Page_BatchOrderResponse_:
-      title: Page of BatchOrderResponse
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/BatchOrderResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      type: object
-      required:
-      - data
-      - pagination
     broker__apps__api__types__RegulatoryDisclosureResponse:
       description: 'An object describing regulatory information, such as expected prices, quantities and costs as well as links to relevant documents.
 
@@ -1025,6 +752,80 @@ components:
             '
       type: object
       title: RegulatoryDisclosureResponse
+    AppropriatenessCheckWarningResponse:
+      title: AppropriatenessCheckWarningResponse
+      description: 'An object representing the requirements for explicit confirmation of an appropriateness warning.
+
+        '
+      type: object
+      properties:
+        consent_required:
+          type: boolean
+          title: Consent Required
+          description: 'Requirement indicator for the appropriateness warning.
+
+            **NOTE:** If this value is `true`, the frontend must present a warning to the user as outlined in your onboarding documentation.
+
+            '
+        consent_confirmed_at:
+          type: string
+          format: date-time
+          title: Consent Confirmed At
+          description: 'A timestamp representing the point in time at which the user has confirmed the appropriateness warning.  If the user hasn''t done this yet, the value will be `null`.
+
+            '
+      required:
+      - consent_required
+    CreateBatchOrderRequestSell:
+      properties:
+        side:
+          $ref: '#/components/schemas/Side'
+        instrument:
+          type: string
+          maxLength: 255
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
+
+            '
+        quantity:
+          type: string
+          format: number
+          exclusiveMinimum: 0
+          title: Quantity
+          description: 'Specify the quantity of shares for the instrument to be sold.
+
+            '
+        fee:
+          type: string
+          format: number
+          minimum: 0
+          title: Fee
+          description: 'The fee that will be charged by lemon.markets on your behalf.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+      example:
+        side: sell
+        instrument: IE00B441G979
+        quantity: '1.23456'
+        currency: EUR
+        fee: '0.50'
+      type: object
+      required:
+      - side
+      - instrument
+      - quantity
+      - fee
+      - currency
+      title: CreateBatchOrderRequest
     StatusChangeResponse:
       description: 'An object representing a change in an order.
 
@@ -1054,53 +855,6 @@ components:
       - status
       - timestamp
       title: StatusChange[OrderStatus]
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
-    ConfirmBatchOrderRequest:
-      properties:
-        appropriateness_consent:
-          type: boolean
-          title: Appropriateness Consent
-          description: 'A value indicating if a user has explicitly agreed to place the order after reading the appropriateness warning.
-
-            **NOTE:** If the batch order object indicated no need to provide the appropriateness consent, you can send `null` or omit the value.
-
-            '
-        sca:
-          $ref: '#/components/schemas/SCAConfirmation'
-      type: object
-      title: ConfirmBatchOrderRequest
-    StrongCustomerAuthenticationRequest:
-      title: StrongCustomerAuthenticationRequest
-      description: 'An object representing a strong customer authentication challenge.
-
-        '
-      properties:
-        required:
-          type: boolean
-          title: Required
-          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
-
-            '
-        challenge:
-          type: string
-          title: Challenge
-          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
-
-            '
-      type: object
-      required:
-      - required
-      - challenge
     CreateBatchOrderRequestBuy:
       properties:
         side:
@@ -1151,6 +905,252 @@ components:
       - fee
       - currency
       title: CreateBatchOrderRequest
+    ConfirmBatchOrderRequest:
+      properties:
+        appropriateness_consent:
+          type: boolean
+          title: Appropriateness Consent
+          description: 'A value indicating if a user has explicitly agreed to place the order after reading the appropriateness warning.
+
+            **NOTE:** If the batch order object indicated no need to provide the appropriateness consent, you can send `null` or omit the value.
+
+            '
+        sca:
+          $ref: '#/components/schemas/SCAConfirmation'
+      type: object
+      title: ConfirmBatchOrderRequest
+    StrongCustomerAuthenticationRequest:
+      title: StrongCustomerAuthenticationRequest
+      description: 'An object representing a strong customer authentication challenge.
+
+        '
+      properties:
+        required:
+          type: boolean
+          title: Required
+          description: 'Indication of strong customer authentication requirement.  If this value is `true`, the next request needs to include a solution to the challege (e.g. in the `sca` property for batch order confirmation).
+
+            '
+        challenge:
+          type: string
+          title: Challenge
+          description: 'A base64-url encoded blob of data.  Sign the decoded data using a registered authenticator and include the signature in the next request (e.g. in the `sca` property for batch order confirmation).
+
+            '
+      type: object
+      required:
+      - required
+      - challenge
+    ActorResponse:
+      properties:
+        type:
+          type: string
+          const: person
+          title: Type
+          description: 'The actor type.  For the time being, the only valid value is `"person"`.
+
+            '
+        person:
+          type: string
+          title: Person Identifier
+          description: 'A person identifier.  This identifier specifies the individual performing an action (e.g. create/confirm order).
+
+            '
+      type: object
+      required:
+      - type
+      - person
+      title: ActorResponse
+      description: 'An object describing the individual performing an action.
+
+        '
+    SCAConfirmation:
+      title: Strong Customer Authentication
+      description: 'An object representing the confirmation for strong customer authentication.
+
+        '
+      properties:
+        client_credential_id:
+          type: string
+          title: Client Credential Identifier
+          description: 'The client-side identifier of the authenticator used to generate the signature.
+
+            '
+        signature:
+          type: string
+          title: Signature
+          description: 'The base64-url encoded DER form of the signature for `challenge` using the private key for the public key that was registered as an authenticator.
+
+            '
+      type: object
+      required:
+      - client_credential_id
+      - signature
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    Page_BatchOrderResponse_:
+      title: Page of BatchOrderResponse
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BatchOrderResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      type: object
+      required:
+      - data
+      - pagination
+    BatchOrderResponse:
+      properties:
+        id:
+          type: string
+          title: Batch Order Identifier
+          example: bord_353dc0fa58ba4ab7b8bd66430d04dd53
+          description: 'The unique identifier for this batch order.
+
+            '
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: 'The timestamp of the batch order.  It represents the point in time at which the batch order was created.
+
+            '
+        side:
+          $ref: '#/components/schemas/Side'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument to be bought/sold.
+
+            '
+        amount:
+          type: string
+          format: number
+          title: Amount
+          description: 'The amount of cash for a buy order, `null` for a sell order.
+
+            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
+
+            '
+        quantity:
+          type: string
+          format: number
+          exclusiveMinimum: 0
+          title: Quantity
+          description: 'The quantity of shares for a sell order, `null` for a buy order.
+
+            **NOTE:** We may evolve the API to allow quantity-based buy orders and amount-based sell orders. We do not recommend to rely on the current behavior.
+
+            '
+        fee:
+          type: string
+          format: number
+          title: Fee
+          description: 'The fee that will be charged by lemon.markets on your behalf.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          example: EUR
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the amount and fee listed here. The only currently available currency is `"EUR"`.
+
+            '
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChangeResponse'
+          type: array
+          title: History
+        regulatory_disclosures:
+          $ref: '#/components/schemas/broker__apps__api__types__RegulatoryDisclosureResponse'
+        appropriateness_check:
+          $ref: '#/components/schemas/AppropriatenessCheckWarningResponse'
+        sca:
+          $ref: '#/components/schemas/StrongCustomerAuthenticationRequest'
+      type: object
+      required:
+      - id
+      - created_at
+      - side
+      - instrument
+      - fee
+      - currency
+      - status
+      - history
+      title: BatchOrderResponse
+    OrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - confirmed
+      - created
+      - executed
+      - rejected
+      title: OrderStatus
+      description: 'A category representing the state of an order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>confirmed</code> <li><code>created</code> <li><code>executed</code> <li><code>rejected</code> </ul>
+
+        '
+    OrderRejectionReason:
+      type: string
+      enum:
+      - insufficient_buying_power
+      - insufficient_available_securities
+      - insufficient_order_amount
+      - rejected_by_exchange
+      - manual_rejection
+      - unknown
+      title: Order rejection reason
+      description: 'The reason why an order was rejected. Only populated when the order status is `rejected`.
+
+        <ul> <li><code>insufficient_buying_power</code> - Customer does not have enough buying power for buy order</li> <li><code>insufficient_available_securities</code> - Customer does not have enough available securities for sell order</li> <li><code>insufficient_order_amount</code> - Order amount is not enough to buy at least one unit of the instrument</li> <li><code>rejected_by_exchange</code> - Order was rejected by the exchange</li> <li><code>manual_rejection</code> - Order was manually rejected</li> <li><code>unknown</code> - Rejection reason could not be determined</li> </ul>
+
+        '
+      example: insufficient_buying_power
+    CreateBatchOrderRequest:
+      oneOf:
+      - $ref: '#/components/schemas/CreateBatchOrderRequestBuy'
+      - $ref: '#/components/schemas/CreateBatchOrderRequestSell'
+      discriminator:
+        propertyName: side
+        mapping:
+          buy: '#/components/schemas/CreateBatchOrderRequestBuy'
+          sell: '#/components/schemas/CreateBatchOrderRequestSell'
   securitySchemes:
     bearerAuth:
       type: http

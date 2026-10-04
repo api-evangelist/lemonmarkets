@@ -463,29 +463,6 @@ paths:
           description: Server Error
 components:
   schemas:
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    TaxExemptionOrderStatus:
-      type: string
-      enum:
-      - accepted
-      - canceled
-      - canceling
-      - created
-      - rejected
-      title: TaxExemptionOrderStatus
-      description: 'A category describing the status of a tax exemption order:
-
-        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>created</code> <li><code>rejected</code> </ul>
-
-        '
     TaxExemptionOrderResponse:
       properties:
         id:
@@ -539,6 +516,96 @@ components:
       - valid_from
       - history
       title: TaxExemptionOrderResponse
+    TaxExemptionUsageResponse:
+      properties:
+        year:
+          type: string
+          title: Year
+          description: 'The year for the tax exemption usage.
+
+            '
+        amount_total:
+          type: string
+          title: Amount Total
+          description: 'The total amount of the corresponding tax exemption order.
+
+            '
+        amount_used:
+          type: string
+          title: Amount Used
+          description: 'The utilized amount of the corresponding tax exemption order.  Use the difference between `amount_total - amount_used` to determine the amount still available.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount_total` and `amount_used` listed here. The only currently available currency is `"EUR"`.
+
+            '
+      type: object
+      required:
+      - year
+      - amount_total
+      - amount_used
+      - currency
+      title: TaxExemptionUsageResponse
+    TaxExemptionOrderStatus:
+      type: string
+      enum:
+      - accepted
+      - canceled
+      - canceling
+      - created
+      - rejected
+      title: TaxExemptionOrderStatus
+      description: 'A category describing the status of a tax exemption order:
+
+        <ul> <li><code>accepted</code> <li><code>canceled</code> <li><code>canceling</code> <li><code>created</code> <li><code>rejected</code> </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    EncodedPaginationResponse:
+      type: object
+      title: EncodedPaginationResponse
+      properties:
+        next_cursor:
+          type: string
+          title: Next Cursor
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/TaxExemptionUsageResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
+
+            '
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TaxExemptionUsageResponse]
     StatusChange_TaxExemptionOrderStatus_:
       properties:
         status:
@@ -556,21 +623,34 @@ components:
       - status
       - timestamp
       title: StatusChange of TaxExemptionOrderStatus
-    EncodedPaginationResponse:
-      type: object
-      title: EncodedPaginationResponse
+    EncodedPaginatedCollectionResponse_TaxExemptionOrderResponse_:
       properties:
-        next_cursor:
-          type: string
-          title: Next Cursor
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+        data:
+          items:
+            $ref: '#/components/schemas/TaxExemptionOrderResponse'
+          type: array
+          title: Data
+          description: 'The elements of the response.
 
             '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        pagination:
+          $ref: '#/components/schemas/EncodedPaginationResponse'
+      type: object
+      required:
+      - data
+      - pagination
+      title: EncodedPaginatedCollectionResponse[TaxExemptionOrderResponse]
+    TaxExemptionType:
+      type: string
+      enum:
+      - individual
+      const: individual
+      title: TaxExemptionType
+      description: 'A category describing the type of a tax exemption order:
+
+        <ul> <li><code>individual</code>:  Tax exemption limits for individuals apply to this order. </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
     CreateTaxExemptionOrderRequest:
       properties:
         amount_total:
@@ -614,86 +694,6 @@ components:
       - valid_from
       title: CreateTaxExemptionOrderRequest
       description: 'An object specifying a tax exemption order.
-
-        '
-    EncodedPaginatedCollectionResponse_TaxExemptionOrderResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TaxExemptionOrderResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[TaxExemptionOrderResponse]
-    TaxExemptionUsageResponse:
-      properties:
-        year:
-          type: string
-          title: Year
-          description: 'The year for the tax exemption usage.
-
-            '
-        amount_total:
-          type: string
-          title: Amount Total
-          description: 'The total amount of the corresponding tax exemption order.
-
-            '
-        amount_used:
-          type: string
-          title: Amount Used
-          description: 'The utilized amount of the corresponding tax exemption order.  Use the difference between `amount_total - amount_used` to determine the amount still available.
-
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'An ISO 4217 three-letter currency code. Its value represents the currency for the `amount_total` and `amount_used` listed here. The only currently available currency is `"EUR"`.
-
-            '
-      type: object
-      required:
-      - year
-      - amount_total
-      - amount_used
-      - currency
-      title: TaxExemptionUsageResponse
-    EncodedPaginatedCollectionResponse_TaxExemptionUsageResponse_:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/TaxExemptionUsageResponse'
-          type: array
-          title: Data
-          description: 'The elements of the response.
-
-            '
-        pagination:
-          $ref: '#/components/schemas/EncodedPaginationResponse'
-      type: object
-      required:
-      - data
-      - pagination
-      title: EncodedPaginatedCollectionResponse[TaxExemptionUsageResponse]
-    TaxExemptionType:
-      type: string
-      enum:
-      - individual
-      const: individual
-      title: TaxExemptionType
-      description: 'A category describing the type of a tax exemption order:
-
-        <ul> <li><code>individual</code>:  Tax exemption limits for individuals apply to this order. </ul>
 
         '
   securitySchemes:

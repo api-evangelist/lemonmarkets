@@ -231,6 +231,17 @@ paths:
           description: Server Error
 components:
   schemas:
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
+
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
+
+        '
     TradeResponse:
       properties:
         id:
@@ -330,21 +341,17 @@ components:
       - securities_account
       - executed_at
       title: TradeResponse
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+    Direction:
+      type: string
+      enum:
+      - debit
+      - credit
+      title: Direction
+      description: 'A category representing the direction of a payment or transaction flow:
 
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
+        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
 
         '
-      example:
-        next_cursor: <opaque-data>
     ErrorResponse:
       title: ErrorResponse
       required:
@@ -371,17 +378,6 @@ components:
       - data
       - pagination
       title: Page of TradeResponse
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
     TaxResponseField:
       properties:
         type:
@@ -408,17 +404,21 @@ components:
       - amount
       - direction
       title: TaxResponseField
-    Direction:
-      type: string
-      enum:
-      - debit
-      - credit
-      title: Direction
-      description: 'A category representing the direction of a payment or transaction flow:
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
 
-        <ul> <li><code>credit</code> <li><code>debit</code> </ul>
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
 
         '
+      example:
+        next_cursor: <opaque-data>
   securitySchemes:
     bearerAuth:
       type: http
