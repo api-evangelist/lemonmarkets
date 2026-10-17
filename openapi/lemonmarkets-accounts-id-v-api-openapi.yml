@@ -279,6 +279,39 @@ paths:
           description: Server Error
 components:
   schemas:
+    PersonType:
+      type: string
+      const: customer
+      title: PersonType
+      description: 'A category representing the relationship of a person to an account.
+
+        <ul> <li><code>customer</code> </ul>
+
+        '
+    PersonIdentificationStatus:
+      type: string
+      enum:
+      - created
+      - failed
+      - started
+      - succeeded
+      title: PersonIdentificationStatus
+      description: 'A category representing the status on a person identification process.
+
+        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
+
+        '
+    IdentificationDocumentType:
+      type: string
+      enum:
+      - id_card
+      - passport
+      title: IdentificationDocumentType
+      description: 'A category representing a givernment issued identification document.
+
+        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
+
+        '
     PersonResponse:
       properties:
         id:
@@ -297,23 +330,6 @@ components:
       description: 'An object representing a person to be verified.
 
         '
-    StatusChange_PersonIdentificationStatus_:
-      properties:
-        status:
-          $ref: '#/components/schemas/PersonIdentificationStatus'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
-
-            '
-          example: '2023-06-23T07:29:55.465000+00:00'
-      type: object
-      required:
-      - status
-      - timestamp
-      title: StatusChange[PersonIdentificationStatus]
     PersonIdentificationMethod:
       type: string
       const: kyc_reliance
@@ -378,6 +394,32 @@ components:
       - person
       - method
       - status
+    StatusChange_PersonIdentificationStatus_:
+      properties:
+        status:
+          $ref: '#/components/schemas/PersonIdentificationStatus'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: 'The timestamp of the event.  It represents the point in time at which the onboarding status was updated.
+
+            '
+          example: '2023-06-23T07:29:55.465000+00:00'
+      type: object
+      required:
+      - status
+      - timestamp
+      title: StatusChange[PersonIdentificationStatus]
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
     InitiateKYCRequest:
       title: InitiateKYCRequest
       description: 'An object describing client-side configuration for the identity verification process.
@@ -442,37 +484,6 @@ components:
       description: 'An object describing a previously completed ID+V process for a person in the context of KYC reliance.
 
         '
-    PersonType:
-      type: string
-      const: customer
-      title: PersonType
-      description: 'A category representing the relationship of a person to an account.
-
-        <ul> <li><code>customer</code> </ul>
-
-        '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    PersonIdentificationStatus:
-      type: string
-      enum:
-      - created
-      - failed
-      - started
-      - succeeded
-      title: PersonIdentificationStatus
-      description: 'A category representing the status on a person identification process.
-
-        <ul> <li><code>created</code> <li><code>failed</code> <li><code>started</code> <li><code>succeeded</code> </ul>
-
-        '
     IdentificationDocument:
       properties:
         type:
@@ -510,17 +521,6 @@ components:
       - issuing_country
       title: IdentificationDocument
       description: 'An object representing a government issued identity document.
-
-        '
-    IdentificationDocumentType:
-      type: string
-      enum:
-      - id_card
-      - passport
-      title: IdentificationDocumentType
-      description: 'A category representing a givernment issued identification document.
-
-        <ul> <li><code>id_card</code> <li><code>passport</code> </ul>
 
         '
   securitySchemes:

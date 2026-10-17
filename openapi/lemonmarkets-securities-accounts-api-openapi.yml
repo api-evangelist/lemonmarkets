@@ -278,6 +278,35 @@ paths:
           description: Server Error
 components:
   schemas:
+    broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
+      properties:
+        id:
+          type: string
+          title: Identifier
+          description: 'A value identifiying a securities account.  Use this as a technical identifier for the securities account.
+
+            '
+        account_number:
+          type: string
+          title: Account Number
+          description: 'A string representing the account number for the securities account.  Use this is a user-visible identifier for the securities account.
+
+            '
+        history:
+          items:
+            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
+          type: array
+          title: History
+          description: 'A history of the status changes for the security account.
+
+            '
+      type: object
+      required:
+      - id
+      - account_number
+      - created_at
+      - history
+      title: SecuritiesAccountResponse
     CustomerAccountStatus:
       title: CustomerAccountStatus
       enum:
@@ -313,6 +342,15 @@ components:
 
             '
           example: '2023-06-23T07:29:55.465000+00:00'
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
     SecuritiesAccountStatus:
       type: string
       enum:
@@ -338,44 +376,6 @@ components:
       - data
       - pagination
       title: EncodedPaginatedCollectionResponse[SecuritiesAccountResponse]
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
-    broker__apps__api__endpoints__securities_accounts__SecuritiesAccountResponse:
-      properties:
-        id:
-          type: string
-          title: Identifier
-          description: 'A value identifiying a securities account.  Use this as a technical identifier for the securities account.
-
-            '
-        account_number:
-          type: string
-          title: Account Number
-          description: 'A string representing the account number for the securities account.  Use this is a user-visible identifier for the securities account.
-
-            '
-        history:
-          items:
-            $ref: '#/components/schemas/StatusChange_CustomerAccountStatus_'
-          type: array
-          title: History
-          description: 'A history of the status changes for the security account.
-
-            '
-      type: object
-      required:
-      - id
-      - account_number
-      - created_at
-      - history
-      title: SecuritiesAccountResponse
     EncodedPaginationResponse:
       type: object
       title: EncodedPaginationResponse

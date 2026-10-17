@@ -369,32 +369,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Side:
-      type: string
-      enum:
-      - buy
-      - sell
-      title: Side
-      description: 'A category to represent the side of a customer''s order:
-
-        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
-
-        '
-    InstrumentRegulatoryInformationResponse:
-      title: InstrumentRegulatoryInformationResponse
-      description: 'An object representing regulatory information regarding the instrument.
-
-        '
-      type: object
-      properties:
-        kid:
-          title: KID
-          type: string
-          format: uri
-          description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
-
-            '
-    QuoteResponseWithType:
+    NavResponse:
       properties:
         type:
           $ref: '#/components/schemas/PriceType'
@@ -402,30 +377,6 @@ components:
           type: string
           title: Instrument
           description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
-
-            '
-        ask_price:
-          type: string
-          title: Ask Price
-          description: 'The ask price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type buy.
-
-            '
-        ask_size:
-          type: string
-          title: Ask Size
-          description: 'The ask size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type buy to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
-
-            '
-        bid_price:
-          type: string
-          title: Bid Price
-          description: 'The bid price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type sell.
-
-            '
-        bid_size:
-          type: string
-          title: Bid Size
-          description: 'The bid size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type sell to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
 
             '
         currency:
@@ -436,111 +387,27 @@ components:
           description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
 
             '
-        updated_at:
+        price:
           type: string
-          format: date-time
-          title: Updated At
-          description: 'The timestamp of the quote. It represents the point in time at which the quote was updated.
+          title: Price
+          description: 'The net asset value (NAV) for the instrument.
+
+            '
+        valuation_date:
+          type: string
+          format: date
+          title: Valuation Date
+          description: 'The date of the NAV valuation.
 
             '
       type: object
       required:
-      - instrument
-      - ask_price
-      - bid_price
-      - ask_size
-      - bid_size
       - currency
+      - instrument
+      - price
       - type
-      - updated_at
-      title: QuoteResponseWithType
-    Page_InstrumentResponse_:
-      title: Page of InstrumentResponse
-      required:
-      - data
-      - pagination
-      type: object
-      properties:
-        data:
-          title: Data
-          description: 'The elements of the response.
-
-            '
-          type: array
-          items:
-            $ref: '#/components/schemas/InstrumentResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    InstrumentType:
-      title: InstrumentType
-      enum:
-      - etf
-      - fund
-      - stock
-      type: string
-      description: 'A category specifying the type of a financial instrument:
-
-        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
-
-        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
-
-        '
-    InstrumentFundProfitModel:
-      title: Fund Profit Model
-      type: string
-      enum:
-      - accumulating
-      - distributing
-      description: 'A category to represent a fund''s model for profit use:
-
-        <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
-
-        '
-    PriceType:
-      type: string
-      enum:
-      - nav
-      - quote
-      title: PriceType
-      description: 'A category representing the source of a price:
-
-        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
-
-        '
-    InstrumentPriceResponse:
-      title: Price Response
-      oneOf:
-      - $ref: '#/components/schemas/QuoteResponseWithType'
-      - $ref: '#/components/schemas/NavResponse'
-      discriminator:
-        propertyName: type
-        mapping:
-          nav: '#/components/schemas/NavResponse'
-          quote: '#/components/schemas/QuoteResponseWithType'
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
+      - valuation_date
+      title: NavResponse
     YieldResponse:
       title: Yield
       description: 'Most recent yield data available for the specified instrument.
@@ -628,45 +495,28 @@ components:
           description: 'The side of trading that is halted. If <code>null</code>, both buy and sell operations are halted.
 
             '
-    NavResponse:
-      properties:
-        type:
-          $ref: '#/components/schemas/PriceType'
-        instrument:
-          type: string
-          title: Instrument
-          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+    PriceType:
+      type: string
+      enum:
+      - nav
+      - quote
+      title: PriceType
+      description: 'A category representing the source of a price:
 
-            '
-        currency:
-          type: string
-          maxLength: 3
-          minLength: 3
-          title: Currency
-          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+        <ul> <li><code>nav</code>:  The price indicates the most recent net asset value (NAV) per share. <li><code>quote</code>:  The price indicates the most recent market quote (bid side) for a share. </ul>
 
-            '
-        price:
-          type: string
-          title: Price
-          description: 'The net asset value (NAV) for the instrument.
+        '
+    Side:
+      type: string
+      enum:
+      - buy
+      - sell
+      title: Side
+      description: 'A category to represent the side of a customer''s order:
 
-            '
-        valuation_date:
-          type: string
-          format: date
-          title: Valuation Date
-          description: 'The date of the NAV valuation.
+        <ul> <li><code>buy</code>: Buy shares of an instrument and pay with cash. <li><code>sell</code>: Sell shares of an instrument and receive cash. </ul>
 
-            '
-      type: object
-      required:
-      - currency
-      - instrument
-      - price
-      - type
-      - valuation_date
-      title: NavResponse
+        '
     InstrumentResponse:
       title: InstrumentResponse
       description: 'An object representing a financial instrument.
@@ -715,6 +565,156 @@ components:
           description: 'A list of currently active trading halts for this instrument. Trading halts are temporarily applied by lemon.markets, and restrict buy and/or sell operations on the instrument. This field is only present when there are active trading halts. See <code>GET /instruments/{isin}</code> documentation about ISINs that can be used in the Sandbox environment to test Trading Halt scenarios.
 
             '
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    InstrumentFundProfitModel:
+      title: Fund Profit Model
+      type: string
+      enum:
+      - accumulating
+      - distributing
+      description: 'A category to represent a fund''s model for profit use:
+
+        <ul> <li><code>accumulating</code> <li><code>distributing</code> </ul>
+
+        '
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
+    Page_InstrumentResponse_:
+      title: Page of InstrumentResponse
+      required:
+      - data
+      - pagination
+      type: object
+      properties:
+        data:
+          title: Data
+          description: 'The elements of the response.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/InstrumentResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    InstrumentPriceResponse:
+      title: Price Response
+      oneOf:
+      - $ref: '#/components/schemas/QuoteResponseWithType'
+      - $ref: '#/components/schemas/NavResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          nav: '#/components/schemas/NavResponse'
+          quote: '#/components/schemas/QuoteResponseWithType'
+    InstrumentRegulatoryInformationResponse:
+      title: InstrumentRegulatoryInformationResponse
+      description: 'An object representing regulatory information regarding the instrument.
+
+        '
+      type: object
+      properties:
+        kid:
+          title: KID
+          type: string
+          format: uri
+          description: 'The KID (Key Investor Document) for the instrument, usually only available for funds.
+
+            '
+    InstrumentType:
+      title: InstrumentType
+      enum:
+      - etf
+      - fund
+      - stock
+      type: string
+      description: 'A category specifying the type of a financial instrument:
+
+        <ul> <li><code>etf</code> <li><code>fund</code> <li><code>stock</code> </ul>
+
+        <strong>Note:</strong> This list is not final, expect other values to be added in the future.
+
+        '
+    QuoteResponseWithType:
+      properties:
+        type:
+          $ref: '#/components/schemas/PriceType'
+        instrument:
+          type: string
+          title: Instrument
+          description: 'An ISIN (International Securities Identification Number) according to ISO 6166. This value uniquely identifies the instrument.
+
+            '
+        ask_price:
+          type: string
+          title: Ask Price
+          description: 'The ask price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type buy.
+
+            '
+        ask_size:
+          type: string
+          title: Ask Size
+          description: 'The ask size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type buy to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        bid_price:
+          type: string
+          title: Bid Price
+          description: 'The bid price for the quote. Unless there is a new quote in the mean time, this is the execution price for a market order of type sell.
+
+            '
+        bid_size:
+          type: string
+          title: Bid Size
+          description: 'The bid size for the quote. Unless there is a new quote in the mean time, this is the maximum quantity for a market order of type sell to be executed immediately and completely. Placing orders with larger quantities can lead to partial execution (if permitted) or delayed execution.
+
+            '
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          description: 'The currency for quoted prices. The currency will be represented using a three letter ISO 4217 currency code. At the moment, we will only return "EUR" as a currency.
+
+            '
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: 'The timestamp of the quote. It represents the point in time at which the quote was updated.
+
+            '
+      type: object
+      required:
+      - instrument
+      - ask_price
+      - bid_price
+      - ask_size
+      - bid_size
+      - currency
+      - type
+      - updated_at
+      title: QuoteResponseWithType
   securitySchemes:
     bearerAuth:
       type: http

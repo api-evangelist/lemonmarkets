@@ -341,6 +341,30 @@ components:
       - securities_account
       - executed_at
       title: TradeResponse
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        next_cursor:
+          title: Cursor for Next Page
+          type: string
+          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
+
+            '
+      description: 'Information about accessing elements beyond the ones that were returned.
+
+        '
+      example:
+        next_cursor: <opaque-data>
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          title: Message
+          type: string
     Direction:
       type: string
       enum:
@@ -352,15 +376,6 @@ components:
         <ul> <li><code>credit</code> <li><code>debit</code> </ul>
 
         '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - message
-      type: object
-      properties:
-        message:
-          title: Message
-          type: string
     Page_TradeResponse_:
       properties:
         data:
@@ -404,21 +419,6 @@ components:
       - amount
       - direction
       title: TaxResponseField
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        next_cursor:
-          title: Cursor for Next Page
-          type: string
-          description: 'When fetching long lists of elements, you can use our pagination feature to fetch batches of data.  If a response contains the property `pagination.next_cursor`, you can pass its value via the query item `cursor` to generate the request for the next batch of data.
-
-            '
-      description: 'Information about accessing elements beyond the ones that were returned.
-
-        '
-      example:
-        next_cursor: <opaque-data>
   securitySchemes:
     bearerAuth:
       type: http
