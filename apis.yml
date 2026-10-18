@@ -224,6 +224,8 @@ apis:
   humanURL: https://developer.lemon.markets/
   baseURL: https://api.lemon.markets/v1
   tags:
+  - Events (webhooks)
+  tags_raw:
   - Events + Webhooks
   properties:
   - type: OpenAPI
